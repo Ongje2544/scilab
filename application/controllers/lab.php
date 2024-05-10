@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class dashboard extends CI_Controller
+class lab extends CI_Controller
 {
 
 	public function __construct()
@@ -14,7 +14,7 @@ class dashboard extends CI_Controller
 
 	public function index()
 	{
-		$view["module"] = $this->load->view("backend/dashboard/board", NULL, TRUE);
+		$view["module"] = $this->load->view("backend/lab/list", NULL, TRUE);
 		$this->load->view("backend/template", $view);
 	}
 

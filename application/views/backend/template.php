@@ -9,18 +9,38 @@
 
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/fontawesome-free/css/all.min.css">
-
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/dist/css/adminlte.min.css">
-
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
+  <!-- DataTables -->
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/jquery/jquery.min.js"></script>
-
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/dist/js/adminlte.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/dist/js/adminlte.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/chart.js/Chart.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/dist/js/pages/dashboard3.js"></script>
+  <!-- DataTables  & Plugins -->
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/jszip/jszip.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/pdfmake/pdfmake.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/pdfmake/vfs_fonts.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+  <!-- Page specific script -->
+  <!-- <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/dist/js/demo.js"></script> -->
+
 
 </head>
 
@@ -81,24 +101,15 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="../../index3.html" class="brand-link">
-        <img src="<?PHP echo config_item("assets_url"); ?>/dist/img/bsru.png" class="brand-image">
+        <img src="<?PHP echo config_item("assets_url"); ?>/dist/img/bsru.png" class="brand-image" style="margin-left: 5px;">
         <span class="brand-text font-weight-normal">BSRU</span>
       </a>
 
       <!-- Sidebar -->
       <div class="sidebar">
-        <!-- Sidebar user (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-          <div class="image">
-            <img src="<?PHP echo config_item("assets_url"); ?>/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-          </div>
-          <div class="info">
-            <a href="#" class="d-block">Alexander Pierce</a>
-          </div>
-        </div>
 
         <!-- SidebarSearch Form -->
-        <div class="form-inline">
+        <div class="form-inline mt-3">
           <div class="input-group" data-widget="sidebar-search">
             <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
             <div class="input-group-append">
@@ -175,15 +186,6 @@
     <!-- /.control-sidebar -->
   </div>
   <!-- ./wrapper -->
-
-  <!-- jQuery -->
-  <script src="../../plugins/jquery/jquery.min.js"></script>
-  <!-- Bootstrap 4 -->
-  <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- AdminLTE App -->
-  <script src="../../dist/js/adminlte.min.js"></script>
-  <!-- AdminLTE for demo purposes -->
-  <script src="../../dist/js/demo.js"></script>
 </body>
 
 </html>
