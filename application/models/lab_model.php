@@ -2,8 +2,7 @@
 
 class lab_model extends CI_Model
 {
-
-	private $dbname = "fines";
+	private $dbname = "lab";
 	private $ID = "ID";
 
 	public function __construct()
@@ -12,79 +11,27 @@ class lab_model extends CI_Model
 		date_default_timezone_set('Asia/Bangkok');
 	}
 
-	public function get_list($page = 1, $select = "", $word = "", $status = "")
+	public function get_list()
 	{
-		$ss_user = $this->session->userdata('logged_in');
-		//print_r($ss_user);exit();
 		$today = date("Y-m-d");
 
-		$range = 5;
-		$pagelen = 25;
-		$w = "";
-        $e = "and f.Id_card = '$ss_user->authIdCard'";
-
-		if ($select == "Name" && $word != "") {
-			$w .= "and f.Name_accused like '%" . trim($word) . "%' ";
-		}
-		if ($select == "pv" && $word != "") {
-			$w .= "and f.Place_release like '%$word%' ";
-		}
-
-		$sql = "SELECT COUNT(f.id) AS num_rows
-				FROM fines f
-				LEFT JOIN authen_org org ON  org.authID = f.authID
-				LEFT JOIN explain_type ex ON  ex.Id = f.Explain_type
-				where f.Status in('Online','Offline') $e $w";
-		$query = $this->db->query($sql);
-		$row = $query->result();
-
-		$num_rows = $row[0]->num_rows;
-
-		$num_totel = $num_rows;
-		$totalpage = ceil($num_rows / $pagelen);
-		$goto = ($page - 1) * $pagelen;
-		$start = $page - $range;
-		$end = $page + $range;
-		if ($start <= 1) {
-			$start = 1;
-		}
-		if ($end >= $totalpage) {
-			$end = $totalpage;
-		}
-
-		$sql = "SELECT  f.Status_fine StatusFines,ex.Name ExplainName,f.Name_accused NameAccused,f.Date_offence DateOffence,f.List_officers Officers,
-				f.Place_release PlaceRelease,f.*
-				FROM fines f
-				LEFT JOIN authen_org org ON  org.authID = f.authID
-				LEFT JOIN explain_type ex ON  ex.Id = f.Explain_type
-				where f.Status in('Online','Offline') $e $w
-				order by f.ID desc
-				LIMIT $goto,$pagelen";
+		$sql = "SELECT l.ID Idlab ,l.name_list Namelist ,b.Branch_name BranchName ,l.Status Lab ,b.Status Branch
+                FROM lab l
+				LEFT JOIN branch_type b ON  b.Branch_id = l.branch_list
+                WHERE l.Status in('Online', 'Offline')
+                ORDER BY l.ID DESC";
 		$query = $this->db->query($sql);
 		$result = $query->result();
-		//print_r($result);
 		$data['row'] = $result;
-		$data['page'] = $page;
-		$data['start'] = $start;
-		$data['end'] = $end;
-		$data['totalpage'] = $totalpage;
-		$data['num_rows'] = $num_rows;
-		$data['goto'] = $goto;
-		$data['select'] = $select;
-		$data['status'] = $status;
-		$data['word'] = $word;
-
 		return $data;
 	}
 
 	public function get_view($id)
 	{
-		$sql = "SELECT  *,pe.Name PermissionsName
-				FROM fines f
-				LEFT JOIN authen_org org ON  org.authID = f.authID
-				LEFT JOIN province p ON p.PROVINCE_ID = f.province
-				LEFT JOIN permissions_type pe ON pe.Id = f.Permissions_type
-				where f.Status in('Online','Offline') and f.ID = $id ";
+		$sql = "SELECT * ,b.Branch_name BranchName
+				FROM lab l
+				LEFT JOIN branch_type b ON  b.Branch_id = l.branch_list
+				where l.Status in('Online','Offline') and l.ID = $id ";
 		$query = $this->db->query($sql);
 		$row = $query->row();
 		$num_rows = $query->num_rows();
@@ -96,15 +43,9 @@ class lab_model extends CI_Model
 
 	public function get_whereID($id)
 	{
-		$ss_user = $this->session->userdata('logged_in');
-
-		$sql = "SELECT * 
-				FROM fines f
-				LEFT JOIN authen_org org ON  org.authID = f.authID
-				LEFT JOIN province p ON p.PROVINCE_ID = f.province
-				LEFT JOIN permissions_type pe ON pe.Id = f.Permissions_type
-				where f.Status in('Online','Offline') and f.ID = $id ";
-
+		$sql = "SELECT *
+				FROM lab l
+				where l.Status in('Online','Offline') and l.ID = $id ";
 		$query = $this->db->query($sql);
 		$row = $query->row();
 		$num_rows = $query->num_rows();
@@ -114,47 +55,94 @@ class lab_model extends CI_Model
 			return array();
 	}
 
-	public function update($data)
+	public function get_teach_type_list($id)
 	{
+		$query = $this->db->get_where('teach_type_list', array('Lab_id' => $id));
+		return $query->result();
+	}
 
-		$fileUpload = $_FILES["image"]['name'];
-		$digit = $this->generatecode(2);
-		$now = date("Ymdgis");
-		$myrand = $now . $digit;
-		//print_r($_FILES);exit();
-		if (!empty($fileUpload)) {
-			$rest = strrchr($fileUpload, ".");
-			$FileName = $data['inputID'] . "-" . $myrand . $rest;
-
-			if (!is_dir('./uploads/' . $this->dbname)) {
-				mkdir('./uploads/' . $this->dbname . '/', 0777, TRUE);
-			}
-
-			$config['upload_path'] = './uploads/' . $this->dbname;
-			$config['allowed_types'] = 'jpg|jpeg|gif|png|pdf';
-			$config['file_name'] = $FileName;
-			$this->load->library('upload', $config);
-		} else {
-			$FileName = $data['image_old'];
+	public function insertLablist($data)
+	{
+		$insertLablist = array(
+			'ID' 		=> $data['Id'],
+			'name_list' 	=> $data['NameList'],
+			'branch_list' 	=> $data['Branch'],
+			'concept_list' 		=> $data['Concept'],
+			'teach_list' 		=> implode(",", $data['Teach_type']),
+			'price_list' 		=> $data['Price'],
+		);
+		$this->db->insert($this->dbname, $insertLablist);
+		$insert_id = $data['Id'];
+		$this->add_log($insertLablist, $this->dbname, 'insertLablist', $insert_id);
+		foreach ($data['Teach_type'] as $key => $type) {
+			$type_id = $type;
+			$insert_list = array(
+				'Teach_id' => $type_id,
+				'Lab_id' => $insert_id
+			);
+			$this->db->insert('Teach_type_list', $insert_list, $key);
 		}
+		$insert_list_branch = array(
+			'Branch_id' => $data['Branch'],
+			'Lab_id' => $insert_id
+		);
+		$this->db->insert('Branch_type_list', $insert_list_branch);
+		return $insert_id;
+	}
 
-		$explain = array(
-			'UserID'					=> $data['UserID'],
-			'Explain_type'				=> $data['Explain_type'],
-			'Permissions_type' 			=> $data['Permissions_type'],
-			'Description_permissions'	=> $data['Description_permissions'],
-			'FileName2' 				=> $FileName,
+	public function updateLablist($data)
+	{
+		$uploadLablist = array(
+			'ID' 		=> $data['Id'],
+			'name_list' 	=> $data['NameList'],
+			'branch_list' 	=> $data['Branch'],
+			'concept_list' 		=> $data['Concept'],
+			'teach_list' 		=> implode(",", $data['Teach_type']),
+			'price_list' 		=> $data['Price'],
 		);
 
-		if(!empty($fileUpload)){
-			if(!empty($data['image_old'])){
-				@unlink('./uploads/'.$this->dbname.'/'.$data['image_old']);
-			}
-			$this->upload->do_upload('image');
-		} 
-		
-		$this->add_log($explain,$this->dbname,'StatusExplain',$data['inputID']);
-		return $this->db->update($this->dbname, $explain, array($this->ID => $data['inputID'])); 
+		$update_id = $data['inputID'];
+		$this->add_log($uploadLablist, $this->dbname, 'update', $update_id);
+		$this->db->update($this->dbname, $uploadLablist, array($this->ID => $update_id));
+		$this->delete_type_teach($update_id);
+		$this->delete_type_branch($update_id);
+		foreach ($data['Teach_type'] as $key => $type) {
+			$type_id = $type;
+			$update_list = array(
+				'Teach_id' => $type_id,
+				'Lab_id' => $update_id
+			);
+			$this->db->insert('Teach_type_list', $update_list, $key);
+		}
+		$update_list_branch = array(
+			'Branch_id' => $data['Branch'],
+			'Lab_id' => $update_id
+		);
+		$this->db->insert('Branch_type_list', $update_list_branch);
+		return $update_id;
+	}
+	public function deleteLablist($id)
+	{
+		$data = $this->get_whereID($id);
+
+		$deleteLablist = array(
+			'Status' 		=> 'Delete'
+		);
+
+		$this->add_log($data, $this->dbname, 'deleteLablist');
+		//return $this->db->delete($this->dbname, array($this->ID => $id)); 
+		return $this->db->update($this->dbname, $deleteLablist, array($this->ID => $id));
+	}
+
+	private function delete_type_teach($data)
+	{
+		$this->db->where('Lab_id', $data);
+		return $this->db->delete('Teach_type_list');
+	}
+	private function delete_type_branch($data)
+	{
+		$this->db->where('Lab_id', $data);
+		return $this->db->delete('Branch_type_list');
 	}
 
 	public function changeDate($date)
@@ -165,8 +153,6 @@ class lab_model extends CI_Model
 
 	public function add_log($data, $logTable, $logAction, $ID = 0)
 	{
-		$ss_user = $this->session->userdata('logged_in');
-
 		$log['logContent'] 	= json_encode($data, JSON_UNESCAPED_UNICODE);
 		$log['logTable'] 	= $logTable;
 		$log['logAction'] 	= $logAction;
@@ -174,7 +160,7 @@ class lab_model extends CI_Model
 		$log['logIP']		=	$this->getIP();
 		$this->db->insert('log', $log);
 	}
-	
+
 	public function getIP()
 	{
 		$ip = $_SERVER['REMOTE_ADDR'];
@@ -187,3 +173,83 @@ class lab_model extends CI_Model
 		return $ip;
 	}
 }
+
+	// public function get_view($id)
+	// {
+	// 	$sql = "SELECT  *,pe.Name PermissionsName
+	// 			FROM fines f
+	// 			LEFT JOIN authen_org org ON  org.authID = f.authID
+	// 			LEFT JOIN province p ON p.PROVINCE_ID = f.province
+	// 			LEFT JOIN permissions_type pe ON pe.Id = f.Permissions_type
+	// 			where f.Status in('Online','Offline') and f.ID = $id ";
+	// 	$query = $this->db->query($sql);
+	// 	$row = $query->row();
+	// 	$num_rows = $query->num_rows();
+	// 	if ($num_rows == 1)
+	// 		return $row;
+	// 	else
+	// 		return array();
+	// }
+
+	// public function get_whereID($id)
+	// {
+	// 	$ss_user = $this->session->userdata('logged_in');
+
+	// 	$sql = "SELECT * 
+	// 			FROM fines f
+	// 			LEFT JOIN authen_org org ON  org.authID = f.authID
+	// 			LEFT JOIN province p ON p.PROVINCE_ID = f.province
+	// 			LEFT JOIN permissions_type pe ON pe.Id = f.Permissions_type
+	// 			where f.Status in('Online','Offline') and f.ID = $id ";
+
+	// 	$query = $this->db->query($sql);
+	// 	$row = $query->row();
+	// 	$num_rows = $query->num_rows();
+	// 	if ($num_rows == 1)
+	// 		return $row;
+	// 	else
+	// 		return array();
+	// }
+
+	// public function update($data)
+	// {
+
+	// 	$fileUpload = $_FILES["image"]['name'];
+	// 	$digit = $this->generatecode(2);
+	// 	$now = date("Ymdgis");
+	// 	$myrand = $now . $digit;
+	// 	//print_r($_FILES);exit();
+	// 	if (!empty($fileUpload)) {
+	// 		$rest = strrchr($fileUpload, ".");
+	// 		$FileName = $data['inputID'] . "-" . $myrand . $rest;
+
+	// 		if (!is_dir('./uploads/' . $this->dbname)) {
+	// 			mkdir('./uploads/' . $this->dbname . '/', 0777, TRUE);
+	// 		}
+
+	// 		$config['upload_path'] = './uploads/' . $this->dbname;
+	// 		$config['allowed_types'] = 'jpg|jpeg|gif|png|pdf';
+	// 		$config['file_name'] = $FileName;
+	// 		$this->load->library('upload', $config);
+	// 	} else {
+	// 		$FileName = $data['image_old'];
+	// 	}
+
+	// 	$explain = array(
+	// 		'UserID'					=> $data['UserID'],
+	// 		'Explain_type'				=> $data['Explain_type'],
+	// 		'Permissions_type' 			=> $data['Permissions_type'],
+	// 		'Description_permissions'	=> $data['Description_permissions'],
+	// 		'FileName2' 				=> $FileName,
+	// 	);
+
+	// 	if(!empty($fileUpload)){
+	// 		if(!empty($data['image_old'])){
+	// 			@unlink('./uploads/'.$this->dbname.'/'.$data['image_old']);
+	// 		}
+	// 		$this->upload->do_upload('image');
+	// 	} 
+		
+	// 	$this->add_log($explain,$this->dbname,'StatusExplain',$data['inputID']);
+	// 	return $this->db->update($this->dbname, $explain, array($this->ID => $data['inputID'])); 
+	// }
