@@ -12,8 +12,9 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">General Form</li>
+                    <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
+                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/school/">ตารางโรงเรียน</a></li>
+                    <li class="breadcrumb-item active">แก้ไขข้อมูลโรงเรียน</li>
                 </ol>
             </div>
         </div>
@@ -33,27 +34,28 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form" id="insertSchool" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/insertSchool" method="post">
+                    <form role="form" id="insertSchool" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/school/updateSchool" method="post">
+                    <input name="inputID" type="hidden" value="<?php echo $row->School_id ?>">
                         <div class="card-body" style="background-color: rgb(245, 245, 245);">
                             <div class="form-group mt-3 mr-5 d-flex">
                                 <label for="nameSchool" class="mid mt-2 col-sm-4 text-right">ชื่อโรงเรียน/สถาบัน</label>
-                                <input type="text" name="SchoolName" class="form-control col-sm-8" id="nameSchool" placeholder="กรอกชื่อโรงเรียน/สถาบัน">
+                                <input type="text" name="SchoolName" class="form-control col-sm-8" id="nameSchool" placeholder="กรอกชื่อโรงเรียน/สถาบัน" value="<?php echo $row->School_name ?>">
                             </div>
                             <div class="form-group mt-3 mr-5 d-flex">
                                 <label for="address" class="mid mt-2 col-sm-4 text-right">ที่อยู่</label>
-                                <textarea name="Address" rows="4" class="form-control col-sm-8" id="address" placeholder="กรอกที่อยู่"></textarea>
+                                <textarea name="Address" rows="4" class="form-control col-sm-8" id="address" placeholder="กรอกที่อยู่"><?php echo $row->School_address ?></textarea>
                             </div>
                             <div class="form-group mt-3 mr-5 d-flex">
                                 <label for="callNumber" class="mid mt-2 col-sm-4 text-right">โทรศัพท์</label>
-                                <input type="text" name="Callnum" class="form-control col-sm-8" id="callNumber1" placeholder="กรอกโทรศัพท์">
+                                <input type="text" name="Callnum" class="form-control col-sm-8" id="callNumber1" placeholder="กรอกโทรศัพท์" value="<?php echo $row->School_callnum ?>">
                             </div>
                             <div class="form-group mt-3 mr-5 d-flex">
                                 <label for="fax" class="mid mt-2 col-sm-4 text-right">แฟกซ์(ถ้ามี)</label>
-                                <input type="text" name="Fax" class="form-control col-sm-8" id="fax" placeholder="กรอกแฟกซ์">
+                                <input type="text" name="Fax" class="form-control col-sm-8" id="fax" placeholder="กรอกแฟกซ์" value="<?php echo $row->School_fax ?>">
                             </div>
                             <div class="form-group mt-3 mr-5 d-flex">
                                 <label for="email" class="mid mt-2 col-sm-4 text-right">อีเมล</label>
-                                <input type="email" name="Email" class="form-control col-sm-8" id="email" placeholder="กรอกอีเมล">
+                                <input type="email" name="Email" class="form-control col-sm-8" id="email" placeholder="กรอกอีเมล" value="<?php echo $row->School_email ?>">
                             </div>
                         </div>
                         <div class="card-footer" style="background-color: rgb(255, 255, 255);">

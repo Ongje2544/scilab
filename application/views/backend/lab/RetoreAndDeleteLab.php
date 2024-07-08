@@ -18,6 +18,10 @@
         padding: 5px;
         text-decoration: underline;
     }
+
+    .bt{
+        position: absolute;
+    }
 </style>
 
 <!-- Content Header (Page header) -->
@@ -29,9 +33,9 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายวิชา</a></li>
-                    <li class="breadcrumb-item active">ดูข้อมูลรายวิชา</li>
+                    <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
+                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/restoreMenuLab">การกู้ข้อมูลรายวิชา</a></li>
+                    <li class="breadcrumb-item active">รายละเอียดข้อมูลรายวิชา</li>
                 </ol>
             </div>
         </div>
@@ -99,6 +103,14 @@
                     <!-- /.card-body -->
                     <div class="card-footer">
                         <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
+                        <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/RestoreLab" method="post">
+                            <input name="inputID" type="hidden" value="<?php echo $row->ID ?>">
+                            <button type="submit" class="btn btn-primary bt" style="bottom : 12px; left:5rem">กู้ข้อมูล</button>
+                        </form>
+                        <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/SuredeleteLab" method="post">
+                            <input name="inputID" type="hidden" value="<?php echo $row->ID ?>">
+                            <button type="submit" class="btn btn-danger bt" style="bottom : 12px; left:9.9rem">ลบข้อมูล</button>
+                        </form>
                     </div>
                     <!-- /.card-footer-->
                 </div>

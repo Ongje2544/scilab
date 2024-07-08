@@ -30,8 +30,8 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายการ</a></li>
-                    <li class="breadcrumb-item active">ดูหมวดหมู่</li>
+                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/school/">ตารางโรงเรียน</a></li>
+                    <li class="breadcrumb-item active">ลบข้อมูลโรงเรียน</li>
                 </ol>
             </div>
         </div>
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <!-- /.card-body -->
-                    <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/deleteSchool" method="post">
+                    <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/school/deleteSchool" method="post">
                         <input name="inputID" type="hidden" value="<?php echo $row->School_id ?>">
                         <div class="card-footer">
                             <a href="javascript:history.back()" class="btn btn-success">กลับ</a>

@@ -18,6 +18,11 @@
         padding: 5px;
         text-decoration: underline;
     }
+    
+    .bt{
+        position: absolute;
+    }
+
 </style>
 
 <!-- Content Header (Page header) -->
@@ -30,8 +35,8 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายวิชา</a></li>
-                    <li class="breadcrumb-item active">ลบผู้สอน</li>
+                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/restoreMenuLab">การกู้ข้อมูลรายวิชา</a></li>
+                    <li class="breadcrumb-item active">รายละเอียดข้อมูลผู้สอน</li>
                 </ol>
             </div>
         </div>
@@ -66,13 +71,17 @@
                         </div>
                     </div>
                     <!-- /.card-body -->
-                    <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/deleteTeach" method="post">
-                        <input name="inputID" type="hidden" value="<?php echo $row->Teach_id ?>">
-                        <div class="card-footer">
-                            <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
-                            <button type="submit" class="btn btn-danger">ลบข้อมูล</button>
-                        </div>
-                    </form>
+                    <div class="card-footer">
+                        <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
+                        <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/RestoreTeach" method="post">
+                            <input name="inputID" type="hidden" value="<?php echo $row->Teach_id ?>">
+                            <button type="submit" class="btn btn-primary bt" style="bottom : 12px; left:5rem">กู้ข้อมูล</button>
+                        </form>
+                        <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/SuredeleteTeach" method="post">
+                            <input name="inputID" type="hidden" value="<?php echo $row->Teach_id ?>">
+                            <button type="submit" class="btn btn-danger bt" style="bottom : 12px; left:9.9rem">ลบข้อมูล</button>
+                        </form>
+                    </div>
                     <!-- /.card-footer-->
                 </div>
                 <!-- /.card -->
@@ -92,9 +101,9 @@
                                     foreach ($teach_type_list as $v) {
                                         foreach ($lab as $select) {
                                             if ($v->Lab_id == $select->ID) {
-                                                if($select->name_list != Null){
+                                                if ($select->name_list != Null) {
                                                     echo $select->name_list;
-                                                }else{
+                                                } else {
                                                     echo 'Untitle name';
                                                 }
                                             }

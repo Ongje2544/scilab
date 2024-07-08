@@ -60,6 +60,20 @@ class teach_model extends CI_Model
 		return $data;
 	}
 
+	public function get_list_restore()
+	{
+
+		$today = date("Y-m-d");
+
+		$sql = "SELECT *
+                FROM teach_type tt
+				WHERE tt.Status in('Delete')
+                ORDER BY tt.Teach_id DESC";
+		$query = $this->db->query($sql);
+		$school = $query->result();
+		$data['row'] = $school;
+		return $data;
+	}
 	public function get_view($id)
 	{
 		$sql = "SELECT *
@@ -88,6 +102,19 @@ class teach_model extends CI_Model
 			return array();
 	}
 
+	public function get_RestorewhereID($id)
+	{
+		$sql = "SELECT *
+				FROM teach_type tt
+				where tt.Status in('Delete') and tt.Teach_id = $id ";
+		$query = $this->db->query($sql);
+		$row = $query->row();
+		$num_rows = $query->num_rows();
+		if ($num_rows == 1)
+			return $row;
+		else
+			return array();
+	}
 	public function get_lab()
 	{
 		$sql = "SELECT * FROM lab";
@@ -97,7 +124,9 @@ class teach_model extends CI_Model
 	
 	public function get_teach_type()
 	{
-		$sql = "SELECT * FROM teach_type";
+		$sql = "SELECT * 
+				FROM teach_type tt
+				where tt.Status in('Online') ";
 		$query = $this->db->query($sql);
 		return $query->result();
 	}
@@ -158,6 +187,24 @@ class teach_model extends CI_Model
 		$this->add_log($data, $this->dbname, 'deleteTeach');
 		//return $this->db->delete($this->dbname, array($this->ID => $id)); 
 		return $this->db->update($this->dbname, $deleteTeach, array($this->ID => $id));
+	}
+
+	public function SuredeleteTeach($data)
+	{
+		$this->add_log('Teach ID : '.$data, $this->dbname, 'ComfirmDelete_Teach');
+		$this->db->where('Teach_id', $data);
+		return $this->db->delete('teach_type');
+	}
+
+	public function RestoreTeach($id)
+	{
+
+		$RestoreTeach = array(
+			'Status' 		=> 'Online'
+		);
+
+		$this->add_log('Teach ID : '.$id, $this->dbname, 'Restore Teach');
+		return $this->db->update($this->dbname, $RestoreTeach, array($this->ID => $id));
 	}
 
 	public function changeDate($date)

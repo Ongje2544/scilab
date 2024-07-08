@@ -19,9 +19,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>ฐานข้อมูลรายการ</h1>
-                <a href="<?PHP echo config_item("base_url"); ?>/lab/addMenuLab/" class="btn bg-blue bt" style=" top: 0px; right:-31.35rem;">เพิ่มรายการ</a>
-                <a href="<?PHP echo config_item("base_url"); ?>/lab/restoreMenuLab/" class="btn btn-outline-danger bt" style=" top: 0px; right:-39.75rem;">กู้ข้อมูลรายการ</a>
+                <h1>กู้คืนฐานข้อมูลรายการ</h1>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -68,17 +66,9 @@
                                             } ?></td>
                                         <td>
                                             <center>
-                                                <p class="<?php echo ($v->Lab == 'Online') ? "text-green" : "text-red"; ?>" title="" style="margin-bottom: 0px;"><?php echo $v->Lab ?></p>
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/ViewMenuLab/<?php echo $v->Idlab ?>">
-                                                    <span class="btn btn-xs btn-primary">ดูรายละเอียด</span>
-                                                </a>
-
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/EditMenuLab/<?php echo $v->Idlab ?>/?sID=<?php echo $v->Idlab ?>">
-                                                    <span class="btn btn-xs btn-warning">แก้ไข</span>
-                                                </a>
-
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/confirmDeleteLablist/<?php echo $v->Idlab ?>" style="display:">
-                                                    <span class="btn btn-xs btn-danger">ลบ</span>
+                                                <p class="text-red" title="" style="margin-bottom: 0px;"><?php echo $v->Lab ?></p>
+                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/confirmRestoreandeleteLab/<?php echo $v->Idlab ?>">
+                                                    <span class="btn btn-xs btn-warning">ดูรายละเอียด</span>
                                                 </a>
                                                 <?php
                                                 foreach ($teach_lab as $select) {
@@ -130,16 +120,8 @@
                                         <td><?php echo $t->Teach_name ?></td>
                                         <td>
                                             <center>
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/ViewMenuTeach/<?php echo $t->Teach_id ?>">
-                                                    <span class="btn btn-xs btn-primary">ดูรายละเอียด</span>
-                                                </a>
-
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/EditMenuTeach/<?php echo $t->Teach_id ?>/?sID=<?php echo $t->Teach_id ?>">
-                                                    <span class="btn btn-xs btn-warning">แก้ไข</span>
-                                                </a>
-
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/confirmDeleteTeach/<?php echo $t->Teach_id ?>" style="display:">
-                                                    <span class="btn btn-xs btn-danger">ลบ</span>
+                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/confirmRestoreandeleteTeach/<?php echo $t->Teach_id ?>">
+                                                    <span class="btn btn-xs btn-warning">ดูรายละเอียด</span>
                                                 </a>
                                                 <?php
                                                 ?>
@@ -188,16 +170,8 @@
                                         <td><?php echo $b->Branch_name ?></td>
                                         <td>
                                             <center>
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/ViewMenuBranch/<?php echo $b->Branch_id ?>">
-                                                    <span class="btn btn-xs btn-primary">ดูรายละเอียด</span>
-                                                </a>
-
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/EditMenuBranch/<?php echo $b->Branch_id ?>/?sID=<?php echo $b->Branch_id ?>">
-                                                    <span class="btn btn-xs btn-warning">แก้ไข</span>
-                                                </a>
-
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/confirmDeleteBranch/<?php echo $b->Branch_id ?>" style="display:">
-                                                    <span class="btn btn-xs btn-danger">ลบ</span>
+                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/confirmRestoreandeleteBranch/<?php echo $b->Branch_id ?>">
+                                                    <span class="btn btn-xs btn-warning">ดูรายละเอียด</span>
                                                 </a>
                                                 <?php
                                                 ?>

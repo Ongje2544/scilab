@@ -60,7 +60,20 @@ class school_model extends CI_Model
 		$data['row'] = $school;
 		return $data;
 	}
+	public function get_list_restore()
+	{
 
+		$today = date("Y-m-d");
+
+		$sql = "SELECT *
+                FROM school s
+                WHERE s.Status in('Delete')
+                ORDER BY s.School_id DESC";
+		$query = $this->db->query($sql);
+		$school = $query->result();
+		$data['row'] = $school;
+		return $data;
+	}
 	public function get_view($id)
 	{
 		$sql = "SELECT *
@@ -80,6 +93,20 @@ class school_model extends CI_Model
 		$sql = "SELECT *
 				FROM school s
 				where s.Status in('Online','Offline') and s.School_id = $id ";
+		$query = $this->db->query($sql);
+		$row = $query->row();
+		$num_rows = $query->num_rows();
+		if ($num_rows == 1)
+			return $row;
+		else
+			return array();
+	}
+
+	public function get_RestorewhereID($id)
+	{
+		$sql = "SELECT *
+				FROM school s
+				where s.Status in('Delete') and s.School_id = $id ";
 		$query = $this->db->query($sql);
 		$row = $query->row();
 		$num_rows = $query->num_rows();
@@ -132,6 +159,25 @@ class school_model extends CI_Model
 		$this->add_log($data, $this->dbname, 'deleteSchool');
 		//return $this->db->delete($this->dbname, array($this->ID => $id)); 
 		return $this->db->update($this->dbname, $deleteSchool, array($this->ID => $id));
+	}
+
+	public function SuredeleteSchool($data)
+	{
+		$this->add_log('School ID : '.$data, $this->dbname, 'ComfirmDelete_Scool');
+		$this->db->where('School_id', $data);
+		return $this->db->delete('school');
+	}
+
+	public function RestoreSchool($id)
+	{
+
+		$RestoreSchool = array(
+			'Status' 		=> 'Online'
+		);
+
+		$this->add_log('School ID : '.$id, $this->dbname, 'Restore School');
+		//return $this->db->delete($this->dbname, array($this->ID => $id)); 
+		return $this->db->update($this->dbname, $RestoreSchool, array($this->ID => $id));
 	}
 
 	public function changeDate($date)

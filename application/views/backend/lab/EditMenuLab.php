@@ -12,8 +12,9 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">General Form</li>
+                <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
+                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายวิชา</a></li>
+                    <li class="breadcrumb-item active">แก้ไขข้อมูลรายวิชา</li>
                 </ol>
             </div>
         </div>
@@ -38,7 +39,7 @@
                         <div class="card-body" style="background-color: rgb(245, 245, 245);">
                             <div class="form-group">
                                 <label for="NumId">รหัสรายวิชา</label>
-                                <input type="text" name="Id" class="form-control" id="NumId" placeholder="กรอกรหัสรายวิชา" maxlength="5" value="<?php echo $row->ID ?>" disabled>
+                                <input type="text" class="form-control" id="NumId" placeholder="กรอกรหัสรายวิชา" maxlength="5" value="<?php echo $row->ID ?>" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="NameList">ชื่อรายวิชา</label>

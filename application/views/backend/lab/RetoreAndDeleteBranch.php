@@ -18,6 +18,10 @@
         padding: 5px;
         text-decoration: underline;
     }
+    
+    .bt{
+        position: absolute;
+    }
 </style>
 
 <!-- Content Header (Page header) -->
@@ -30,8 +34,8 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายวิชา</a></li>
-                    <li class="breadcrumb-item active">ลบผู้สอน</li>
+                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/restoreMenuLab">การกู้ข้อมูลรายวิชา</a></li>
+                    <li class="breadcrumb-item active">รายละเอียดข้อมูลหมวดหมู่</li>
                 </ol>
             </div>
         </div>
@@ -46,33 +50,28 @@
                 <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">ดูข้อมูลผู้สอน/อาจารย์</h3>
+                        <h3 class="card-title">ดูเนื้อหาหมวดหมู่</h3>
                     </div>
                     <div class="card-body">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <div class="mid">ชื่อผู้สอน/อาจารย์</div>
-                                <div class="board"><?php echo $row->Teach_name ?></div>
-                            </div>
-                            <div class="form-group">
-                                <div class="mid">เบอร์ติดต่อผู้สอน/อาจารย์</div>
-                                <div class="board"><?php
-                                                    if ($row->Teach_callnum != Null) {
-                                                        echo $row->Teach_callnum;
-                                                    } else {
-                                                        echo 'ไม่มีเบอร์ติดต่อ';
-                                                    } ?></div>
+                                <div class="mid">หมวดหมู่</div>
+                                <div class="board"><?php echo $row->Branch_name ?></div>
                             </div>
                         </div>
                     </div>
                     <!-- /.card-body -->
-                    <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/deleteTeach" method="post">
-                        <input name="inputID" type="hidden" value="<?php echo $row->Teach_id ?>">
-                        <div class="card-footer">
-                            <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
-                            <button type="submit" class="btn btn-danger">ลบข้อมูล</button>
-                        </div>
-                    </form>
+                    <div class="card-footer">
+                        <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
+                        <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/RestoreBranch" method="post">
+                            <input name="inputID" type="hidden" value="<?php echo $row->Branch_id ?>">
+                            <button type="submit" class="btn btn-primary bt" style="bottom : 12px; left:5rem">กู้ข้อมูล</button>
+                        </form>
+                        <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/SuredeleteBranch" method="post">
+                            <input name="inputID" type="hidden" value="<?php echo $row->Branch_id ?>">
+                            <button type="submit" class="btn btn-danger bt" style="bottom : 12px; left:9.9rem">ลบข้อมูล</button>
+                        </form>
+                    </div>
                     <!-- /.card-footer-->
                 </div>
                 <!-- /.card -->
@@ -89,15 +88,15 @@
                                 <div class="mid">รายวิชา</div>
                                 <div class="board">
                                     <?php
-                                    foreach ($teach_type_list as $v) {
-                                        foreach ($lab as $select) {
-                                            if ($v->Lab_id == $select->ID) {
-                                                if($select->name_list != Null){
-                                                    echo $select->name_list;
-                                                }else{
-                                                    echo 'Untitle name';
-                                                }
+                                    $i = '1';
+                                    foreach ($lab as $option) {
+                                        if ($option->branch_list == $row->Branch_id) {
+                                            if ($option->name_list != Null) {
+                                                echo "<div class='boardfines'>"  . " " . $option->name_list . "</div></br>";
+                                            } else {
+                                                echo "Untitle name";
                                             }
+                                            $i++;
                                         }
                                     }
                                     ?>

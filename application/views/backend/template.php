@@ -170,9 +170,9 @@ $Actionlink2 = $this->uri->segment(2);
                 </li>
               </ul>
             </li>
-            <li class="nav-header">ฐานข้อมูล</li>
-            <li class="nav-item <?php if($Actionlink == 'lab'){ echo 'menu-open';}?>">
-              <a href="#" class="nav-link <?php if($Actionlink == 'lab'){ echo 'active';}?>">
+            <li class="nav-header">จัดค่าย</li>
+            <li class="nav-item <?php if($Actionlink == 'list'){ echo 'menu-open';}?>">
+              <a href="#" class="nav-link <?php if($Actionlink == 'list'){ echo 'active';}?>">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                   ข้อมูลค่าย
@@ -181,13 +181,31 @@ $Actionlink2 = $this->uri->segment(2);
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="<?PHP echo config_item("base_url"); ?>/lab/" class="nav-link <?php if($Actionlink == 'lab' && $Actionlink2 == ''){ echo 'active';}?>">
+                  <a href="<?PHP echo config_item("base_url"); ?>/menulist/" class="nav-link <?php if($Actionlink == 'list'){ echo 'active';}?>">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>เมนูค่าย</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-header">ฐานข้อมูล</li>
+            <li class="nav-item <?php if($Actionlink == 'lab' || $Actionlink == 'school'){ echo 'menu-open';}?>">
+              <a href="#" class="nav-link <?php if($Actionlink == 'lab' || $Actionlink == 'school'){ echo 'active';}?>">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  ข้อมูลค่าย
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?PHP echo config_item("base_url"); ?>/lab/" class="nav-link <?php if($Actionlink == 'lab'){ echo 'active';}?>">
                     <i class="far fa-circle nav-icon"></i>
                     <p>รายการรายวิชา</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="<?PHP echo config_item("base_url"); ?>/lab/schoollist" class="nav-link <?php if($Actionlink == 'lab' && $Actionlink2 == 'schoollist'){ echo 'active';}?>">
+                  <a href="<?PHP echo config_item("base_url"); ?>/school/" class="nav-link <?php if($Actionlink == 'school'){ echo 'active';}?>">
                     <i class="far fa-circle nav-icon"></i>
                     <p>รายการโรงเรียน</p>
                   </a>

@@ -26,6 +26,21 @@ class lab_model extends CI_Model
 		return $data;
 	}
 
+	public function get_list_restore()
+	{
+		$today = date("Y-m-d");
+
+		$sql = "SELECT l.ID Idlab ,l.name_list Namelist ,b.Branch_name BranchName ,l.Status Lab ,b.Status Branch
+                FROM lab l
+				LEFT JOIN branch_type b ON  b.Branch_id = l.branch_list
+                WHERE l.Status in('Delete')
+                ORDER BY l.ID DESC";
+		$query = $this->db->query($sql);
+		$result = $query->result();
+		$data['row'] = $result;
+		return $data;
+	}
+
 	public function get_view($id)
 	{
 		$sql = "SELECT * ,b.Branch_name BranchName
@@ -55,6 +70,20 @@ class lab_model extends CI_Model
 			return array();
 	}
 
+	public function get_RestorewhereID($id)
+	{
+		$sql = "SELECT * ,b.Branch_name BranchName
+				FROM lab l
+				LEFT JOIN branch_type b ON  b.Branch_id = l.branch_list
+				where l.Status in('Delete') and l.ID = $id ";
+		$query = $this->db->query($sql);
+		$row = $query->row();
+		$num_rows = $query->num_rows();
+		if ($num_rows == 1)
+			return $row;
+		else
+			return array();
+	}
 	public function get_teach_type_list($id)
 	{
 		$query = $this->db->get_where('teach_type_list', array('Lab_id' => $id));
@@ -93,7 +122,6 @@ class lab_model extends CI_Model
 	public function updateLablist($data)
 	{
 		$uploadLablist = array(
-			'ID' 		=> $data['Id'],
 			'name_list' 	=> $data['NameList'],
 			'branch_list' 	=> $data['Branch'],
 			'concept_list' 		=> $data['Concept'],
@@ -144,6 +172,28 @@ class lab_model extends CI_Model
 		$this->db->where('Lab_id', $data);
 		return $this->db->delete('Branch_type_list');
 	}
+
+	public function SuredeleteLab($data)
+	{
+		$this->delete_type_teach($data);
+		$this->delete_type_branch($data);
+		$this->add_log('Lab ID : '.$data, $this->dbname, 'ComfirmDelete_Lab');
+		$this->db->where('ID', $data);
+		return $this->db->delete('lab');
+	}
+
+	public function RestoreLab($id)
+	{
+
+		$RestoreLab = array(
+			'Status' 		=> 'Online'
+		);
+
+		$this->add_log('Lab ID : '.$id, $this->dbname, 'Restore Lablist');
+		//return $this->db->delete($this->dbname, array($this->ID => $id)); 
+		return $this->db->update($this->dbname, $RestoreLab, array($this->ID => $id));
+	}
+
 
 	public function changeDate($date)
 	{

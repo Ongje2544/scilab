@@ -30,8 +30,8 @@
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-          <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายการ</a></li>
-          <li class="breadcrumb-item active">ดูหมวดหมู่</li>
+          <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายวิชา</a></li>
+          <li class="breadcrumb-item active">ดูข้อมูลหมวดหมู่</li>
         </ol>
       </div>
     </div>
@@ -82,7 +82,7 @@
                         if( $option->name_list != Null ){ 
                             echo "<div class='boardfines'>"  . " " . $option->name_list . "</div></br>";    
                         }else{
-                            echo "Untitle name";
+                            echo "ไม่กำหนดชื่อรายวิชา";
                         }
                       $i++;
                     }

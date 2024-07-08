@@ -15,7 +15,6 @@ class lab extends CI_Controller
 	public function index()
 	{
 		$data['result'] = $this->lab_model->get_list();
-		$data['school'] = $this->school_model->get_list();
 		$data['teacher'] = $this->teach_model->get_list();
 		$data['branch'] = $this->branch_model->get_list();
 		$data['teach_type'] = $this->teach_model->get_teach_type();
@@ -25,12 +24,18 @@ class lab extends CI_Controller
 		$this->load->view("backend/template", $view);
 	}
 
-	public function schoollist()
+	public function restoreMenuLab()
 	{
-		$data['school'] = $this->school_model->get_list();
-		$view["module"] = $this->load->view("backend/lab/schoollist", $data, TRUE);
+		$data['result'] = $this->lab_model->get_list_restore();
+		$data['teacher'] = $this->teach_model->get_list_restore();
+		$data['branch'] = $this->branch_model->get_list_restore();
+		$data['teach_type'] = $this->teach_model->get_teach_type();
+		$data['teach_lab'] = $this->teach_model->get_teach_lab();
+		// $data['branch_type'] = $this->lab_model->get_branch_type();
+		$view["module"] = $this->load->view("backend/lab/restorelablist", $data, TRUE);
 		$this->load->view("backend/template", $view);
 	}
+
 
 	/*<----------------------------- Add ------------------------------------------->*/
 	public function addMenuLab()
@@ -39,24 +44,6 @@ class lab extends CI_Controller
 		$data['branch_type'] = $this->branch_model->get_branch_type();
 		$view["module"] = $this->load->view("backend/lab/addMenuLab", $data, true);
 		$this->load->view("backend/template", $view);
-	}
-
-	public function addMenuSchool()
-	{
-		$view["module"] = $this->load->view("backend/lab/addMenuSchool", null , true);
-		$this->load->view("backend/template", $view);
-	}
-
-	public function insertSchool()
-	{
-		$inputFrom = $this->input->post();
-		//print_r($inputFrom);exit();
-		$data = $this->school_model->insertSchool($inputFrom);
-		//echo $data;exit();
-		if ($data <> 0)
-			redirect('lab/addMenuSchool?success', 'refresh');
-		else
-			redirect('lab/addMenuSchool/add?Error', 'refresh');
 	}
 
 	public function insertLablist()
@@ -96,17 +83,6 @@ class lab extends CI_Controller
 	}
 	/*<----------------------------- //Add ------------------------------------------->*/
 	/*<------------------------------ View Menu ------------------------------------------->*/
-	public function ViewMenuSchool()
-	{
-		$id = $this->uri->segment(3);
-
-		$data['row'] = $this->school_model->get_view($id);
-		if (!isset($data['row']->School_id))
-			redirect('lab/ViewMenuSchool', 'refresh');
-
-		$view["module"] = $this->load->view("backend/lab/ViewMenuSchool", $data, true);
-		$this->load->view("backend/template", $view);
-	}
 
 	public function ViewMenuLab()
 	{
@@ -129,7 +105,7 @@ class lab extends CI_Controller
 		$data['row'] = $this->branch_model->get_view($id);
 		$data['lab'] = $this->branch_model->get_lab();
 		// $data['branch_type_list'] = $this->branch_model->get_branch_type_list($id);
-		
+
 		if (!isset($data['row']->Branch_id))
 			redirect('lab/ViewMenuBranch', 'refresh');
 
@@ -153,30 +129,6 @@ class lab extends CI_Controller
 	/*<------------------------------ //View Menu ------------------------------------------->*/
 
 	/*<------------------------------ Edit Menu ------------------------------------------->*/
-	public function EditMenuSchool()
-	{
-		$id = $this->uri->segment(3);
-
-		$data['row'] = $this->school_model->get_whereID($id);
-
-		if (!isset($data['row']->School_id))
-			redirect('lab/EditMenuSchool', 'refresh');
-
-		$view["module"] = $this->load->view("backend/lab/EditMenuSchool", $data, true);
-		$this->load->view("backend/template", $view);
-	}
-
-	public function updateSchool()
-	{
-		$inputFrom = $this->input->post();
-
-		$data = $this->school_model->updateSchool($inputFrom);
-
-		if ($data <> 0)
-			redirect('lab/EditMenuSchool/' . $inputFrom['inputID'] . '/?sID=' . $inputFrom['inputID'] . '&Success', 'refresh');
-		else
-			redirect('lab/EditMenuSchool/' . $inputFrom['inputID'] . '/?sID=' . $inputFrom['inputID'] . '&Error', 'refresh');
-	}
 
 	public function EditMenuLab()
 	{
@@ -264,12 +216,12 @@ class lab extends CI_Controller
 		$data['teach_type_list'] = $this->lab_model->get_teach_type_list($id);
 		if (!isset($data['row']->ID))
 			redirect('lab/DeleteLablist', 'refresh');
-			
+
 		$data['check'] = array();
 
 		$view["module"] = $this->load->view("backend/lab/DeleteLablist", $data, true);
 		$this->load->view("backend/template", $view);
-	}	
+	}
 	public function deleteLablist()
 	{
 		$inputFrom = $this->input->post();
@@ -281,30 +233,6 @@ class lab extends CI_Controller
 			redirect('lab', 'refresh');
 	}
 
-	public function confirmDeleteSchool()
-	{
-		$id = $this->uri->segment(3);
-
-		$data['row'] = $this->school_model->get_view($id);
-		if (!isset($data['row']->School_id))
-			redirect('lab/DeleteSchool', 'refresh');
-			
-		$data['check'] = array();
-
-		$view["module"] = $this->load->view("backend/lab/DeleteSchool", $data, true);
-		$this->load->view("backend/template", $view);
-	}	
-	public function deleteSchool()
-	{
-		$inputFrom = $this->input->post();
-		$data = $this->school_model->deleteSchool($inputFrom['inputID']);
-
-		if ($data <> 0)
-			redirect('lab/schoollist', 'refresh');
-		else
-			redirect('lab/schoollist', 'refresh');
-	}
-
 	public function confirmDeleteBranch()
 	{
 		$id = $this->uri->segment(3);
@@ -313,12 +241,12 @@ class lab extends CI_Controller
 		$data['lab'] = $this->branch_model->get_lab();
 		if (!isset($data['row']->Branch_id))
 			redirect('lab/DeleteBranch', 'refresh');
-			
+
 		$data['check'] = array();
 
 		$view["module"] = $this->load->view("backend/lab/DeleteBranch", $data, true);
 		$this->load->view("backend/template", $view);
-	}	
+	}
 
 	public function deleteBranch()
 	{
@@ -340,12 +268,12 @@ class lab extends CI_Controller
 		$data['teach_type_list'] = $this->teach_model->get_teach_type_list($id);
 		if (!isset($data['row']->Teach_id))
 			redirect('lab/DeleteTeach', 'refresh');
-			
+
 		$data['check'] = array();
 
 		$view["module"] = $this->load->view("backend/lab/DeleteTeach", $data, true);
 		$this->load->view("backend/template", $view);
-	}	
+	}
 	public function deleteTeach()
 	{
 		$inputFrom = $this->input->post();
@@ -358,7 +286,115 @@ class lab extends CI_Controller
 	}
 
 	/*<------------------------------ //Delete Menu ------------------------------------------->*/
-}
+	/*<------------------------------- Comfire Delete or Restore Menu -------------------------------------------->*/
+    public function confirmRestoreandeleteLab()
+	{
+		$id = $this->uri->segment(3);
+		$data['row'] = $this->lab_model->get_RestorewhereID($id);
+		$data['teach_type'] = $this->teach_model->get_teach_type();
+		$data['teach_type_list'] = $this->lab_model->get_teach_type_list($id);
+		if (!isset($data['row']->ID))
+			redirect('lab/DeleteLablist', 'refresh');
+
+		$data['check'] = array();
+
+		$view["module"] = $this->load->view("backend/lab/RetoreAndDeleteLab", $data, true);
+		$this->load->view("backend/template", $view);
+	}	
+	public function SuredeleteLab()
+	{
+		$inputFrom = $this->input->post();
+		$data = $this->lab_model->SuredeleteLab($inputFrom['inputID']);
+
+		if ($data <> 0)
+			redirect('lab', 'refresh');
+		else
+			redirect('lab', 'refresh');
+	}
+	public function RestoreLab()
+	{
+		$inputFrom = $this->input->post();
+		$data = $this->lab_model->RestoreLab($inputFrom['inputID']);
+
+		if ($data <> 0)
+			redirect('lab', 'refresh');
+		else
+			redirect('lab', 'refresh');
+	}
+
+	public function confirmRestoreandeleteBranch()
+	{
+		$id = $this->uri->segment(3);
+
+		$data['row'] = $this->branch_model->get_RestorewhereID($id);
+		$data['lab'] = $this->branch_model->get_lab();
+		if (!isset($data['row']->Branch_id))
+			redirect('lab/DeleteBranch', 'refresh');
+
+		$data['check'] = array();
+
+		$view["module"] = $this->load->view("backend/lab/RetoreAndDeleteBranch", $data, true);
+		$this->load->view("backend/template", $view);
+	}	
+	public function SuredeleteBranch()
+	{
+		$inputFrom = $this->input->post();
+		$data = $this->branch_model->SuredeleteBranch($inputFrom['inputID']);
+
+		if ($data <> 0)
+			redirect('lab', 'refresh');
+		else
+			redirect('lab', 'refresh');
+	}
+	public function RestoreBranch()
+	{
+		$inputFrom = $this->input->post();
+		$data = $this->branch_model->RestoreBranch($inputFrom['inputID']);
+
+		if ($data <> 0)
+			redirect('lab', 'refresh');
+		else
+			redirect('lab', 'refresh');
+	}
+
+	public function confirmRestoreandeleteTeach()
+	{
+		$id = $this->uri->segment(3);
+
+		$data['row'] = $this->teach_model->get_RestorewhereID($id);
+		$data['lab'] = $this->branch_model->get_lab();
+		$data['teach_type_list'] = $this->teach_model->get_teach_type_list($id);
+		if (!isset($data['row']->Teach_id))
+			redirect('lab/DeleteTeach', 'refresh');
+
+		$data['check'] = array();
+
+		$view["module"] = $this->load->view("backend/lab/RetoreAndDeleteTeach", $data, true);
+		$this->load->view("backend/template", $view);
+	}	
+	public function SuredeleteTeach()
+	{
+		$inputFrom = $this->input->post();
+		$data = $this->teach_model->SuredeleteTeach($inputFrom['inputID']);
+
+		if ($data <> 0)
+			redirect('lab', 'refresh');
+		else
+			redirect('lab', 'refresh');
+	}
+	public function RestoreTeach()
+	{
+		$inputFrom = $this->input->post();
+		$data = $this->teach_model->RestoreTeach($inputFrom['inputID']);
+
+		if ($data <> 0)
+			redirect('lab', 'refresh');
+		else
+			redirect('lab', 'refresh');
+	}
+
+	/*<------------------------------ //Comfire Delete or Restore Menu ------------------------------------------->*/
+}	
 
 
 // echo '1';

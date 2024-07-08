@@ -60,6 +60,21 @@ class branch_model extends CI_Model
 		return $data;
 	}
 
+	public function get_list_restore()
+	{
+
+		$today = date("Y-m-d");
+
+		$sql = "SELECT *
+                FROM branch_type bt
+				WHERE bt.Status in('Delete')
+                ORDER BY bt.Branch_id DESC";
+		$query = $this->db->query($sql);
+		$school = $query->result();
+		$data['row'] = $school;
+		return $data;
+	}
+
 	public function get_view($id)
 	{
 		$sql = "SELECT * 
@@ -101,6 +116,19 @@ class branch_model extends CI_Model
 			return array();
 	}
 
+	public function get_RestorewhereID($id)
+	{
+		$sql = "SELECT *
+				FROM branch_type bt
+				where bt.Status in('Delete') and bt.Branch_id = $id ";
+		$query = $this->db->query($sql);
+		$row = $query->row();
+		$num_rows = $query->num_rows();
+		if ($num_rows == 1)
+			return $row;
+		else
+			return array();
+	}
 // 	public function get_whereID($id)
 // {
 //     $this->db->where('Branch_id', $id);
@@ -110,7 +138,9 @@ class branch_model extends CI_Model
 	
 	public function get_branch_type()
 	{
-		$sql = "SELECT * FROM branch_type";
+		$sql = "SELECT *
+				FROM branch_type bt
+				where bt.Status in('Online')";
 		$query = $this->db->query($sql);
 		return $query->result();
 	}
@@ -147,25 +177,25 @@ class branch_model extends CI_Model
 		);
 
 		$this->add_log($data, $this->dbname, 'deleteBranch');
-		//return $this->db->delete($this->dbname, array($this->ID => $id)); 
 		return $this->db->update($this->dbname, $deleteBranch, array($this->ID => $id));
 	}
 
-	public function updateSchool($data)
+	public function SuredeleteBranch($data)
+	{
+		$this->add_log('Branch ID : '.$data, $this->dbname, 'ComfirmDelete_Branch');
+		$this->db->where('Branch_id', $data);
+		return $this->db->delete('branch_type');
+	}
+
+	public function RestoreBranch($id)
 	{
 
-		$updateSchool = array(
-			'School_name' 		=> $data['SchoolName'],
-			'School_address' 	=> $data['Address'],
-			'School_callnum' 	=> $data['Callnum'],
-			'School_fax' 		=> $data['Fax'],
-			'School_email'		=> $data['Email'],
+		$RestoreBranch = array(
+			'Status' 		=> 'Online'
 		);
 
-		$update_id = $data['inputID'];
-		$this->db->update($this->dbname, $updateSchool, array($this->ID => $update_id));
-		$this->add_log($updateSchool, $this->dbname, 'updateSchool', $update_id);
-		return $update_id;
+		$this->add_log('Branch ID : '.$id, $this->dbname, 'Restore Branch');
+		return $this->db->update($this->dbname, $RestoreBranch, array($this->ID => $id));
 	}
 
 	public function changeDate($date)

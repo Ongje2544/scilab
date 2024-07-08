@@ -19,8 +19,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>DataTables</h1>
-                <a href="<?PHP echo config_item("base_url"); ?>/lab/addMenuSchool/" class="btn bg-blue bt" style=" top: 0px; right:-39.75rem;">เพิ่มรายการ</a>
+                <h1>ฐานข้อมูลโรงเรียน</h1>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -66,17 +65,9 @@
                                         <td><?php echo $s->School_callnum ?></td>
                                         <td>
                                             <center>
-                                                <p class="<?php echo ($s->Status == 'Online') ? "text-green" : "text-red"; ?>" title="" style="margin-bottom: 0px;"><?php echo $s->Status ?></p>
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/ViewMenuSchool/<?php echo $s->School_id ?>">
-                                                    <span class="btn btn-xs btn-primary">ดูรายละเอียด</span>
-                                                </a>
-
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/EditMenuSchool/<?php echo $s->School_id ?>/?sID=<?php echo $s->School_id ?>">
-                                                    <span class="btn btn-xs btn-warning">แก้ไข</span>
-                                                </a>
-
-                                                <a href="<?PHP echo config_item("base_url"); ?>/lab/confirmDeleteSchool/<?php echo $s->School_id ?>" style="display:">
-                                                    <span class="btn btn-xs btn-danger">ลบ</span>
+                                                <p class="text-red" title="" style="margin-bottom: 0px;"><?php echo $s->Status ?></p>
+                                                <a href="<?PHP echo config_item("base_url"); ?>/school/confirmRestoreandeleteSchool/<?php echo $s->School_id ?>">
+                                                    <span class="btn btn-xs btn-warning">ดูรายละเอียด</span>
                                                 </a>
                                                 <?php
                                                 ?>
