@@ -102,6 +102,15 @@ class school_model extends CI_Model
 			return array();
 	}
 
+	public function get_school()
+	{
+		$sql = "SELECT *
+				FROM school s
+				where s.Status in('Online')";
+		$query = $this->db->query($sql);
+		return $query->result();
+	}
+
 	public function get_RestorewhereID($id)
 	{
 		$sql = "SELECT *

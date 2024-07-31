@@ -20,6 +20,10 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="../../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
+
 
 
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/jquery/jquery.min.js"></script>
@@ -29,7 +33,6 @@
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/dist/js/adminlte.js"></script>
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/chart.js/Chart.min.js"></script>
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/dist/js/pages/dashboard3.js"></script>
-  <!-- DataTables  & Plugins -->
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -42,13 +45,10 @@
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-buttons/js/buttons.print.min.js"></script>
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-  <!-- bs-custom-file-input -->
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-  <!-- Bootstrap Switch -->
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-  <!-- AdminLTE App -->
-  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/dist/js/adminlte.min.js"></script>
-
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/sweetalert2/sweetalert2.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/toastr/toastr.min.js"></script>
 
   <!-- Page specific script -->
   <!-- <script type="text/javascript" src="< ?PHP echo config_item("assets_url"); ?>/dist/js/demo.js"></script> -->
@@ -173,7 +173,7 @@ $Actionlink2 = $this->uri->segment(2);
             <li class="nav-header">จัดค่าย</li>
             <li class="nav-item <?php if($Actionlink == 'list'){ echo 'menu-open';}?>">
               <a href="#" class="nav-link <?php if($Actionlink == 'list'){ echo 'active';}?>">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-edit"></i>
                 <p>
                   ข้อมูลค่าย
                   <i class="right fas fa-angle-left"></i>
@@ -183,7 +183,7 @@ $Actionlink2 = $this->uri->segment(2);
                 <li class="nav-item">
                   <a href="<?PHP echo config_item("base_url"); ?>/menulist/" class="nav-link <?php if($Actionlink == 'list'){ echo 'active';}?>">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>เมนูค่าย</p>
+                    <p>ตารางจัดจอง</p>
                   </a>
                 </li>
               </ul>
@@ -191,9 +191,9 @@ $Actionlink2 = $this->uri->segment(2);
             <li class="nav-header">ฐานข้อมูล</li>
             <li class="nav-item <?php if($Actionlink == 'lab' || $Actionlink == 'school'){ echo 'menu-open';}?>">
               <a href="#" class="nav-link <?php if($Actionlink == 'lab' || $Actionlink == 'school'){ echo 'active';}?>">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-book"></i>
                 <p>
-                  ข้อมูลค่าย
+                  ฐานข้อมูล
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>

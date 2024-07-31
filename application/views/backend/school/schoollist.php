@@ -20,7 +20,7 @@
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1>กู้คืนฐานข้อมูลโรงเรียน</h1>
-                <a href="<?PHP echo config_item("base_url"); ?>/school/addMenuSchool/" class="btn bg-blue bt" style=" top: 0px; right: -31rem;">เพิ่มรายการ</a>
+                <a href="<?PHP echo config_item("base_url"); ?>/school/addMenuSchool/" class="btn bg-blue bt" style=" top: 0px; right: -31rem;">เพิ่มข้อมูลโรงเรียน</a>
                 <a href="<?PHP echo config_item("base_url"); ?>/school/restoreMenuSchool/" class="btn btn-outline-danger bt" style=" top: 0px; right:-39.75rem;">กู้ข้อมูลโรงเรียน</a>
             </div>
         </div>
