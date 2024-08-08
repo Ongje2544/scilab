@@ -104,7 +104,7 @@
 				$("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
 				$("#modal-default").modal('show');
 			} else {
-				$("#addTeach").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
+				$("#insertLablist").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
 			}
 		});
 
@@ -128,7 +128,7 @@
 				$("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
 				$("#modal-default").modal('show');
 			} else {
-				$("#addTeach").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
+				$("#addBranch").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
 			}
 		});
 
@@ -186,7 +186,7 @@
 			</div>
 			<div class="col-sm-6">
 				<ol class="breadcrumb float-sm-right">
-					<li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
+					<li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/home/">หน้าหลัก</a></li>
 					<li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายวิชา</a></li>
 					<li class="breadcrumb-item active">เพิ่มรายการ</li>
 				</ol>

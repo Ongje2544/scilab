@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class dashboard extends CI_Controller
+class log extends CI_Controller
 {
 
 	public function __construct()
@@ -10,20 +10,14 @@ class dashboard extends CI_Controller
 		// $this->load->model('fines_model');
 		// $this->load->model('province_model');
 		// $this->load->model('organization_model');
+        $this->load->model('log_model');
 	}
 
-	public function A()
+	public function index()
 	{
-		$view["module"] = $this->load->view("backend/dashboard/boardA", NULL, TRUE);
+        $data['result'] = $this->log_model->get_list();
+		$view["module"] = $this->load->view("backend/log/list", $data, TRUE);
 		$this->load->view("backend/template", $view);
 	}
-	public function B()
-	{
-		$view["module"] = $this->load->view("backend/dashboard/boardB", NULL, TRUE);
-		$this->load->view("backend/template", $view);
-	}
-
 
 }
-// echo '1';
-// exit();

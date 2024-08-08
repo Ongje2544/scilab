@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Scilab</title>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/dist/css/adminlte.min.css">
@@ -25,7 +26,7 @@
   <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
 
 
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/select2/js/select2.full.min.js"></script>
@@ -95,27 +96,13 @@ $Actionlink2 = $this->uri->segment(2);
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
             <i class="far fa-bell"></i>
-            <span class="badge badge-warning navbar-badge">15</span>
+            <span class="badge badge-warning navbar-badge">!</span>
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <span class="dropdown-item dropdown-header">15 Notifications</span>
             <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-envelope mr-2"></i> 4 new messages
-              <span class="float-right text-muted text-sm">3 mins</span>
+            <a href="<?PHP echo config_item("base_url"); ?>/log/" class="dropdown-item">
+              <i class='fas fa-hammer mr-2'></i> แจ้งเตือนประวัติ
             </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-users mr-2"></i> 8 friend requests
-              <span class="float-right text-muted text-sm">12 hours</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-file mr-2"></i> 3 new reports
-              <span class="float-right text-muted text-sm">2 days</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
           </div>
         </li>
         <li class="nav-item">
@@ -153,26 +140,34 @@ $Actionlink2 = $this->uri->segment(2);
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+            <li class="nav-header">กราฟ</li>
             <li class="nav-item <?php if($Actionlink == 'dashboard'){ echo 'menu-open';}?>">
               <a href="#" class="nav-link <?php if($Actionlink == 'dashboard'){ echo 'active';}?>">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="nav-icon fa fa-pie-chart"></i>
                 <p>
-                  Dashboard
+                  Dashborad
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
               <ul class="nav nav-treeview">
+              <li class="nav-item <?php if($Actionlink == 'dashboard'){ echo 'active';}?>">
+                  <a href="<?PHP echo config_item("base_url"); ?>/dashboard/A" class="nav-link <?php if($Actionlink2 == 'A'){ echo 'active';}?>">
+                    <i class='fas fa-chart-bar nav-icon'></i>
+                    <p>รายได้</p>
+                  </a>
+                </li>
                 <li class="nav-item <?php if($Actionlink == 'dashboard'){ echo 'active';}?>">
-                  <a href="<?PHP echo config_item("base_url"); ?>/dashboard/" class="nav-link <?php if($Actionlink == 'dashboard'){ echo 'active';}?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Dashboard</p>
+                  <a href="<?PHP echo config_item("base_url"); ?>/dashboard/B" class="nav-link <?php if($Actionlink2 == 'B'){ echo 'active';}?>">
+                    <i class="fas fa-user-friends nav-icon"></i>
+                    <p>ยอดผู้ใช้</p>
                   </a>
                 </li>
               </ul>
             </li>
             <li class="nav-header">จัดค่าย</li>
-            <li class="nav-item <?php if($Actionlink == 'list'){ echo 'menu-open';}?>">
-              <a href="#" class="nav-link <?php if($Actionlink == 'list'){ echo 'active';}?>">
+            <li class="nav-item <?php if($Actionlink == 'menulist' || $Actionlink == 'menuprocess'){ echo 'menu-open';}?>">
+              <a href="#" class="nav-link <?php if($Actionlink == 'menulist' || $Actionlink == 'menuprocess'){ echo 'active';}?>">
               <i class="nav-icon fas fa-edit"></i>
                 <p>
                   ข้อมูลค่าย
@@ -181,9 +176,15 @@ $Actionlink2 = $this->uri->segment(2);
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="<?PHP echo config_item("base_url"); ?>/menulist/" class="nav-link <?php if($Actionlink == 'list'){ echo 'active';}?>">
+                  <a href="<?PHP echo config_item("base_url"); ?>/menulist/" class="nav-link <?php if($Actionlink == 'menulist'){ echo 'active';}?>">
                     <i class="far fa-circle nav-icon"></i>
                     <p>ตารางจัดจอง</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?PHP echo config_item("base_url"); ?>/menuprocess/" class="nav-link <?php if($Actionlink == 'menuprocess'){ echo 'active';}?>">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>ดำเนินการ</p>
                   </a>
                 </li>
               </ul>

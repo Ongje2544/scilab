@@ -29,7 +29,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
+                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/home/">หน้าหลัก</a></li>
                     <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/school/">ตารางโรงเรียน</a></li>
                     <li class="breadcrumb-item active">ลบข้อมูลโรงเรียน</li>
                 </ol>

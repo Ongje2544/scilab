@@ -124,8 +124,6 @@ function changeDateShow($date)
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1>ฐานข้อมูลรายการ</h1>
-                <a href="<?PHP echo config_item("base_url"); ?>/school/addMenuSchool/" class="btn bg-blue bt" style=" top: 0px; right: -31rem;">เพิ่มข้อมูลโรงเรียน</a>
-                <a href="<?PHP echo config_item("base_url"); ?>/menulist/restoreMenu/" class="btn btn-outline-danger bt" style=" top: 0px; right:-39.75rem;">กู้ข้อมูลรายการ</a>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -169,6 +167,7 @@ function changeDateShow($date)
                                     }
                                     ?>
                                 </select>
+                                <a class="form-control col-sm-1 ml-4 btn btn-primary" href="<?PHP echo config_item("base_url"); ?>/school/addMenuSchool/">เพิ่มข้อมูล</a>
                             </div>
                             <div class="form-group mt-3 mr-5 d-flex">
                                 <label for="class" class="mid mt-2 col-sm-4 text-right">ระดับชั้น</label>
@@ -205,8 +204,9 @@ function changeDateShow($date)
                     </form>
                     <!-- /.card-header -->
                     <div class="card-header">
-                        <h3 class="card-title">เพิ่มรายชื่อโรงเรียน</h3>
+                        <h3 class="card-title">รายการค่าย</h3>
                     </div>
+
                     <div class="card-body" style="background-color: rgb(255, 250, 255);">
                         <table id="tablelab1" class="table table-bordered table-striped">
                             <thead>
@@ -247,13 +247,12 @@ function changeDateShow($date)
                                         <td>
                                             <center>
                                                 <p class="text-yellow" style="margin-bottom: 0px;">รอการจัดการ
-                                                                                                            
+
                                                 </p>
-                                                <a href="<?PHP echo config_item("base_url"); ?>/menulist/process/<?php echo $v->ID ?>/?sID=<?php echo $v->ID ?>">
+                                                <a href="<?PHP echo config_item("base_url"); ?>/menulist/cart/<?php echo $v->ID ?>/?sID=<?php echo $v->ID ?>">
                                                     <span class="btn btn-xs btn-warning">จัดค่าย/แก้ไข</span>
                                                 </a>
-
-                                                <a href="<?PHP echo config_item("base_url"); ?>/menulist/confirmDeleteprocess/<?php echo $v->ID ?>" style="display:">
+                                                <a href="<?PHP echo config_item("base_url"); ?>/menulist/confirmDeletewaiting/<?php echo $v->ID ?>" class="delete-link">
                                                     <span class="btn btn-xs btn-danger">ลบ</span>
                                                 </a>
                                             </center>
@@ -292,5 +291,33 @@ function changeDateShow($date)
             "lengthChange": false,
             "autoWidth": false,
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+
+    $(document).ready(function() {
+        $('.delete-link').on('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงค์ทันที
+            var href = $(this).attr('href'); // เก็บ URL ของลิงค์
+
+            Swal.fire({
+                title: 'คุณแน่ใจหรือไม่?',
+                text: "การลบนี้ไม่สามารถย้อนกลับได้!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ใช่, ลบเลย!',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'ลบสำเร็จ!',
+                        text: 'รายการของคุณถูกลบแล้ว.',
+                        icon: 'success'
+                    }).then(() => {
+                        window.location.href = href; // ดำเนินการลบโดยการเปลี่ยนหน้าไปที่ URL ของลิงค์
+                    });
+                }
+            });
+        });
     });
 </script>

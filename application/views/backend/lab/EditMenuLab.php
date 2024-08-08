@@ -4,109 +4,109 @@
     }
 </style>
 <script type="text/javascript">
-	$(function() {
-		var Toast = Swal.mixin({
-			toast: true,
-			position: 'top-end',
-			showConfirmButton: false,
-			timer: 3000
-		});
+    $(function() {
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
 
-		$('.swalDefaultSuccess').click(function() {
-			Toast.fire({
-				icon: 'success',
-				title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
-			})
-		});
-		$('.swalDefaultError').click(function() {
-			Toast.fire({
-				icon: 'error',
-				title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
-			})
-		});
-	});
+        $('.swalDefaultSuccess').click(function() {
+            Toast.fire({
+                icon: 'success',
+                title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+            })
+        });
+        $('.swalDefaultError').click(function() {
+            Toast.fire({
+                icon: 'error',
+                title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+            })
+        });
+    });
 
-	// function checkID(id) {
-	// 	if (id.length != 13) return false;
-	// 	for (i = 0, sum = 0; i < 12; i++)
-	// 		sum += parseFloat(id.charAt(i)) * (13 - i);
-	// 	if ((11 - sum % 11) % 10 != parseFloat(id.charAt(12)))
-	// 		return false;
-	// 	return true;
-	// }
-	$(document).ready(function() {
+    // function checkID(id) {
+    // 	if (id.length != 13) return false;
+    // 	for (i = 0, sum = 0; i < 12; i++)
+    // 		sum += parseFloat(id.charAt(i)) * (13 - i);
+    // 	if ((11 - sum % 11) % 10 != parseFloat(id.charAt(12)))
+    // 		return false;
+    // 	return true;
+    // }
+    $(document).ready(function() {
 
-		$(".num").on("keypress", function(e) {
+        $(".num").on("keypress", function(e) {
 
-			var code = e.keyCode ? e.keyCode : e.which;
+            var code = e.keyCode ? e.keyCode : e.which;
 
-			if (code > 57) {
-				return false;
-			} else if ((code < 48) && (code != 46)) {
-				return false;
-			}
+            if (code > 57) {
+                return false;
+            } else if ((code < 48) && (code != 46)) {
+                return false;
+            }
 
-		});
+        });
 
-		$("#btSubmit").click(function(event) {
-			event.preventDefault(); // ป้องกันการ submit form โดยตรง
+        $("#btSubmit").click(function(event) {
+            event.preventDefault(); // ป้องกันการ submit form โดยตรง
 
-			var txt_error = "";
-			var obj_err = "";
+            var txt_error = "";
+            var obj_err = "";
 
-			$(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
+            $(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
 
-			if ($("#NumId").val().trim() == "") {
-				txt_error += "- กรุณากรอกรหัสรายวิชา\n";
-				$("#NumId").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#NumId");
-				}
-			}
-			if ($("#NameList").val().trim() == "") {
-				txt_error += "- กรุณากรอกชื่อรายวิชา\n";
-				$("#NameList").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#NameList");
-				}
-			}
-			if ($("#Branch_type").val() == "") {
-				txt_error += "- กรุณาเลือกหมวดหมู่\n";
-				$("#Branch_type").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#Branch_type");
-				}
-			}
-			if ($("#Conceptlab").val() == "") {
-				txt_error += "- กรุณากรอกเนื้อหารายวิชา\n";
-				$("#Conceptlab").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#Conceptlab");
-				}
-			}
-			if ($("#TeachType").val() == "") {
-				txt_error += "- กรุณาเลือกผู้สอน/อาจารย์\n";
-				$("#TeachType").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#TeachType");
-				}
-			}
-			if ($("#Pricelab").val() == "") {
-				txt_error += "- กรุณากรอกราคารายวิชา\n";
-				$("#Pricelab").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#Pricelab");
-				}
-			}
+            if ($("#NumId").val().trim() == "") {
+                txt_error += "- กรุณากรอกรหัสรายวิชา\n";
+                $("#NumId").css("background-color", "#ffebe6");
+                if (!obj_err) {
+                    obj_err = $("#NumId");
+                }
+            }
+            if ($("#NameList").val().trim() == "") {
+                txt_error += "- กรุณากรอกชื่อรายวิชา\n";
+                $("#NameList").css("background-color", "#ffebe6");
+                if (!obj_err) {
+                    obj_err = $("#NameList");
+                }
+            }
+            if ($("#Branch_type").val() == "") {
+                txt_error += "- กรุณาเลือกหมวดหมู่\n";
+                $("#Branch_type").css("background-color", "#ffebe6");
+                if (!obj_err) {
+                    obj_err = $("#Branch_type");
+                }
+            }
+            if ($("#Conceptlab").val() == "") {
+                txt_error += "- กรุณากรอกเนื้อหารายวิชา\n";
+                $("#Conceptlab").css("background-color", "#ffebe6");
+                if (!obj_err) {
+                    obj_err = $("#Conceptlab");
+                }
+            }
+            if ($("#TeachType").val() == "") {
+                txt_error += "- กรุณาเลือกผู้สอน/อาจารย์\n";
+                $("#TeachType").css("background-color", "#ffebe6");
+                if (!obj_err) {
+                    obj_err = $("#TeachType");
+                }
+            }
+            if ($("#Pricelab").val() == "") {
+                txt_error += "- กรุณากรอกราคารายวิชา\n";
+                $("#Pricelab").css("background-color", "#ffebe6");
+                if (!obj_err) {
+                    obj_err = $("#Pricelab");
+                }
+            }
 
-			if (txt_error) {
-				$("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
-				$("#modal-default").modal('show');
-			} else {
-				$("#addTeach").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
-			}
-		});
-	});
+            if (txt_error) {
+                $("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
+                $("#modal-default").modal('show');
+            } else {
+                $("#editLablist").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
+            }
+        });
+    });
 </script>
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -117,7 +117,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
+                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/home/">หน้าหลัก</a></li>
                     <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายวิชา</a></li>
                     <li class="breadcrumb-item active">แก้ไขข้อมูลรายวิชา</li>
                 </ol>
@@ -139,7 +139,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/updateLablist" method="post">
+                    <form role="form" id="editLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/updateLablist" method="post">
                         <input name="inputID" type="hidden" value="<?php echo $row->ID ?>">
                         <div class="card-body" style="background-color: rgb(245, 245, 245);">
                             <div class="form-group">
@@ -239,23 +239,23 @@
         <!-- /.row -->
     </div><!-- /.container-fluid -->
     <div class="modal fade" id="modal-default">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">แจ้งเตือน</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<p id="modal-text"></p>
-				</div>
-				<div class="modal-footer justify-content-between">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">แจ้งเตือน</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-text"></p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <!-- /.content -->
 

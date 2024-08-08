@@ -67,7 +67,7 @@
 				$("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
 				$("#modal-default").modal('show');
 			} else {
-				$("#addTeach").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
+				$("#editBranch").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
 			}
 		});
 	});
@@ -81,9 +81,9 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
+                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/home/">หน้าหลัก</a></li>
                     <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายวิชา</a></li>
-                    <li class="breadcrumb-item active">แก้ไขข้อมูลรายวิชา</li>
+                    <li class="breadcrumb-item active">แก้ไขหมวดหมู่</li>
                 </ol>
             </div>
         </div>
@@ -167,7 +167,7 @@
                     <div class="card-header">
                         <h3 class="card-title">เพิ่มหมวดหมู่</h3>
                     </div>
-                    <form role="form" id="addBranch" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/updateBranch" method="post">
+                    <form role="form" id="editBranch" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/updateBranch" method="post">
                         <input name="inputID" type="hidden" value="<?php echo $row->Branch_id ?>">
                         <div class="card-body" style="background-color: rgb(245, 245, 245);">
                             <div class="form-group">

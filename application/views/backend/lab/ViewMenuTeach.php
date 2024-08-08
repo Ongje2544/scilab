@@ -29,9 +29,9 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
+                <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/home/">หน้าหลัก</a></li>
                     <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายวิชา</a></li>
-                    <li class="breadcrumb-item active">ดูข้อมูลรายวิชา</li>
+                    <li class="breadcrumb-item active">ดูข้อมูลผู้สอน</li>
                 </ol>
             </div>
         </div>
@@ -50,6 +50,12 @@
                     </div>
                     <div class="card-body">
                         <div class="col-lg-12">
+                        <div class="form-group">
+                                <div class="mid">รูปประจำตัว</div>
+                                <center>
+                                <img src="<?PHP echo config_item("uploads_url");?>/5-4-150x150.jpg" alt="">
+                                </center>
+                            </div>
                             <div class="form-group">
                                 <div class="mid">ชื่อผู้สอน/อาจารย์</div>
                                 <div class="board"><?php echo $row->Teach_name ?></div>

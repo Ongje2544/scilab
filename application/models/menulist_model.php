@@ -20,7 +20,35 @@ class menulist_model extends CI_Model
 		$data['row'] = $result;
 		return $data;
 	}
+	public function get_list_process()
+	{
+		$today = date("Y-m-d");
 
+		$sql = "SELECT * ,s.School_name SchoolName
+                FROM process p
+				LEFT JOIN school s ON  s.School_id = p.SchoolID_process
+                WHERE p.Status in('Process')
+                ORDER BY p.ID DESC";
+		$query = $this->db->query($sql);
+		$result = $query->result();
+		$data['row'] = $result;
+		return $data;
+	}
+	public function get_list_Online()
+	{
+		$today = date("Y-m-d");
+
+		$sql = "SELECT * ,s.School_name SchoolName
+                FROM process p
+				LEFT JOIN school s ON  s.School_id = p.SchoolID_process
+                WHERE p.Status in('Online')
+                ORDER BY p.ID DESC";
+		$query = $this->db->query($sql);
+		$result = $query->result();
+		$data['row'] = $result;
+		return $data;
+	}
+	
 	public function get_class_type_list()
 	{
 		$sql = "SELECT * 
@@ -41,6 +69,34 @@ class menulist_model extends CI_Model
 		$sql = "SELECT *
 				FROM process p
 				where p.Status in('Waiting') and p.ID = $id ";
+		$query = $this->db->query($sql);
+		$row = $query->row();
+		$num_rows = $query->num_rows();
+		if ($num_rows == 1)
+			return $row;
+		else
+			return array();
+	}
+
+	public function get_whereID_process($id)
+	{
+		$sql = "SELECT *
+				FROM process p
+				where p.Status in('Process') and p.ID = $id ";
+		$query = $this->db->query($sql);
+		$row = $query->row();
+		$num_rows = $query->num_rows();
+		if ($num_rows == 1)
+			return $row;
+		else
+			return array();
+	}
+
+	public function get_whereID_online($id)
+	{
+		$sql = "SELECT *
+				FROM process p
+				where p.Status in('Online') and p.ID = $id ";
 		$query = $this->db->query($sql);
 		$row = $query->row();
 		$num_rows = $query->num_rows();
@@ -71,6 +127,22 @@ class menulist_model extends CI_Model
 		}
 		return $insert_id;
 	}
+
+	public function DeleteQuese($data)
+	{
+		$this->add_log('Quese ID : '.$data, $this->dbname, 'ComfirmDeleteQuese');
+		$this->db->where('ID', $data);
+		return $this->db->delete('process');
+	}
+
+	public function DeleteOnline($data)
+	{
+		$this->add_log('Quese ID : '.$data, $this->dbname, 'ComfirmDeleteOnline');
+		$this->db->where('ID', $data);
+		return $this->db->delete('process');
+	}
+	
+
 
 	public function changeDate($date)
 	{

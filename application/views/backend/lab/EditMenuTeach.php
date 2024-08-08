@@ -4,93 +4,93 @@
     }
 </style>
 <script type="text/javascript">
-	$(function() {
-		var Toast = Swal.mixin({
-			toast: true,
-			position: 'top-end',
-			showConfirmButton: false,
-			timer: 3000
-		});
+    $(function() {
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
 
-		$('.swalDefaultSuccess').click(function() {
-			Toast.fire({
-				icon: 'success',
-				title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
-			})
-		});
-		$('.swalDefaultError').click(function() {
-			Toast.fire({
-				icon: 'error',
-				title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
-			})
-		});
-	});
+        $('.swalDefaultSuccess').click(function() {
+            Toast.fire({
+                icon: 'success',
+                title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+            })
+        });
+        $('.swalDefaultError').click(function() {
+            Toast.fire({
+                icon: 'error',
+                title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+            })
+        });
+    });
 
-	// function checkID(id) {
-	// 	if (id.length != 13) return false;
-	// 	for (i = 0, sum = 0; i < 12; i++)
-	// 		sum += parseFloat(id.charAt(i)) * (13 - i);
-	// 	if ((11 - sum % 11) % 10 != parseFloat(id.charAt(12)))
-	// 		return false;
-	// 	return true;
-	// }
-	$(document).ready(function() {
+    // function checkID(id) {
+    // 	if (id.length != 13) return false;
+    // 	for (i = 0, sum = 0; i < 12; i++)
+    // 		sum += parseFloat(id.charAt(i)) * (13 - i);
+    // 	if ((11 - sum % 11) % 10 != parseFloat(id.charAt(12)))
+    // 		return false;
+    // 	return true;
+    // }
+    $(document).ready(function() {
 
-		$(".num").on("keypress", function(e) {
+        $(".num").on("keypress", function(e) {
 
-			var code = e.keyCode ? e.keyCode : e.which;
+            var code = e.keyCode ? e.keyCode : e.which;
 
-			if (code > 57) {
-				return false;
-			} else if ((code < 48) && (code != 46)) {
-				return false;
-			}
+            if (code > 57) {
+                return false;
+            } else if ((code < 48) && (code != 46)) {
+                return false;
+            }
 
-		});
+        });
 
         $("#btTeach").click(function(event) {
-			event.preventDefault(); // ป้องกันการ submit form โดยตรง
+            event.preventDefault(); // ป้องกันการ submit form โดยตรง
 
-			var txt_error = "";
-			var obj_err = "";	
-			var invalidFileUploaded = false;
+            var txt_error = "";
+            var obj_err = "";
+            var invalidFileUploaded = false;
 
-			$(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
+            $(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
 
-			if ($("#TeachName").val().trim() == "") {
-				txt_error += "- กรุณากรอกชื่อผู้สอน/อาจารย์\n";
-				$("#TeachName").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#TeachName");
-				}
-			}
+            if ($("#TeachName").val().trim() == "") {
+                txt_error += "- กรุณากรอกชื่อผู้สอน/อาจารย์\n";
+                $("#TeachName").css("background-color", "#ffebe6");
+                if (!obj_err) {
+                    obj_err = $("#TeachName");
+                }
+            }
 
-			var vFile = 0;
-			var file = $("input#image").val();
-			var ext = file.split(".").pop().toLowerCase();
-			var arrayExtensions = ["jpg", "jpeg", "png", "bmp", "pdf"];
+            var vFile = 0;
+            var file = $("input#image").val();
+            var ext = file.split(".").pop().toLowerCase();
+            var arrayExtensions = ["jpg", "jpeg", "png", "bmp", "pdf"];
 
-			if (file) {
-				if (arrayExtensions.lastIndexOf(ext) == -1) {
-					vFile = 1;
-					invalidFileUploaded = true;
-				} else {
-					invalidFileUploaded = false;
-				}
-			}
+            if (file) {
+                if (arrayExtensions.lastIndexOf(ext) == -1) {
+                    vFile = 1;
+                    invalidFileUploaded = true;
+                } else {
+                    invalidFileUploaded = false;
+                }
+            }
 
-			if (vFile == 1) {
-				txt_error += "- กรุณาแนบไฟล์ (jpg, jpeg, png, bmp, pdf)\n";
-			}
+            if (vFile == 1) {
+                txt_error += "- กรุณาแนบไฟล์ (jpg, jpeg, png, bmp, pdf)\n";
+            }
 
-			if (txt_error || invalidFileUploaded) {
-				$("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
-				$("#modal-default").modal('show');
-			} else {
-				$("#addTeach").off('submit').submit();
-			}
-		});
-	});
+            if (txt_error || invalidFileUploaded) {
+                $("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
+                $("#modal-default").modal('show');
+            } else {
+                $("#editTeach").off('submit').submit();
+            }
+        });
+    });
 </script>
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -101,7 +101,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
+                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/home/">หน้าหลัก</a></li>
                     <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายวิชา</a></li>
                     <li class="breadcrumb-item active">แก้ไขข้อมูลผู้สอน</li>
                 </ol>
@@ -197,59 +197,59 @@
                 </div>
                 <!-- general form elements -->
                 <div class="card card-info">
-					<div class="card-header">
-						<h3 class="card-title">เพิ่มรายชื่อผู้สอน/อาจารย์</h3>
-					</div>
+                    <div class="card-header">
+                        <h3 class="card-title">เพิ่มรายชื่อผู้สอน/อาจารย์</h3>
+                    </div>
                     <form role="form" id="editTeach" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/updateTeach" method="post">
-                            <input name="inputID" type="hidden" value="<?php echo $row->Teach_id ?>">
-						<div class="card-body" style="background-color: rgb(245, 245, 245);">
-							<div class="form-group">
-								<label>เพิ่มชื่ออาจารย์/ครูผู้สอน<span class="text-red">*</span></label>
-								<input type="text" name="Teach" class="form-control col-sm-12" id="TeachName" placeholder="กรอกเพิ่มชื่ออาจารย์/ครูผู้สอน" value="<?php echo $row->Teach_name ?>">
-							</div>
-							<div class="form-group">
-								<label>เบอร์ติดต่ออาจารย์/ครูผู้สอน (ถ้ามี)</label>
-								<input type="text" name="Teach_callnum" class="form-control col-sm-12" id="callNumber2" placeholder="กรอกเบอร์ติดต่อ" value="<?php echo $row->Teach_callnum ?>">
-							</div>
-							<div class="form-group">
-								<label>รูปอาจารย์/ผู้สอน (ถ้ามี)</label>
-								<div class="input-group">
-									<div class="custom-file">
-										<input type="file" name="image" class="custom-file-input" id="image">
-										<label class="custom-file-label">เลือกรูปภาพ</label>
-									</div>
+                        <input name="inputID" type="hidden" value="<?php echo $row->Teach_id ?>">
+                        <div class="card-body" style="background-color: rgb(245, 245, 245);">
+                            <div class="form-group">
+                                <label>เพิ่มชื่ออาจารย์/ครูผู้สอน<span class="text-red">*</span></label>
+                                <input type="text" name="Teach" class="form-control col-sm-12" id="TeachName" placeholder="กรอกเพิ่มชื่ออาจารย์/ครูผู้สอน" value="<?php echo $row->Teach_name ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>เบอร์ติดต่ออาจารย์/ครูผู้สอน (ถ้ามี)</label>
+                                <input type="text" name="Teach_callnum" class="form-control col-sm-12" id="callNumber2" placeholder="กรอกเบอร์ติดต่อ" value="<?php echo $row->Teach_callnum ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>รูปอาจารย์/ผู้สอน (ถ้ามี)</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" name="image" class="custom-file-input" id="image">
+                                        <label class="custom-file-label">เลือกรูปภาพ</label>
+                                    </div>
 
-								</div>
-							</div>
-						</div>
-						<div class="card-footer" style="background-color: rgb(255, 255, 255);">
-							<button type="submit" class="btn btn-info" id="btTeach">บันทึก</button>
-						</div>
-					</form>
-				</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer" style="background-color: rgb(255, 255, 255);">
+                            <button type="submit" class="btn btn-info" id="btTeach">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <!--/.col (right) -->
         </div>
         <!-- /.row -->
     </div><!-- /.container-fluid -->
     <div class="modal fade" id="modal-default">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">แจ้งเตือน</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<p id="modal-text"></p>
-				</div>
-				<div class="modal-footer justify-content-between">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">แจ้งเตือน</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-text"></p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <!-- /.content -->
 
