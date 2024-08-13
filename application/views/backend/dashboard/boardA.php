@@ -1,176 +1,138 @@
-<!-- Content Header (Page header) -->
-<div class="content-header">
+<section class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">แผงควบคุมรายได้</h1>
-      </div><!-- /.col -->
+        <h1>รายได้</h1>
+      </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">หน้าหลัก</a></li>
-          <li class="breadcrumb-item active">แผงควบคุมรายได้</li>
+          <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/home/">หน้าหลัก</a></li>
+          <li class="breadcrumb-item active">รายได้</li>
         </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
+      </div>
+    </div>
   </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
+</section>
 
 <!-- Main content -->
-<div class="content">
+<section class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="card-header border-0">
-            <div class="d-flex justify-content-between">
-              <h3 class="card-title">Online Store Visitors</h3>
-              <a href="javascript:void(0);">View Report</a>
+      <div class="col-md-6">
+        <!-- PIE CHART -->
+        <div class="card card-danger">
+          <div class="card-header">
+            <h3 class="card-title">ยอดเงิน-หัก</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
             </div>
           </div>
           <div class="card-body">
-            <div class="d-flex">
-              <p class="d-flex flex-column">
-                <span class="text-bold text-lg">820</span>
-                <span>Visitors Over Time</span>
-              </p>
-              <p class="ml-auto d-flex flex-column text-right">
-                <span class="text-success">
-                  <i class="fas fa-arrow-up"></i> 12.5%
-                </span>
-                <span class="text-muted">Since last week</span>
-              </p>
-            </div>
-            <!-- /.d-flex -->
-
-            <div class="position-relative mb-4">
-              <canvas id="visitors-chart" height="200"></canvas>
-            </div>
-
-            <div class="d-flex flex-row justify-content-end">
-              <span class="mr-2">
-                <i class="fas fa-square text-primary"></i> This Week
-              </span>
-
-              <span>
-                <i class="fas fa-square text-gray"></i> Last Week
-              </span>
-            </div>
+            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
           </div>
+          <!-- /.card-body -->
         </div>
         <!-- /.card -->
       </div>
-      <!-- /.col-md-6 -->
-      <div class="col-lg-6">
-      <div class="card">
-          <div class="card-header border-0">
-            <h3 class="card-title">Products</h3>
+      <!-- /.col (LEFT) -->
+      <div class="col-md-6">
+        <!-- BAR CHART -->
+        <div class="card card-success">
+          <div class="card-header">
+            <h3 class="card-title">ยอดเงิน-สุทธิ</h3>
+
             <div class="card-tools">
-              <a href="#" class="btn btn-tool btn-sm">
-                <i class="fas fa-download"></i>
-              </a>
-              <a href="#" class="btn btn-tool btn-sm">
-                <i class="fas fa-bars"></i>
-              </a>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
             </div>
           </div>
-          <div class="card-body table-responsive p-0">
-            <table class="table table-striped table-valign-middle">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Price</th>
-                  <th>Sales</th>
-                  <th>More</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <img src="<?PHP echo config_item("assets_url"); ?>/dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                    Some Product
-                  </td>
-                  <td>$13 USD</td>
-                  <td>
-                    <small class="text-success mr-1">
-                      <i class="fas fa-arrow-up"></i>
-                      12%
-                    </small>
-                    12,000 Sold
-                  </td>
-                  <td>
-                    <a href="#" class="text-muted">
-                      <i class="fas fa-search"></i>
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src="<?PHP echo config_item("assets_url"); ?>/dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                    Another Product
-                  </td>
-                  <td>$29 USD</td>
-                  <td>
-                    <small class="text-warning mr-1">
-                      <i class="fas fa-arrow-down"></i>
-                      0.5%
-                    </small>
-                    123,234 Sold
-                  </td>
-                  <td>
-                    <a href="#" class="text-muted">
-                      <i class="fas fa-search"></i>
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src="<?PHP echo config_item("assets_url"); ?>/dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                    Amazing Product
-                  </td>
-                  <td>$1,230 USD</td>
-                  <td>
-                    <small class="text-danger mr-1">
-                      <i class="fas fa-arrow-down"></i>
-                      3%
-                    </small>
-                    198 Sold
-                  </td>
-                  <td>
-                    <a href="#" class="text-muted">
-                      <i class="fas fa-search"></i>
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src="<?PHP echo config_item("assets_url"); ?>/dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                    Perfect Item
-                    <span class="badge bg-danger">NEW</span>
-                  </td>
-                  <td>$199 USD</td>
-                  <td>
-                    <small class="text-success mr-1">
-                      <i class="fas fa-arrow-up"></i>
-                      63%
-                    </small>
-                    87 Sold
-                  </td>
-                  <td>
-                    <a href="#" class="text-muted">
-                      <i class="fas fa-search"></i>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="card-body">
+            <div class="chart">
+              <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            </div>
           </div>
+          <!-- /.card-body -->
         </div>
+        <!-- /.card -->
       </div>
-      <!-- /.col-md-6 -->
+      <!-- /.col (RIGHT) -->
     </div>
     <!-- /.row -->
-  </div>
-  <!-- /.container-fluid -->
-</div>
-<!-- /.content -->
+  </div><!-- /.container-fluid -->
+</section>
+
+<script>
+  $(function() {
+    //-------------
+    //- PIE CHART -
+    //-------------
+    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+    var pieData = {
+      labels: ['เงินหัก', 'รายได้', 'ยอดเงิน'],
+      datasets: [{
+        data: [700000, 250000, 950000],
+        backgroundColor: ['#f56954', '#00a65a', '#3c8dbc'],
+      }]
+    }
+    var pieOptions = {
+      maintainAspectRatio: false,
+      responsive: true,
+    }
+    new Chart(pieChartCanvas, {
+      type: 'pie',
+      data: pieData,
+      options: pieOptions
+    })
+
+    //-------------
+    //- BAR CHART -
+    //-------------
+    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+    var barChartData = {
+      labels: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+      datasets: [{
+          label: 'ยอดเงินทั้งหมด',
+          backgroundColor: 'rgba(60,141,188,0.9)',
+          borderColor: 'rgba(60,141,188,0.8)',
+          pointRadius: false,
+          pointColor: '#3b8bba',
+          pointStrokeColor: 'rgba(60,141,188,1)',
+          pointHighlightFill: '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data: [450000, 520000, 610000, 480000, 530000, 690000, 710000, 630000, 550000, 570000, 620000, 680000]
+        },
+        {
+          label: 'รายได้',
+          backgroundColor: 'rgba(210, 214, 222, 1)',
+          borderColor: 'rgba(210, 214, 222, 1)',
+          pointRadius: false,
+          pointColor: 'rgba(210, 214, 222, 1)',
+          pointStrokeColor: '#c1c7d1',
+          pointHighlightFill: '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data: [320000, 380000, 450000, 370000, 420000, 480000, 500000, 470000, 400000, 450000, 470000, 520000]
+        }
+      ]
+    }
+    var barChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      datasetFill: false
+    }
+    new Chart(barChartCanvas, {
+      type: 'bar',
+      data: barChartData,
+      options: barChartOptions
+    })
+  })
+</script>

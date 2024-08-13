@@ -128,6 +128,39 @@ class menulist_model extends CI_Model
 		return $insert_id;
 	}
 
+	public function updatecart($data)
+	{
+		$updateCart = array(
+			'Place_address' 	=> $data['place'],
+			'StartDate' 		=> (!empty($data['StartDate'])) ? trim($this->changeDate($data['StartDate'])) : null, 
+			'EndDate' 			=> (!empty($data['EndDate'])) ? trim($this->changeDate($data['EndDate'])) : null, 
+			'Place_address' 	=> $data['place'],
+			'Lab_process' 		=> implode(",", $data['cart']),
+			'Status' 			=> $data['Status'],
+		);
+
+		$update_id = $data['inputID'];
+		$this->add_log($updateCart, $this->dbname, 'อัพเดตการเลือกแคมค์สอนเรียน', $update_id);
+		$this->db->update($this->dbname, $updateCart, array($this->ID => $update_id));
+		return $update_id;
+	}
+
+	public function editcart($data)
+	{
+		$updateCart = array(
+			'Place_address' 	=> $data['place'],
+			'StartDate' 		=> (!empty($data['StartDate'])) ? trim($this->changeDate($data['StartDate'])) : null, 
+			'EndDate' 			=> (!empty($data['EndDate'])) ? trim($this->changeDate($data['EndDate'])) : null, 
+			'Place_address' 	=> $data['place'],
+			'Lab_process' 		=> implode(",", $data['cart']),
+		);
+
+		$update_id = $data['inputID'];
+		$this->add_log($updateCart, $this->dbname, 'แก้ไขการเลือกแคมค์สอนเรียน', $update_id);
+		$this->db->update($this->dbname, $updateCart, array($this->ID => $update_id));
+		return $update_id;
+	}
+
 	public function DeleteQuese($data)
 	{
 		$this->add_log('Quese ID : '.$data, $this->dbname, 'ComfirmDeleteQuese');
@@ -141,13 +174,25 @@ class menulist_model extends CI_Model
 		$this->db->where('ID', $data);
 		return $this->db->delete('process');
 	}
-	
+
+	public function insertAmount($data)
+	{
+		$insertAmount = array(
+			'Amount' 		=> $data['Amount'],
+			'NetIncome' 	=> $data['NetIncome'],
+			'Status'		=> 'Online',
+		);
+		$update_id = $data['inputID'];
+		$this->add_log($insertAmount, $this->dbname, 'อัพเดตการเงินของแคมค์', $update_id);
+		$this->db->update($this->dbname, $insertAmount, array($this->ID => $update_id));
+		return $update_id;
+	}
 
 
 	public function changeDate($date)
 	{
 		list($dd, $mm, $yy) = explode("/", $date);
-		return ($yy - 543) . "-" . $mm . "-" . $dd;
+		return $yy . "-" . $mm . "-" . $dd;
 	}
 
 	public function add_log($data, $logTable, $logAction, $ID = 0)

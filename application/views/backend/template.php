@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-
   <!-- DataTables -->
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -21,9 +20,23 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <link rel="stylesheet" href="../../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-  <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/toastr/toastr.min.css">
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/daterangepicker/daterangepicker.css">
+  <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Bootstrap4 Duallistbox -->
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+  <!-- BS Stepper -->
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/bs-stepper/css/bs-stepper.min.css">
+  <!-- dropzonejs -->
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/dropzone/min/dropzone.min.css">
+  <link rel="stylesheet" href="<?PHP echo config_item("assets_url"); ?>/plugins/fullcalendar/main.css">
 
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -50,9 +63,18 @@
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/sweetalert2/sweetalert2.min.js"></script>
   <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/toastr/toastr.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/daterangepicker/daterangepicker.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/moment/moment.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/inputmask/jquery.inputmask.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/dropzone/min/dropzone.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/jquery-ui/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="<?PHP echo config_item("assets_url"); ?>/plugins/fullcalendar/main.js"></script>
 
-  <!-- Page specific script -->
-  <!-- <script type="text/javascript" src="< ?PHP echo config_item("assets_url"); ?>/dist/js/demo.js"></script> -->
+
 
   <style>
     /* Chrome, Safari, Edge, Opera */
@@ -70,7 +92,7 @@
 
 </head>
 
-<?php 
+<?php
 $Actionlink = $this->uri->segment(1);
 $Actionlink2 = $this->uri->segment(2);
 ?>
@@ -86,7 +108,7 @@ $Actionlink2 = $this->uri->segment(2);
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="../../index3.html" class="nav-link">Home</a>
+          <a href="<?PHP echo config_item("base_url"); ?>/home/" class="nav-link">Home</a>
         </li>
       </ul>
 
@@ -142,8 +164,12 @@ $Actionlink2 = $this->uri->segment(2);
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
             <li class="nav-header">กราฟ</li>
-            <li class="nav-item <?php if($Actionlink == 'dashboard'){ echo 'menu-open';}?>">
-              <a href="#" class="nav-link <?php if($Actionlink == 'dashboard'){ echo 'active';}?>">
+            <li class="nav-item <?php if ($Actionlink == 'dashboard') {
+                                  echo 'menu-open';
+                                } ?>">
+              <a href="#" class="nav-link <?php if ($Actionlink == 'dashboard') {
+                                            echo 'active';
+                                          } ?>">
                 <i class="nav-icon fa fa-pie-chart"></i>
                 <p>
                   Dashborad
@@ -151,24 +177,60 @@ $Actionlink2 = $this->uri->segment(2);
                 </p>
               </a>
               <ul class="nav nav-treeview">
-              <li class="nav-item <?php if($Actionlink == 'dashboard'){ echo 'active';}?>">
-                  <a href="<?PHP echo config_item("base_url"); ?>/dashboard/A" class="nav-link <?php if($Actionlink2 == 'A'){ echo 'active';}?>">
+                <li class="nav-item <?php if ($Actionlink == 'dashboard') {
+                                      echo 'active';
+                                    } ?>">
+                  <a href="<?PHP echo config_item("base_url"); ?>/dashboard/A" class="nav-link <?php if ($Actionlink2 == 'A') {
+                                                                                                  echo 'active';
+                                                                                                } ?>">
                     <i class='fas fa-chart-bar nav-icon'></i>
                     <p>รายได้</p>
                   </a>
                 </li>
-                <li class="nav-item <?php if($Actionlink == 'dashboard'){ echo 'active';}?>">
-                  <a href="<?PHP echo config_item("base_url"); ?>/dashboard/B" class="nav-link <?php if($Actionlink2 == 'B'){ echo 'active';}?>">
+                <li class="nav-item <?php if ($Actionlink == 'dashboard') {
+                                      echo 'active';
+                                    } ?>">
+                  <a href="<?PHP echo config_item("base_url"); ?>/dashboard/B" class="nav-link <?php if ($Actionlink2 == 'B') {
+                                                                                                  echo 'active';
+                                                                                                } ?>">
                     <i class="fas fa-user-friends nav-icon"></i>
                     <p>ยอดผู้ใช้</p>
                   </a>
                 </li>
               </ul>
             </li>
+            <li class="nav-header">รายงาน</li>
+            <li class="nav-item <?php if ($Actionlink == 'document') {
+                                  echo 'menu-open';
+                                } ?>">
+              <a href="#" class="nav-link <?php if ($Actionlink == 'document') {
+                                            echo 'active';
+                                          } ?>">
+                <i class="nav-icon fa fa-files-o"></i>
+                <p>
+                  รายละเอียดงาน
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?PHP echo config_item("base_url"); ?>/document/calender" class="nav-link <?php if ($Actionlink2 == 'calender') {
+                                                                                                echo 'active';
+                                                                                              } ?>">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>ปฏิทิน</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
             <li class="nav-header">จัดค่าย</li>
-            <li class="nav-item <?php if($Actionlink == 'menulist' || $Actionlink == 'menuprocess'){ echo 'menu-open';}?>">
-              <a href="#" class="nav-link <?php if($Actionlink == 'menulist' || $Actionlink == 'menuprocess'){ echo 'active';}?>">
-              <i class="nav-icon fas fa-edit"></i>
+            <li class="nav-item <?php if ($Actionlink == 'menulist' || $Actionlink == 'menuprocess') {
+                                  echo 'menu-open';
+                                } ?>">
+              <a href="#" class="nav-link <?php if ($Actionlink == 'menulist' || $Actionlink == 'menuprocess') {
+                                            echo 'active';
+                                          } ?>">
+                <i class="nav-icon fas fa-edit"></i>
                 <p>
                   ข้อมูลค่าย
                   <i class="right fas fa-angle-left"></i>
@@ -176,13 +238,17 @@ $Actionlink2 = $this->uri->segment(2);
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="<?PHP echo config_item("base_url"); ?>/menulist/" class="nav-link <?php if($Actionlink == 'menulist'){ echo 'active';}?>">
+                  <a href="<?PHP echo config_item("base_url"); ?>/menulist/" class="nav-link <?php if ($Actionlink == 'menulist') {
+                                                                                                echo 'active';
+                                                                                              } ?>">
                     <i class="far fa-circle nav-icon"></i>
                     <p>ตารางจัดจอง</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="<?PHP echo config_item("base_url"); ?>/menuprocess/" class="nav-link <?php if($Actionlink == 'menuprocess'){ echo 'active';}?>">
+                  <a href="<?PHP echo config_item("base_url"); ?>/menuprocess/" class="nav-link <?php if ($Actionlink == 'menuprocess') {
+                                                                                                  echo 'active';
+                                                                                                } ?>">
                     <i class="far fa-circle nav-icon"></i>
                     <p>ดำเนินการ</p>
                   </a>
@@ -190,9 +256,13 @@ $Actionlink2 = $this->uri->segment(2);
               </ul>
             </li>
             <li class="nav-header">ฐานข้อมูล</li>
-            <li class="nav-item <?php if($Actionlink == 'lab' || $Actionlink == 'school'){ echo 'menu-open';}?>">
-              <a href="#" class="nav-link <?php if($Actionlink == 'lab' || $Actionlink == 'school'){ echo 'active';}?>">
-              <i class="nav-icon fas fa-book"></i>
+            <li class="nav-item <?php if ($Actionlink == 'lab' || $Actionlink == 'school') {
+                                  echo 'menu-open';
+                                } ?>">
+              <a href="#" class="nav-link <?php if ($Actionlink == 'lab' || $Actionlink == 'school') {
+                                            echo 'active';
+                                          } ?>">
+                <i class="nav-icon fas fa-book"></i>
                 <p>
                   ฐานข้อมูล
                   <i class="right fas fa-angle-left"></i>
@@ -200,13 +270,17 @@ $Actionlink2 = $this->uri->segment(2);
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="<?PHP echo config_item("base_url"); ?>/lab/" class="nav-link <?php if($Actionlink == 'lab'){ echo 'active';}?>">
+                  <a href="<?PHP echo config_item("base_url"); ?>/lab/" class="nav-link <?php if ($Actionlink == 'lab') {
+                                                                                          echo 'active';
+                                                                                        } ?>">
                     <i class="far fa-circle nav-icon"></i>
                     <p>รายการรายวิชา</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="<?PHP echo config_item("base_url"); ?>/school/" class="nav-link <?php if($Actionlink == 'school'){ echo 'active';}?>">
+                  <a href="<?PHP echo config_item("base_url"); ?>/school/" class="nav-link <?php if ($Actionlink == 'school') {
+                                                                                              echo 'active';
+                                                                                            } ?>">
                     <i class="far fa-circle nav-icon"></i>
                     <p>รายการโรงเรียน</p>
                   </a>

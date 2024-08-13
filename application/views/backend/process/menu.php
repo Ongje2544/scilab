@@ -74,23 +74,25 @@ function changeDateShow($date)
                                     <tr>
                                         <td><?php echo $numId ?></td>
                                         <td><?php echo $v->SchoolName ?></td>
-                                        <td><?php foreach ($class as $select) {
-                                                if ($v->ID == $select->Queue_id) {
-                                                    if ($select->Class_id == "A") {
-                                                        echo "| ม.1 |";
-                                                    } elseif ($select->Class_id == "B") {
-                                                        echo "| ม.2 |";
-                                                    } elseif ($select->Class_id == "C") {
-                                                        echo "| ม.3 |";
-                                                    } elseif ($select->Class_id == "D") {
-                                                        echo "| ม.4 |";
-                                                    } elseif ($select->Class_id == "E") {
-                                                        echo "| ม.5 |";
-                                                    } elseif ($select->Class_id == "F") {
-                                                        echo "| ม.6 |";
-                                                    }
-                                                }
-                                            } ?></td>
+                                        <td>
+                                            <div class="row"><?php foreach ($class as $select) {
+                                                                    if ($v->ID == $select->Queue_id) {
+                                                                        if ($select->Class_id == "A") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 1</span>";
+                                                                        } elseif ($select->Class_id == "B") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 2</span>";
+                                                                        } elseif ($select->Class_id == "C") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 3</span>";
+                                                                        } elseif ($select->Class_id == "D") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 4</span>";
+                                                                        } elseif ($select->Class_id == "E") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 5</span>";
+                                                                        } elseif ($select->Class_id == "F") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 6</span>";
+                                                                        }
+                                                                    }
+                                                                } ?></div>
+                                        </td>
                                         <td><?php echo changeDateShow($v->CreateDate); ?></td>
                                         <td>
                                             <center>
@@ -150,23 +152,25 @@ function changeDateShow($date)
                                     <tr>
                                         <td><?php echo $numId ?></td>
                                         <td><?php echo $v->SchoolName ?></td>
-                                        <td><?php foreach ($class as $select) {
-                                                if ($v->ID == $select->Queue_id) {
-                                                    if ($select->Class_id == "A") {
-                                                        echo "| ม.1 |";
-                                                    } elseif ($select->Class_id == "B") {
-                                                        echo "| ม.2 |";
-                                                    } elseif ($select->Class_id == "C") {
-                                                        echo "| ม.3 |";
-                                                    } elseif ($select->Class_id == "D") {
-                                                        echo "| ม.4 |";
-                                                    } elseif ($select->Class_id == "E") {
-                                                        echo "| ม.5 |";
-                                                    } elseif ($select->Class_id == "F") {
-                                                        echo "| ม.6 |";
-                                                    }
-                                                }
-                                            } ?></td>
+                                        <td>
+                                            <div class="row"><?php foreach ($class as $select) {
+                                                                    if ($v->ID == $select->Queue_id) {
+                                                                        if ($select->Class_id == "A") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 1</span>";
+                                                                        } elseif ($select->Class_id == "B") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 2</span>";
+                                                                        } elseif ($select->Class_id == "C") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 3</span>";
+                                                                        } elseif ($select->Class_id == "D") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 4</span>";
+                                                                        } elseif ($select->Class_id == "E") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 5</span>";
+                                                                        } elseif ($select->Class_id == "F") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 6</span>";
+                                                                        }
+                                                                    }
+                                                                } ?></div>
+                                        </td>
                                         <td><?php echo changeDateShow($v->CreateDate); ?></td>
                                         <td><span class="text-green"><?php echo $v->Amount?></span> / <span class="text-blue"><?php echo $v->NetIncome ?></span></td>
                                         <td>

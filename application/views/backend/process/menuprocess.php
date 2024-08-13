@@ -1,3 +1,14 @@
+<?php
+function changeDateShow($date)
+{
+	if (!empty($date)) {
+		list($yy, $mm, $dd) = explode("-", $date);
+		return $dd . "/" . $mm . "/" . $yy;
+	}
+}
+
+$today = date("Y-m-d");
+?>
 <style>
 	textarea {
 		resize: none;
@@ -99,15 +110,17 @@
 	.bt {
 		position: absolute;
 	}
-    .checkbox-wrapper-1 [type=checkbox].substituted:disabled+label:before {
+
+	.checkbox-wrapper-1 [type=checkbox].substituted:disabled+label:before {
 		background-color: #3B99FC;
 		/* สีพื้นหลังเดียวกับสถานะปกติ */
 		color: rgba(0, 0, 0, 0.075);
 		background-size: 0.75em;
 		opacity: 0.12;
 		/* ทำให้สีเข้มเต็มที่ */
-	}	
-    .bd{
+	}
+
+	.bd {
 		border: none;
 		border-radius: 5px;
 		background-color: rgb(255, 255, 255);
@@ -115,8 +128,49 @@
 		padding-right: 50px;
 		font-weight: 800;
 	}
-
 </style>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$("#btAmount").click(function(event) {
+			event.preventDefault(); // ป้องกันการ submit form โดยตรง
+
+			var txt_error = "";
+			var obj_err = "";
+			var invalidFileUploaded = false;
+			var selectedRadio = $("input[name='Status']:checked").val();
+
+			// รีเซ็ตสีพื้นหลังให้เป็นสีขาว
+			$(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
+
+			// ตรวจสอบ textarea
+			if ($("#amount").val().trim() == "") {
+				txt_error += "- กรุณากรอกสถานที่จัด\n";
+				$("#amount").css("background-color", "#ffebe6");
+				if (!obj_err) {
+					obj_err = $("#amount");
+				}
+			}
+			if ($("#netincome").val().trim() == "") {
+				txt_error += "- กรุณาเลือกแคมค์วิชา\n";
+				$("#netincome").css("background-color", "#ffebe6");
+				if (!obj_err) {
+					obj_err = $("#netincome");
+				}
+			}
+
+
+			// แสดงข้อความเตือนถ้ามีข้อผิดพลาด
+			if (txt_error) {
+				$("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
+				$("#modal-default").modal('show');
+			} else {
+				$("#insertAmount").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
+			}
+
+		});
+	});
+</script>
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<div class="container-fluid">
@@ -148,16 +202,16 @@
 					</div>
 					<!-- /.card-header -->
 					<!-- form start -->
-					<form role="form" id="insertSchool" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/school/updateSchool" method="post">
+					<form role="form" id="insertAmount" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/menuprocess/insertAmount" method="post">
 						<input name="inputID" type="hidden" value="<?php echo $row->ID ?>">
 						<div class="card-body" style="background-color: rgb(245, 245, 245);">
 							<div class="form-group mt-3 mr-5 d-flex">
 								<label for="School_process" class="mid mt-2 col-sm-4 text-right">ชื่อโรงเรียน/สถาบัน</label>
 								<div class="mt-1 ml-3 pt-1 bd"><?php foreach ($school as $c) {
-										if ($row->SchoolID_process == $c->School_id) {
-											echo  $c->School_name;
-										}
-									}?></div>
+																	if ($row->SchoolID_process == $c->School_id) {
+																		echo  $c->School_name;
+																	}
+																} ?></div>
 							</div>
 							<div class="form-group mt-3 mr-5 d-flex">
 								<label for="class" class="mid mt-2 col-sm-4 text-right">ระดับชั้น</label>
@@ -184,60 +238,59 @@
 									}
 								} ?>
 							</div>
-							<div class="form-group mt-3 mr-5 d-flex">
-								<label for="School_process" class="mid mt-2 col-sm-4 text-right">สถานที่จัดค่าย</label>
-                                <!-- <div class="mt-1 ml-3 pt-1 bd">
-                                    < ?php $row->Place_address?>
-                                </div> -->
-                                <div class="mt-1 ml-3 pt-1 bd">
-                                    อิสระภาพ 255 กรุงเทพมหานคร
-                                </div>
-							</div>
 
-							<div class="card-header" style="background-color: rgb(255, 245, 255);">
-								<h3 class="card-title">รายการที่เลือก</h3>
+							<div class="form-group mr-5 d-flex">
+								<label for="School_process" class="mid mt-2 col-sm-4 text-right">สถานที่จัดค่าย</label>
+								<textarea rows="4" class="form-control col-sm-8 ml-3" id="place" placeholder="กรอกสถานที่จัดงาน" readonly style="border: none; background-color:rgb(255, 255, 255); font-weight:600;"><?php echo $row->Place_address ?></textarea>
 							</div>
-							<div class="card-body" style="background-color: rgb(255, 245, 255);">
-								<table class="table table-bordered table-striped">
-									<thead>
-										<tr>
-											<th class="">#</th>
-											<th class="col-sm-7">ชื่อรายวิชา</th>
-											<th class="col-sm-4">หมวดหมู่</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>1</td>
-											<td>algorithm (3 ช.ม.)</td>
-											<td>คณิตศาสตร์</td>
-										</tr>
-                                        <tr>
-											<td>2</td>
-											<td>เทคโนโลยีเนื้อสัตว์และการแปรรูปผลิตภัณฑ์จากเนื้อสัตว์ (3 ช.ม.)</td>
-											<td>เกษตรและเทคโนโลยี การเกษตร</td>
-										</tr>
-                                        <tr>
-											<td>3</td>
-											<td>ตะลุยโลกจุลินทรีย์</td>
-											<td>จุลชีววิทยา</td>
-										</tr>
-									</tbody>
-								</table>
+							<div class="form-group mr-5 d-flex">
+								<label for="" class="mid mt-2 col-sm-4 text-right">วันที่จัด</label>
+								<div class="mt-1 ml-3 pt-1 bd"><?php echo changeDateShow($row->StartDate); ?></div>
+								<label for="" class="mt-2 col-sm-1 text-right">วันที่สิ้นสุด</label>
+								<div class="mt-1 ml-3 pt-1 bd"><?php echo changeDateShow($row->EndDate); ?></div>
+							</div>
+							<input type="hidden" id="selected_camps" readonly value="<?php echo $row->Lab_process ?>">
+							<div class="card">
+								<div class="card-header" style="background-color: rgb(255, 245, 255);">
+									<h3 class="card-title">รายการที่เลือก</h3>
+								</div>
+								<div class="card-body" style="background-color: rgb(255, 245, 255);">
+									<table id="selectedItemsTable" class="table table-bordered table-striped">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>ชื่อรายวิชา</th>
+												<th>หมวดหมู่</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+											foreach ($result['row'] as $key => $v) {
+											?>
+												<tr>
+													<td><?php echo $v->Idlab ?></td>
+													<td><?php echo $v->Namelist ?></td>
+													<td><?php echo $v->BranchName ?></td>
+												</tr>
+											<?php
+											} ?>
+										</tbody>
+									</table>
+								</div>
 							</div>
 							<br>
 							<div class="form-group mt-3 mr-5 d-flex">
 								<label for="School_process" class="mid mt-2 col-sm-4 text-right">ยอดเงิดทั้งหมด</label>
-                                <input type="text" class="form-control col-3"> 
+								<input type="text" name="Amount" id="amount" class="form-control col-3" value="<?php echo $row->Amount; ?>">
 							</div>
-                            <div class="form-group mt-3 mr-5 d-flex">
+							<div class="form-group mt-3 mr-5 d-flex">
 								<label for="School_process" class="mid mt-2 col-sm-4 text-right">เงินสุทธิ</label>
-                                <input type="text" class="form-control col-3">
+								<input type="text" name="NetIncome" id="netincome" class="form-control col-3" value="<?php echo $row->NetIncome; ?>">
 							</div>
 						</div>
 						<div class="card-footer" style="background-color: rgb(255, 255, 255);">
-                            <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
-							<button type="submit" class="btn btn-primary">บันทึก</button>
+							<a href="javascript:history.back()" class="btn btn-success">กลับ</a>
+							<button type="submit" class="btn btn-primary" id="btAmount">บันทึก</button>
 						</div>
 					</form>
 				</div>
@@ -247,6 +300,24 @@
 		<!--/.col (right) -->
 	</div>
 	<!-- /.row -->
+	<div class="modal fade" id="modal-default">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">แจ้งเตือน</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p id="modal-text"></p>
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 <!-- /.content -->
 
@@ -267,7 +338,7 @@
 		})
 
 		// Phone number input restriction
-		$("#callNumber1,#callNumber2 ,#NumId").on('input', function(e) {
+		$("#callNumber1,#callNumber2 ,#NumId ,#amount ,#netincome").on('input', function(e) {
 			$(this).val($(this).val().replace(/[^0-9]/g, ''));
 		});
 
@@ -280,5 +351,87 @@
 
 		// Initialize custom file input
 		bsCustomFileInput.init();
+	});
+</script>
+<script>
+	$(document).ready(function() {
+		// ฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวในตาราง 'รายการที่เลือก'
+		function updateSelectedItems() {
+			var $inputField = $('#selected_camps');
+			var selectedIds = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่เลือก
+			$('#selectedItemsTable tbody tr').each(function() {
+				var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
+				if (selectedIds.includes(rowId)) {
+					$(this).show(); // แสดงแถว
+				} else {
+					$(this).hide(); // ซ่อนแถว
+				}
+			});
+		}
+
+		// ฟังก์ชันเพื่ออัปเดตค่าใน input และซ่อนแถว
+		function removeItemFromCart(id) {
+			var $inputField = $('#selected_camps');
+			var existingValues = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่มีอยู่แล้ว
+			existingValues = existingValues.filter(value => value !== id); // ลบ ID ออก
+			$inputField.val(existingValues.join(',')); // อัปเดตค่าใน input
+
+			// อัปเดตการแสดงผลของแถว
+			updateSelectedItems();
+			updateAvailableItems(); // เรียกใช้งานฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวใน 'รายการค่าย'
+		}
+
+		// ฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวในตาราง 'รายการค่าย'
+		function updateAvailableItems() {
+			var $inputField = $('#selected_camps');
+			var selectedIds = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่เลือก
+			$('#tablelab1 tbody tr').each(function() {
+				var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
+				if (selectedIds.includes(rowId)) {
+					$(this).hide(); // ซ่อนแถวถ้า ID อยู่ใน input
+				} else {
+					$(this).show(); // แสดงแถวถ้า ID ไม่อยู่ใน input
+				}
+			});
+		}
+
+		// ฟังก์ชันเพื่อเพิ่มรายการใหม่
+		function addItemToCart(id) {
+			var $inputField = $('#selected_camps');
+			var existingValues = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่มีอยู่แล้ว
+			if (!existingValues.includes(id)) {
+				existingValues.push(id); // เพิ่ม ID ใหม่
+				$inputField.val(existingValues.join(',')); // อัปเดตค่าใน input
+			}
+
+			// อัปเดตการแสดงผลของแถว
+			updateSelectedItems();
+			updateAvailableItems(); // เรียกใช้งานฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวใน 'รายการค่าย'
+		}
+
+		// จัดการคลิกที่ไอคอนรถเข็น
+		$('#tablelab1').on('click', '.fa-shopping-cart', function() {
+			var id = $(this).data('id').toString(); // ดึง ID จาก data-id และแปลงเป็นสตริง
+			addItemToCart(id); // เพิ่ม ID ลงใน input และอัปเดตแถว
+		});
+
+		// จัดการคลิกที่ <b> เพื่อนำออก
+		$('#selectedItemsTable').on('click', 'b', function() {
+			var id = $(this).data('id').toString(); // ดึง ID จาก data-id และแปลงเป็นสตริง
+			removeItemFromCart(id); // ลบ ID ออกจาก input และอัปเดตแถว
+		});
+
+		// ตรวจสอบเมื่อโหลดหน้าเพื่อซ่อนแถวที่มี ID ใน input และแสดงแถวที่เหลือ
+		(function() {
+			var ids = $('#selected_camps').val().split(',').filter(Boolean); // ดึง IDs จาก input
+			$('#tablelab1 tbody tr').each(function() {
+				var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
+				if (ids.includes(rowId)) {
+					$(this).hide(); // ซ่อนแถวถ้า ID อยู่ใน input
+				}
+			});
+
+			updateSelectedItems(); // อัปเดตการแสดงผลของแถวใน 'รายการที่เลือก'
+		})();
 	});
 </script>

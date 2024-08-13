@@ -107,6 +107,82 @@
         /* Adjust the font size as needed */
     }
 </style>
+<script type="text/javascript">
+    $(function() {
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+        $('.swalDefaultSuccess').click(function() {
+            Toast.fire({
+                icon: 'success',
+                title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+            })
+        });
+        $('.swalDefaultError').click(function() {
+            Toast.fire({
+                icon: 'error',
+                title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+            })
+        });
+    });
+
+    // function checkID(id) {
+    // 	if (id.length != 13) return false;
+    // 	for (i = 0, sum = 0; i < 12; i++)
+    // 		sum += parseFloat(id.charAt(i)) * (13 - i);
+    // 	if ((11 - sum % 11) % 10 != parseFloat(id.charAt(12)))
+    // 		return false;
+    // 	return true;
+    // }
+    $(document).ready(function() {
+
+        $(".num").on("keypress", function(e) {
+
+            var code = e.keyCode ? e.keyCode : e.which;
+
+            if (code > 57) {
+                return false;
+            } else if ((code < 48) && (code != 46)) {
+                return false;
+            }
+
+        });
+
+        $("#btQueue").click(function(event) {
+            event.preventDefault(); // ป้องกันการ submit form โดยตรง
+
+            var txt_error = "";
+            var obj_err = "";
+
+            $(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
+
+            if ($("#school").val().trim() == "") {
+                txt_error += "- กรุณาเลือกสถาศึกษา/โรงเรียน\n";
+                $("#school").css("background-color", "#ffebe6");
+                if (!obj_err) {
+                    obj_err = $("#school");
+                }
+            }
+            if ($('input[name="Class_process[]"]:checked').length == 0) {
+                txt_error += "- กรุณาเลือกระดับชั้น\n";
+                $('input[name="Class_process[]"]').css("background-color", "#ffebe6");
+                if (!obj_err) {
+                    obj_err = $('input[name="Class_process[]"]');
+                }
+            }
+            if (txt_error) {
+                $("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
+                $("#modal-default").modal('show');
+            } else {
+                $("#insertQueuelist").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
+            }
+        });
+    });
+</script>
 
 <?php
 function changeDateShow($date)
@@ -149,11 +225,11 @@ function changeDateShow($date)
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form" id="insertSchool" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/menulist/insertQueue" method="post">
+                    <form role="form" id="insertQueuelist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/menulist/insertQueue" method="post">
                         <div class="card-body" style="background-color: rgb(245, 245, 245);">
                             <div class="form-group mt-3 mr-5 d-flex">
                                 <label class="mid mt-2 col-sm-4 text-right">โรงเรียน</label>
-                                <select class="form-control select2bs4" name="SchoolID_process" style="width: 100%;" placeholder="เลือกโรงเรียน" required>
+                                <select class="form-control select2bs4" name="SchoolID_process" id="school" style="width: 100%;" placeholder="เลือกโรงเรียน" required>
                                     <option value="" selected> กรุณาเลือกโรงเรียน/สถาบัน</option>
                                     <?php
                                     foreach ($school as $key) {
@@ -199,7 +275,7 @@ function changeDateShow($date)
 
                         </div>
                         <div class="card-footer" style="background-color: rgb(245, 245, 245); display:flex ;  justify-content: end;">
-                            <button type="submit" class="btn btn-primary">บันทึก</button>
+                            <button type="submit" class="btn btn-primary" id="btQueue">บันทึก</button>
                         </div>
                     </form>
                     <!-- /.card-header -->
@@ -226,23 +302,25 @@ function changeDateShow($date)
                                     <tr>
                                         <td><?php echo $numId ?></td>
                                         <td><?php echo $v->SchoolName ?></td>
-                                        <td><?php foreach ($class as $select) {
-                                                if ($v->ID == $select->Queue_id) {
-                                                    if ($select->Class_id == "A") {
-                                                        echo "| ม.1 |";
-                                                    } elseif ($select->Class_id == "B") {
-                                                        echo "| ม.2 |";
-                                                    } elseif ($select->Class_id == "C") {
-                                                        echo "| ม.3 |";
-                                                    } elseif ($select->Class_id == "D") {
-                                                        echo "| ม.4 |";
-                                                    } elseif ($select->Class_id == "E") {
-                                                        echo "| ม.5 |";
-                                                    } elseif ($select->Class_id == "F") {
-                                                        echo "| ม.6 |";
-                                                    }
-                                                }
-                                            } ?></td>
+                                        <td>
+                                            <div class="row"><?php foreach ($class as $select) {
+                                                                    if ($v->ID == $select->Queue_id) {
+                                                                        if ($select->Class_id == "A") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 1</span>";
+                                                                        } elseif ($select->Class_id == "B") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 2</span>";
+                                                                        } elseif ($select->Class_id == "C") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 3</span>";
+                                                                        } elseif ($select->Class_id == "D") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 4</span>";
+                                                                        } elseif ($select->Class_id == "E") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 5</span>";
+                                                                        } elseif ($select->Class_id == "F") {
+                                                                            echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 6</span>";
+                                                                        }
+                                                                    }
+                                                                } ?></div>
+                                        </td>
                                         <td><?php echo changeDateShow($v->CreateDate); ?></td>
                                         <td>
                                             <center>
@@ -274,6 +352,24 @@ function changeDateShow($date)
         <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">แจ้งเตือน</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-text"></p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <!-- /.content -->
 

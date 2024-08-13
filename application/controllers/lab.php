@@ -394,6 +394,50 @@ class lab extends CI_Controller
 	}
 
 	/*<------------------------------ //Comfire Delete or Restore Menu ------------------------------------------->*/
+
+	private function set_upload_options()
+	{
+		//upload an image options
+		$config = array();
+		$config['upload_path'] = './uploads/fines';
+		//$config['allowed_types'] = 'jpg|jpeg|gif|png|JPG|JPEG|PDF';
+		$config['allowed_types'] = '*';
+		$config['max_size']      = '0';
+		$config['overwrite']     = FALSE;
+
+		return $config;
+	}
+	public function resize_image($file_path, $width = 200, $height = 175)
+	{
+		$this->load->library('image_lib');
+
+		$img_cfg['image_library'] = 'gd2';
+		$img_cfg['source_image'] = $file_path;
+		$img_cfg['maintain_ratio'] = TRUE;
+		$img_cfg['create_thumb'] = TRUE;
+		$img_cfg['new_image'] = $file_path;
+		$img_cfg['width'] = $width;
+		$img_cfg['quality'] = 100;
+		//$img_cfg['height'] = $height;
+
+		$this->image_lib->initialize($img_cfg);
+		$this->image_lib->resize();
+	}
+	function viewfile()
+	{
+		$fname = $this->uri->segment(3);
+		$rest = strrchr($fname, ".");
+
+		if (($rest == ".pdf") || ($rest == ".PDF")) {
+			$tofile = realpath("./uploads/fines/" . $fname);
+			header('Content-Type: application/pdf');
+			readfile($tofile);
+		} else {
+			$thumb = "./uploads/fines/" . $fname;
+			header('Content-type: image/jpeg');
+			echo file_get_contents($thumb);
+		}
+	}
 }	
 
 

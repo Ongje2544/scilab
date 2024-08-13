@@ -53,7 +53,7 @@
                         <div class="form-group">
                                 <div class="mid">รูปประจำตัว</div>
                                 <center>
-                                <img src="<?PHP echo config_item("uploads_url");?>/5-4-150x150.jpg" alt="">
+                                <img src="<?PHP echo config_item("uploads_url");?>/unknow.jpg" alt="" width="100">
                                 </center>
                             </div>
                             <div class="form-group">

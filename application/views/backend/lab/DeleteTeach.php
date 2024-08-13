@@ -50,6 +50,10 @@
                     </div>
                     <div class="card-body">
                         <div class="col-lg-12">
+                        <div class="mid">รูปประจำตัว</div>
+                                <center>
+                                <img src="<?PHP echo config_item("uploads_url");?>/unknow.jpg" alt="" width="100">
+                                </center>
                             <div class="form-group">
                                 <div class="mid">ชื่อผู้สอน/อาจารย์</div>
                                 <div class="board"><?php echo $row->Teach_name ?></div>

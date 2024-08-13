@@ -38,6 +38,18 @@ class menuprocess extends CI_Controller
 		$view["module"] = $this->load->view("backend/process/menuprocess", $data, TRUE, null);
 		$this->load->view("backend/template", $view);
 	}
+
+	public function insertAmount()
+	{
+		$inputFrom = $this->input->post();
+		//print_r($inputFrom);exit();
+		$data = $this->menulist_model->insertAmount($inputFrom);
+		//echo $data;exit();
+		if ($data <> 0)
+			redirect('menuprocess/index?success', 'refresh');
+		else
+			redirect('menuprocess/index?Error', 'refresh');
+	}
 	
 	public function editprocess()
 	{
@@ -53,6 +65,18 @@ class menuprocess extends CI_Controller
 
 		$view["module"] = $this->load->view("backend/process/editprocess", $data, TRUE, null);
 		$this->load->view("backend/template", $view);
+	}
+
+	public function fixprocess()
+	{
+		$inputFrom = $this->input->post();
+
+		$data = $this->menulist_model->editcart($inputFrom);
+		//echo $data;exit();
+		if ($data <> 0)
+			redirect('menuprocess/index?success', 'refresh');
+		else
+			redirect('menuprocess/index?Error', 'refresh');
 	}
 
     public function viewprocessed()
