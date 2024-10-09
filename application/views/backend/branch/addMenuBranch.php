@@ -3,6 +3,7 @@
 		resize: none;
 	}
 </style>
+
 <script type="text/javascript">
 	$(function() {
 		var Toast = Swal.mixin({
@@ -48,7 +49,7 @@
 
 		});
 
-		$("#btSchool").click(function(event) {
+		$("#btBranch").click(function(event) {
 			event.preventDefault(); // ป้องกันการ submit form โดยตรง
 
 			var txt_error = "";
@@ -56,44 +57,24 @@
 
 			$(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
 
-			if ($("#nameSchool").val().trim() == "") {
-				txt_error += "- กรุณากรอกชื่อโรงเรียน\n";
-				$("#nameSchool").css("background-color", "#ffebe6");
+			if ($("#MoreBranch").val().trim() == "") {
+				txt_error += "- กรุณากรอกชื่อหมวดหมู่\n";
+				$("#MoreBranch").css("background-color", "#ffebe6");
 				if (!obj_err) {
-					obj_err = $("#nameSchool");
+					obj_err = $("#MoreBranch");
 				}
 			}
-			if ($("#address").val().trim() == "") {
-				txt_error += "- กรุณากรอกสถานที่/ที่อยู่\n";
-				$("#address").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#address");
-				}
-			}
-			if ($("#callNumber1").val().length !== 10) {
-				txt_error += "- กรุณากรอกเบอร์โทรศัพท์/เบอร์ติดต่อ\n";
-				$("#callNumber1").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#callNumber1");
-				}
-			}
-			if ($("#email").val() == "") {
-				txt_error += "- กรุณากรอกอีเมล\n";
-				$("#email").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#email");
-				}
-			}
+
 			if (txt_error) {
 				$("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
 				$("#modal-default").modal('show');
 			} else {
-				// ส่งฟอร์ม
-				$("#insertSchool").off('submit').submit(); // ยกเลิก event.preventDefault() และส่งฟอร์ม
+				$("#addBranch").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
 			}
 		});
 	});
 </script>
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<div class="container-fluid">
@@ -104,8 +85,8 @@
 			<div class="col-sm-6">
 				<ol class="breadcrumb float-sm-right">
 					<li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/home/">หน้าหลัก</a></li>
-					<li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/school/">ตารางโรงเรียน</a></li>
-					<li class="breadcrumb-item active">เพิ่มโรงเรียน</li>
+					<li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/branch/">ตารางหมวดหมู่</a></li>
+					<li class="breadcrumb-item active">เพิ่มรายการ</li>
 				</ol>
 			</div>
 		</div>
@@ -116,16 +97,13 @@
 <section class="content">
 	<div class="container-fluid">
 		<div class="row">
-			<!-- left column -->
 			<div class="col-md-12">
 				<!-- general form elements -->
-				<div class="card card-primary">
+				<div class="card card-info">
 					<div class="card-header">
-						<h3 class="card-title">เพิ่มรายชื่อโรงเรียน</h3>
+						<h3 class="card-title">เพิ่มหมวดหมู่</h3>
 					</div>
-					<!-- /.card-header -->
-					<!-- form start -->
-					<form role="form" id="insertSchool" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/school/insertSchool" method="post">
+					<form role="form" id="addBranch" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/branch/addBranch" method="post">
 					<?php if (isset($_GET['Success'])) { ?>
                             <script>
                                 $(document).ready(function() {
@@ -142,38 +120,22 @@
                         <?php } ?>
 						<div class="card-body" style="background-color: rgb(245, 245, 245);">
 							<div class="form-group mt-3 mr-5 d-flex">
-								<label class="mid mt-2 col-sm-4 text-right">ชื่อโรงเรียน/สถาบัน<span class="text-red"> *</span></label>
-								<input type="text" name="SchoolName" class="form-control col-sm-8" id="nameSchool" placeholder="กรอกชื่อโรงเรียน/สถาบัน">
-							</div>
-							<div class="form-group mt-3 mr-5 d-flex">
-								<label class="mid mt-2 col-sm-4 text-right">ที่อยู่<span class="text-red"> *</span></label>
-								<textarea name="Address" rows="4" class="form-control col-sm-8" id="address" placeholder="กรอกที่อยู่"></textarea>
-							</div>
-							<div class="form-group mt-3 mr-5 d-flex">
-								<label class="mid mt-2 col-sm-4 text-right">โทรศัพท์<span class="text-red"> *</span></label>
-								<input type="text" name="Callnum" class="form-control col-sm-8" id="callNumber1" placeholder="กรอกโทรศัพท์">
-							</div>
-							<div class="form-group mt-3 mr-5 d-flex">
-								<label class="mid mt-2 col-sm-4 text-right">แฟกซ์ (ถ้ามี)</label>
-								<input type="text" name="Fax" class="form-control col-sm-8" id="fax" placeholder="กรอกแฟกซ์">
-							</div>
-							<div class="form-group mt-3 mr-5 d-flex">
-								<label class="mid mt-2 col-sm-4 text-right">อีเมล<span class="text-red"> *</span></label>
-								<input type="email" name="Email" class="form-control col-sm-8" id="email" placeholder="กรอกอีเมล">
+								<label class="mid mt-2 col-sm-4 text-right">เพิ่มหมวดหมู่รายวิชา<span class="text-red">*</span></label>
+								<input type="text" name="Branch" class="form-control col-sm-8" id="MoreBranch" placeholder="กรอกเพิ่มหมวดหมู่รายวิชา">
 							</div>
 						</div>
 						<div class="card-footer" style="background-color: rgb(255, 255, 255);">
-						<a href="<?PHP echo config_item("base_url"); ?>/school/" class="btn btn-default">กลับ</a>
-							<button type="submit" class="btn btn-primary" id="btSchool">บันทึก</button>
+						<a href="<?PHP echo config_item("base_url"); ?>/branch/" class="btn btn-default">กลับ</a>
+							<button type="submit" class="btn btn-info" id="btBranch">บันทึก</button>
 						</div>
 					</form>
 				</div>
 			</div>
-			<!--/.col (left) -->
+			<!--/.col (right) -->
 		</div>
-		<!--/.col (right) -->
-	</div>
-	<!-- /.row -->
+		<!-- /.row -->
+	</div><!-- /.container-fluid -->
+
 	<div class="modal fade" id="modal-default">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -192,6 +154,7 @@
 			</div>
 		</div>
 	</div>
+
 </section>
 <!-- /.content -->
 

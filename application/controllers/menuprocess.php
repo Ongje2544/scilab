@@ -32,6 +32,8 @@ class menuprocess extends CI_Controller
 		$data['school'] = $this->school_model->get_school();
 		$data['result'] = $this->lab_model->get_list();
 		$data['teach_lab'] = $this->teach_model->get_teach_lab();
+		$data['teach_type'] = $this->teach_model->get_teach_type();
+		$data['teach_type_list'] = $this->menulist_model->get_teach_type_list($id);
 		if (!isset($data['row']->ID))
 		redirect('menuprocess/process', 'refresh');
 
@@ -46,9 +48,9 @@ class menuprocess extends CI_Controller
 		$data = $this->menulist_model->insertAmount($inputFrom);
 		//echo $data;exit();
 		if ($data <> 0)
-			redirect('menuprocess/index?success', 'refresh');
+			redirect('menuprocess/index?SuccessAmount', 'refresh');
 		else
-			redirect('menuprocess/index?Error', 'refresh');
+			redirect('menuprocess/index?ErrorAmount', 'refresh');
 	}
 	
 	public function editprocess()
@@ -60,6 +62,8 @@ class menuprocess extends CI_Controller
 		$data['school'] = $this->school_model->get_school();
 		$data['result'] = $this->lab_model->get_list();
 		$data['teach_lab'] = $this->teach_model->get_teach_lab();
+		$data['teach_type'] = $this->teach_model->get_teach_type();
+		$data['teach_type_list'] = $this->menulist_model->get_teach_type_list($id);
 		if (!isset($data['row']->ID))
 		redirect('menuprocess/editprocess', 'refresh');
 
@@ -74,9 +78,9 @@ class menuprocess extends CI_Controller
 		$data = $this->menulist_model->editcart($inputFrom);
 		//echo $data;exit();
 		if ($data <> 0)
-			redirect('menuprocess/index?success', 'refresh');
+			redirect('menuprocess/index?EditSuccess', 'refresh');
 		else
-			redirect('menuprocess/index?Error', 'refresh');
+			redirect('menuprocess/index?EditError', 'refresh');
 	}
 
     public function viewprocessed()
@@ -88,6 +92,8 @@ class menuprocess extends CI_Controller
 		$data['school'] = $this->school_model->get_school();
 		$data['result'] = $this->lab_model->get_list();
 		$data['teach_lab'] = $this->teach_model->get_teach_lab();
+		$data['teach_type'] = $this->teach_model->get_teach_type();
+		$data['teach_type_list'] = $this->menulist_model->get_teach_type_list($id);
 		if (!isset($data['row']->ID))
 		redirect('menuprocess/viewprocessed', 'refresh');
 
@@ -102,9 +108,9 @@ class menuprocess extends CI_Controller
 		$data = $this->menulist_model->DeleteOnline($id);
 		//echo $data;exit();
 		if ($data <> 0)
-			redirect('menulist/index?success', 'refresh');
+			redirect('menuprocess/index?SuccessDelete', 'refresh');
 		else
-			redirect('menulist/index?Error', 'refresh');
+			redirect('menuprocess/index?ErrorDelete', 'refresh');
 	}
 }
 

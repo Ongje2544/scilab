@@ -114,105 +114,39 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <!-- left column -->
-            <div class="col-md-6">
-                <!-- general form elements -->
-                <div class="card card-gray">
-                    <div class="card-header">
-                        <h3 class="card-title">เพิ่มรายวิชา</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <div class="card-body" style="background-color: rgb(245, 245, 245);">
-                        <div class="form-group">
-                            <label for="NumId">รหัสรายวิชา</label>
-                            <input type="text" name="Id" class="form-control" id="NumId" placeholder="กรอกรหัสรายวิชา" maxlength="5" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label for="NameList">ชื่อรายวิชา</label>
-                            <input type="text" name="NameList" class="form-control" id="NameList" placeholder="กรอกชื่อรายวิชา" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label for="Branch_type">ชื่อหมวดหมู่</label>
-                            <select class="form-control select2bs4" name="Branch" id="Branch_type" name="Branch_type" style="width: 100%;" placeholder="กรอกเนื้อหาวิชา" required disabled>
-                                <option value="" selected> กรุณาเลือกหมวดหมู่</option>
-                                <?php
-                                foreach ($branch_type as $o) {
-                                ?>
-                                    <option value="<?php echo $o->Branch_id; ?>">
-                                        <?php
-                                        echo $o->Branch_name;
-                                        ?>
-                                    </option>
-                                <?php
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="Concept">เนื้อหาวิชา</label>
-                            <textarea name="Concept" rows="4" class="form-control" id="Concept" placeholder="กรอกเนื้อหาวิชา" disabled></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="Teach_type">อาจารย์/ครูผู้สอน (เลือกได้มากกว่า 1 บุคลากร)</label>
-                            <select class="form-control select2bs4" multiple="multiple" name="Teach_type[]" id="Teach_type" data-placeholder=" เลือกรายชื่อผู้สอนรายวิชา" style="word-break: break-word;" disabled>
-                                <?php
-                                foreach ($teach_type as $v) {
-                                ?>
-                                    <option value="<?php echo $v->Teach_id; ?>">
-                                        <?php
-                                        echo $v->Teach_name;
-                                        ?>
-                                    </option>
-                                <?php
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="Price">ราคารายวิชา</label>
-                            <input type="text" name="Price" class="form-control" id="Price" placeholder="กรอกราคารายวิชา" disabled>
-                        </div>
-                    </div>
-                    <div class="card-footer" style="background-color: rgb(255, 255, 255);">
-                        <button type="submit" class="btn bg-gray" disabled>บันทึก</button>
-                    </div>
-                </div>
-            </div>
-            <!--/.col (left) -->
-            <!-- right column -->
-            <div class="col-md-6">
-                <!-- general form elements -->
-                <div class="card card-gray">
-                    <div class="card-header">
-                        <h3 class="card-title">เพิ่มหมวดหมู่</h3>
-                    </div>
-                    <div class="card-body" style="background-color: rgb(245, 245, 245);">
-                        <div class="form-group">
-                            <label for="MoreBranch">เพิ่มหมวดหมู่รายวิชา</label>
-                            <input type="text" name="Branch" class="form-control col-sm-10" id="MoreBranch" placeholder="กรอกเพิ่มหมวดหมู่รายวิชา" disabled>
-                        </div>
-                        <button type="submit" class="btn bg-gray " style="position: absolute; top: 98px; right: 27px;;" disabled>บันทึก</button>
-                    </div>
-                </div>
-                <!-- general form elements -->
+            <div class="col-md-12">
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">เพิ่มรายชื่อผู้สอน/อาจารย์</h3>
                     </div>
-                    <form role="form" id="editTeach" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/updateTeach" method="post">
+                    <form role="form" id="editTeach" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/teach/updateTeach" method="post">
                         <input name="inputID" type="hidden" value="<?php echo $row->Teach_id ?>">
+                        <input name="image_old" type="hidden" value="<?php echo $row->FileName ?>">
+                        <?php if (isset($_GET['Success'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.success('บันทึกข้อมูลสำเร็จ!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['Error'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.error('เกิดข้อผิดพลาดในการบันทึกข้อมูล!');
+                                });
+                            </script>
+                        <?php } ?>
                         <div class="card-body" style="background-color: rgb(245, 245, 245);">
-                            <div class="form-group">
-                                <label>เพิ่มชื่ออาจารย์/ครูผู้สอน<span class="text-red">*</span></label>
-                                <input type="text" name="Teach" class="form-control col-sm-12" id="TeachName" placeholder="กรอกเพิ่มชื่ออาจารย์/ครูผู้สอน" value="<?php echo $row->Teach_name ?>">
+                            <div class="form-group mt-3 mr-5 d-flex">
+                                <label class="mid mt-2 col-sm-4 text-right">เพิ่มชื่ออาจารย์/ครูผู้สอน<span class="text-red">*</span></label>
+                                <input type="text" name="Teach" class="form-control col-sm-8" id="TeachName" placeholder="กรอกเพิ่มชื่ออาจารย์/ครูผู้สอน" value="<?php echo $row->Teach_name ?>">
                             </div>
-                            <div class="form-group">
-                                <label>เบอร์ติดต่ออาจารย์/ครูผู้สอน (ถ้ามี)</label>
-                                <input type="text" name="Teach_callnum" class="form-control col-sm-12" id="callNumber2" placeholder="กรอกเบอร์ติดต่อ" value="<?php echo $row->Teach_callnum ?>">
+                            <div class="form-group mt-3 mr-5 d-flex">
+                                <label class="mid mt-2 col-sm-4 text-right">เบอร์ติดต่ออาจารย์/ครูผู้สอน (ถ้ามี)</label>
+                                <input type="text" name="Teach_callnum" class="form-control col-sm-8" id="callNumber2" placeholder="กรอกเบอร์ติดต่อ" value="<?php echo $row->Teach_callnum ?>">
                             </div>
-                            <div class="form-group">
-                                <label>รูปอาจารย์/ผู้สอน (ถ้ามี)</label>
+                            <div class="form-group mt-3 mr-5 d-flex">
+                                <label class="mid mt-2 col-sm-4 text-right">รูปอาจารย์/ผู้สอน (ถ้ามี)</label>
                                 <div class="input-group">
                                     <div class="custom-file">
                                         <input type="file" name="image" class="custom-file-input" id="image">
@@ -223,14 +157,13 @@
                             </div>
                         </div>
                         <div class="card-footer" style="background-color: rgb(255, 255, 255);">
+                            <a href="<?PHP echo config_item("base_url"); ?>/teach/" class="btn btn-default">กลับ</a>
                             <button type="submit" class="btn btn-info" id="btTeach">บันทึก</button>
                         </div>
                     </form>
                 </div>
             </div>
-            <!--/.col (right) -->
         </div>
-        <!-- /.row -->
     </div><!-- /.container-fluid -->
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
@@ -251,8 +184,6 @@
         </div>
     </div>
 </section>
-<!-- /.content -->
-
 <script>
     $(function() {
         // Initialize Select2 Elements

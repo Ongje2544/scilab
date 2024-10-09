@@ -152,7 +152,7 @@ class branch_model extends CI_Model
 		);
 		$this->db->insert($this->dbname, $addBranch);
 		$insert_id = $this->db->insert_id();
-		$this->add_log($addBranch, $this->dbname, 'addBranch', $insert_id);
+		$this->add_log("ชื่อหมวดหมู่ที่เพิ่มเข้ามาชื่อ : ".$data['Branch'] ,'ฐานข้อมูล', 'เพิ่มฐานข้อมูลหมวดหมู่', "หมายเลขหมวดหมู่ที่ถูกเพิ่มเข้ามา ID หมวดหมู่ ".$insert_id);
 		return $insert_id;
 	}
 
@@ -164,25 +164,24 @@ class branch_model extends CI_Model
 
 		$update_id = $data['inputID'];
 		$this->db->update($this->dbname, $updateBranch, array($this->ID => $update_id));
-		$this->add_log($updateBranch, $this->dbname, 'updateBranch', $update_id);
+		$this->add_log("ชื่อหมวดหมู่ที่แก้ไขเข้ามา".$data['Branch'], 'ฐานข้อมูล', 'แก้ไขฐานข้อมูลหมวดหมู่', "หมายเลขหมวดหมู่ที่แก้ไข ID หมวดหมู่ ".$update_id);
 		return $update_id;
 	}
 
 	public function deleteBranch($id)
 	{
-		$data = $this->get_whereID($id);
 
 		$deleteBranch = array(
 			'Status' 		=> 'Delete'
 		);
 
-		$this->add_log($data, $this->dbname, 'deleteBranch');
+		$this->add_log("ลบหมวดหมู่", 'ฐานข้อมูล', "ลบหมวดหมู่ หมายเลข ID หมวดหมู่ ".$id);
 		return $this->db->update($this->dbname, $deleteBranch, array($this->ID => $id));
 	}
 
 	public function SuredeleteBranch($data)
 	{
-		$this->add_log('Branch ID : '.$data, $this->dbname, 'ComfirmDelete_Branch');
+		$this->add_log("ลบหมวดหมู่", 'กู้คืนฐานข้อมูล', "ลบหมวดหมู่ หมายเลข ID หมวดหมู่ ".$data);
 		$this->db->where('Branch_id', $data);
 		return $this->db->delete('branch_type');
 	}
@@ -194,7 +193,7 @@ class branch_model extends CI_Model
 			'Status' 		=> 'Online'
 		);
 
-		$this->add_log('Branch ID : '.$id, $this->dbname, 'Restore Branch');
+		$this->add_log("กู้คืนหมวดหมู่", 'กู้คืนฐานข้อมูล', "หมายเลข ID หมวดหมู่ ".$id);
 		return $this->db->update($this->dbname, $RestoreBranch, array($this->ID => $id));
 	}
 

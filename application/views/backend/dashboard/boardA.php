@@ -1,3 +1,34 @@
+<?php
+function changeDateShow($date)
+{
+    if (!empty($date)) {
+        list($yy, $mm, $dd) = explode("-", $date);
+        return $dd . "/" . $mm . "/" . $yy;
+    }
+}
+
+$today = date("Y");
+$months = ['01' => 'มกราคม', '02' => 'กุมภาพันธ์', '03' => 'มีนาคม', '04' => 'เมษายน', '05' => 'พฤษภาคม', '06' => 'มิถุนายน', '07' => 'กรกฎาคม', '08' => 'สิงหาคม', '09' => 'กันยายน', '10' => 'ตุลาคม', '11' => 'พฤศจิกายน', '12' => 'ธันวาคม'];
+
+$amounts = array_fill_keys(array_keys($months), 0);
+$netIncomes = array_fill_keys(array_keys($months), 0);
+
+foreach ($online['row'] as $v) {
+    $dateParts = explode("-", $v->CreateDate);
+    $year = $dateParts[0];
+    $month = $dateParts[1];
+
+    if ($year == $today) {
+        $amounts[$month] += $v->Amount;
+        $netIncomes[$month] += $v->NetIncome;
+    }
+}
+
+$amountData = array_values($amounts);
+$netIncomeData = array_values($netIncomes);
+$monthLabels = array_values($months);
+?>
+
 <section class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
@@ -18,47 +49,15 @@
 <section class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-6">
-        <!-- PIE CHART -->
-        <div class="card card-danger">
-          <div class="card-header">
-            <h3 class="card-title">ยอดเงิน-หัก</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <div class="card-body">
-            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-          </div>
-          <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-      </div>
-      <!-- /.col (LEFT) -->
-      <div class="col-md-6">
+      <div class="col-md-12">
         <!-- BAR CHART -->
         <div class="card card-success">
           <div class="card-header">
             <h3 class="card-title">ยอดเงิน-สุทธิ</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
           </div>
           <div class="card-body">
             <div class="chart">
-              <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              <canvas id="barChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
             </div>
           </div>
           <!-- /.card-body -->
@@ -73,66 +72,65 @@
 
 <script>
   $(function() {
-    //-------------
-    //- PIE CHART -
-    //-------------
-    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    var pieData = {
-      labels: ['เงินหัก', 'รายได้', 'ยอดเงิน'],
-      datasets: [{
-        data: [700000, 250000, 950000],
-        backgroundColor: ['#f56954', '#00a65a', '#3c8dbc'],
-      }]
-    }
-    var pieOptions = {
-      maintainAspectRatio: false,
-      responsive: true,
-    }
-    new Chart(pieChartCanvas, {
-      type: 'pie',
-      data: pieData,
-      options: pieOptions
-    })
-
-    //-------------
-    //- BAR CHART -
-    //-------------
-    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+    var barChartCanvas = $('#barChart').get(0).getContext('2d');
     var barChartData = {
-      labels: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+      labels: <?php echo json_encode($monthLabels); ?>, // แสดงเดือน
       datasets: [{
           label: 'ยอดเงินทั้งหมด',
           backgroundColor: 'rgba(60,141,188,0.9)',
           borderColor: 'rgba(60,141,188,0.8)',
-          pointRadius: false,
-          pointColor: '#3b8bba',
-          pointStrokeColor: 'rgba(60,141,188,1)',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data: [450000, 520000, 610000, 480000, 530000, 690000, 710000, 630000, 550000, 570000, 620000, 680000]
+          hoverBackgroundColor: 'rgba(60,141,188,1)',
+          hoverBorderColor: 'rgba(60,141,188,1)',
+          data: <?php echo json_encode($amountData); ?> // ยอดเงินทั้งหมด
         },
         {
           label: 'รายได้',
-          backgroundColor: 'rgba(210, 214, 222, 1)',
+          backgroundColor: 'rgba(210, 214, 222, 0.8)',
           borderColor: 'rgba(210, 214, 222, 1)',
-          pointRadius: false,
-          pointColor: 'rgba(210, 214, 222, 1)',
-          pointStrokeColor: '#c1c7d1',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data: [320000, 380000, 450000, 370000, 420000, 480000, 500000, 470000, 400000, 450000, 470000, 520000]
+          hoverBackgroundColor: 'rgba(210, 214, 222, 1)',
+          hoverBorderColor: 'rgba(210, 214, 222, 1)',
+          data: <?php echo json_encode($netIncomeData); ?> // รายได้
         }
       ]
-    }
+    };
+
     var barChartOptions = {
       responsive: true,
       maintainAspectRatio: false,
-      datasetFill: false
-    }
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            stepSize: 50000 // ตั้งค่า step ของกราฟแกน y
+          }
+        }]
+      },
+      legend: {
+        display: true,
+        position: 'top', // ตั้งตำแหน่งของ legend
+        labels: {
+          fontColor: '#333', // สีของ label
+          fontSize: 14 // ขนาดตัวอักษรของ label
+        }
+      },
+      tooltips: {
+        enabled: true,
+        backgroundColor: 'rgba(0,0,0,0.7)',
+        titleFontSize: 14,
+        bodyFontSize: 12,
+        bodyFontColor: '#fff',
+        callbacks: {
+          label: function(tooltipItem, data) {
+            return data.datasets[tooltipItem.datasetIndex].label + ': ' + tooltipItem.yLabel.toLocaleString() + ' บาท';
+          }
+        }
+      }
+    };
+
     new Chart(barChartCanvas, {
       type: 'bar',
       data: barChartData,
       options: barChartOptions
-    })
-  })
+    });
+  });
 </script>

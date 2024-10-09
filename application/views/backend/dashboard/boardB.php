@@ -1,3 +1,27 @@
+<?php
+$today = date("Y-m-d");
+$currentYear = date("Y");
+$months = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+
+// เตรียมข้อมูลเดือนสำหรับค่ายที่ยังไม่จัด
+$notOrganizedCamps = array_fill(0, 12, 0);
+foreach ($result['row'] as $v) {
+    $campMonth = date("n", strtotime($v->CreateDate)) - 1; // แปลงเดือนเป็นตัวเลข (1-12) และลดลง 1 เพื่อให้ตรงกับ index array
+    if (date("Y", strtotime($v->CreateDate)) == $currentYear) {
+        $notOrganizedCamps[$campMonth]++;
+    }
+}
+
+// เตรียมข้อมูลเดือนสำหรับค่ายที่จัดแล้ว
+$organizedCamps = array_fill(0, 12, 0);
+foreach ($online['row'] as $v) {
+    $campMonth = date("n", strtotime($v->CreateDate)) - 1;
+    if (date("Y", strtotime($v->CreateDate)) == $currentYear) {
+        $organizedCamps[$campMonth]++;
+    }
+}
+?>
+
 <section class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
@@ -14,133 +38,50 @@
   </div><!-- /.container-fluid -->
 </section>
 
-<!-- Main content -->
 <section class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-6">
-        <!-- AREA CHART -->
-        <div class="card card-primary">
+      <div class="col-md-12">
+        <!-- BAR CHART -->
+        <div class="card card-info">
           <div class="card-header">
-            <h3 class="card-title">สถานะการจัดจอง(กราฟ)</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
+            <h3 class="card-title">สถานะการจัดจองรายเดือน (ปีปัจจุบัน)</h3>
           </div>
           <div class="card-body">
             <div class="chart">
-              <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              <canvas id="monthlyStatusBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
             </div>
           </div>
-          <!-- /.card-body -->
         </div>
-        <!-- /.card -->
       </div>
-      <!-- /.col (LEFT) -->
-      <div class="col-md-6">
-        <!-- STACKED BAR CHART -->
-        <div class="card card-success">
-          <div class="card-header">
-            <h3 class="card-title">สถานะการจัดจอง</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="chart">
-              <canvas id="stackedBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-            </div>
-          </div>
-          <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-      </div>
-      <!-- /.col (RIGHT) -->
     </div>
-    <!-- /.row -->
-  </div><!-- /.container-fluid -->
+  </div>
 </section>
 
 <script>
   $(function() {
-    //--------------
-    //- AREA CHART -
-    //--------------
+    var monthlyStatusBarChartCanvas = $('#monthlyStatusBarChart').get(0).getContext('2d');
+    
+    var monthlyStatusBarChartData = {
+      labels: <?php echo json_encode($months); ?>,
+      datasets: [
 
-    var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
-
-    var areaChartData = {
-      labels: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม'],
-      datasets: [{
-          label: 'จัดจองแล้ว',
-          backgroundColor: 'rgba(60,141,188,0.9)',
-          borderColor: 'rgba(60,141,188,0.8)',
-          pointRadius: false,
-          pointColor: '#3b8bba',
-          pointStrokeColor: 'rgba(60,141,188,1)',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data: [8, 7, 9, 11, 5, 10, 8, 0]
+        {
+          label: 'ค่ายที่จัดแล้ว',
+          backgroundColor: 'rgba(54,162,235,0.9)',
+          borderColor: 'rgba(54,162,235,0.8)',
+          data: <?php echo json_encode($organizedCamps); ?>
         },
         {
-          label: 'ยังไม่จัดจอง',
-          backgroundColor: 'rgba(210, 214, 222, 1)',
-          borderColor: 'rgba(210, 214, 222, 1)',
-          pointRadius: false,
-          pointColor: 'rgba(210, 214, 222, 1)',
-          pointStrokeColor: '#c1c7d1',
-          pointHighlightFill: '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data: [0, 0, 0, 0, 0, 0, 4, 4]
-        },
+          label: 'ค่ายที่ยังไม่จัด',
+          backgroundColor: 'rgba(255,99,132,0.9)',
+          borderColor: 'rgba(255,99,132,0.8)',
+          data: <?php echo json_encode($notOrganizedCamps); ?>
+        }
       ]
-    }
+    };
 
-    var areaChartOptions = {
-      maintainAspectRatio: false,
-      responsive: true,
-      legend: {
-        display: false
-      },
-      scales: {
-        xAxes: [{
-          gridLines: {
-            display: false,
-          }
-        }],
-        yAxes: [{
-          gridLines: {
-            display: false,
-          }
-        }]
-      }
-    }
-
-    new Chart(areaChartCanvas, {
-      type: 'line',
-      data: areaChartData,
-      options: areaChartOptions
-    })
-
-    //---------------------
-    //- STACKED BAR CHART -
-    //---------------------
-    var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
-    var stackedBarChartData = $.extend(true, {}, areaChartData)
-
-    var stackedBarChartOptions = {
+    var monthlyStatusBarChartOptions = {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
@@ -148,15 +89,19 @@
           stacked: true,
         }],
         yAxes: [{
-          stacked: true
+          stacked: true,
+          ticks: {
+            beginAtZero: true,
+            callback: function(value) { if (value % 1 === 0) { return value; } }
+          }
         }]
       }
-    }
+    };
 
-    new Chart(stackedBarChartCanvas, {
+    new Chart(monthlyStatusBarChartCanvas, {
       type: 'bar',
-      data: stackedBarChartData,
-      options: stackedBarChartOptions
-    })
-  })
+      data: monthlyStatusBarChartData,
+      options: monthlyStatusBarChartOptions
+    });
+  });
 </script>

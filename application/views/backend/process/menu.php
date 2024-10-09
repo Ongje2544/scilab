@@ -56,6 +56,48 @@ function changeDateShow($date)
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body" style="background-color: rgb(255, 250, 255);">
+                    <?php if (isset($_GET['EditSuccess'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.warning('ดำเนินการไขข้อมูลสำเร็จ!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['EditError'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.error('เกิดข้อผิดพลาดในการดำเนินการไขข้อมูล!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['SuccessAmount'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.success('บันทึกยอดเงินสำเร็จ!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['ErrorAmount'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.error('เกิดข้อผิดพลาดในการบันทึกยอดเงิน!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['SuccessDelete'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.success('ลบข้อมูลสำเร็จ!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['ErrorDelete'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.error('เกิดข้อผิดพลาดในการลบข้อมูล!');
+                                });
+                            </script>
+                        <?php } ?>
                         <table id="tablelab1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
@@ -77,17 +119,29 @@ function changeDateShow($date)
                                         <td>
                                             <div class="row"><?php foreach ($class as $select) {
                                                                     if ($v->ID == $select->Queue_id) {
-                                                                        if ($select->Class_id == "A") {
+                                                                        if ($select->Class_id == "A1") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 1</span>";
+                                                                        } elseif ($select->Class_id == "A2") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 2</span>";
+                                                                        } elseif ($select->Class_id == "A3") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 3</span>";
+                                                                        } elseif ($select->Class_id == "A4") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 4</span>";
+                                                                        } elseif ($select->Class_id == "A5") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 5</span>";
+                                                                        } elseif ($select->Class_id == "A6") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 6</span>";
+                                                                        } elseif ($select->Class_id == "B1") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 1</span>";
-                                                                        } elseif ($select->Class_id == "B") {
+                                                                        } elseif ($select->Class_id == "B2") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 2</span>";
-                                                                        } elseif ($select->Class_id == "C") {
+                                                                        } elseif ($select->Class_id == "B3") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 3</span>";
-                                                                        } elseif ($select->Class_id == "D") {
+                                                                        } elseif ($select->Class_id == "B4") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 4</span>";
-                                                                        } elseif ($select->Class_id == "E") {
+                                                                        } elseif ($select->Class_id == "B5") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 5</span>";
-                                                                        } elseif ($select->Class_id == "F") {
+                                                                        } elseif ($select->Class_id == "B6") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 6</span>";
                                                                         }
                                                                     }
@@ -96,7 +150,7 @@ function changeDateShow($date)
                                         <td><?php echo changeDateShow($v->CreateDate); ?></td>
                                         <td>
                                             <center>
-                                                <p class="text-blue" style="margin-bottom: 0px;">ดำเนินการ
+                                                <p class="text-orange" style="margin-bottom: 0px;">กำลังดำเนินการ...
 
                                                 </p>
                                                 <a href="<?PHP echo config_item("base_url"); ?>/menuprocess/process/<?php echo $v->ID ?>/?sID=<?php echo $v->ID ?>">
@@ -140,7 +194,7 @@ function changeDateShow($date)
                                     <th class="col-sm-3">รายการ</th>
                                     <th class="col-sm-3">ชั้น</th>
                                     <th class="col-sm-1">ปี</th>
-                                    <th class="col-sm-2">รายได้/กำไร</th>
+                                    <th class="col-sm-2">รายได้/หักเงิน%/กำไร</th>
                                     <th class="col-sm-2">ดำเนินการ</th>
                                 </tr>
                             </thead>
@@ -155,24 +209,36 @@ function changeDateShow($date)
                                         <td>
                                             <div class="row"><?php foreach ($class as $select) {
                                                                     if ($v->ID == $select->Queue_id) {
-                                                                        if ($select->Class_id == "A") {
+                                                                        if ($select->Class_id == "A1") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 1</span>";
+                                                                        } elseif ($select->Class_id == "A2") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 2</span>";
+                                                                        } elseif ($select->Class_id == "A3") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 3</span>";
+                                                                        } elseif ($select->Class_id == "A4") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 4</span>";
+                                                                        } elseif ($select->Class_id == "A5") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 5</span>";
+                                                                        } elseif ($select->Class_id == "A6") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 6</span>";
+                                                                        } elseif ($select->Class_id == "B1") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 1</span>";
-                                                                        } elseif ($select->Class_id == "B") {
+                                                                        } elseif ($select->Class_id == "B2") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 2</span>";
-                                                                        } elseif ($select->Class_id == "C") {
+                                                                        } elseif ($select->Class_id == "B3") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 3</span>";
-                                                                        } elseif ($select->Class_id == "D") {
+                                                                        } elseif ($select->Class_id == "B4") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 4</span>";
-                                                                        } elseif ($select->Class_id == "E") {
+                                                                        } elseif ($select->Class_id == "B5") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 5</span>";
-                                                                        } elseif ($select->Class_id == "F") {
+                                                                        } elseif ($select->Class_id == "B6") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 6</span>";
                                                                         }
                                                                     }
                                                                 } ?></div>
                                         </td>
                                         <td><?php echo changeDateShow($v->CreateDate); ?></td>
-                                        <td><span class="text-green"><?php echo $v->Amount?></span> / <span class="text-blue"><?php echo $v->NetIncome ?></span></td>
+                                        <td><span class="text-green"><?php echo $v->Amount?></span> / <span class="text-red"><?php echo $v->Deduction?>%</span> / <span class="text-blue"><?php echo $v->NetIncome ?></span></td>
                                         <td>
                                             <center>
                                                 <p class="text-green" style="margin-bottom: 0px;">เสร็จสิ้น

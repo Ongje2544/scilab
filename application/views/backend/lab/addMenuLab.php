@@ -57,13 +57,6 @@
 
 			$(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
 
-			if ($("#NumId").val().trim() == "") {
-				txt_error += "- กรุณากรอกรหัสรายวิชา\n";
-				$("#NumId").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#NumId");
-				}
-			}
 			if ($("#NameList").val().trim() == "") {
 				txt_error += "- กรุณากรอกชื่อรายวิชา\n";
 				$("#NameList").css("background-color", "#ffebe6");
@@ -92,86 +85,19 @@
 					obj_err = $("#TeachType");
 				}
 			}
-			if ($("#Pricelab").val() == "") {
-				txt_error += "- กรุณากรอกราคารายวิชา\n";
-				$("#Pricelab").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#Pricelab");
-				}
-			}
+			// if ($("#Pricelab").val() == "") {
+			// 	txt_error += "- กรุณากรอกราคารายวิชา\n";
+			// 	$("#Pricelab").css("background-color", "#ffebe6");
+			// 	if (!obj_err) {
+			// 		obj_err = $("#Pricelab");
+			// 	}
+			// }
 
 			if (txt_error) {
 				$("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
 				$("#modal-default").modal('show');
 			} else {
 				$("#insertLablist").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
-			}
-		});
-
-		$("#btBranch").click(function(event) {
-			event.preventDefault(); // ป้องกันการ submit form โดยตรง
-
-			var txt_error = "";
-			var obj_err = "";
-
-			$(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
-
-			if ($("#MoreBranch").val().trim() == "") {
-				txt_error += "- กรุณากรอกชื่อหมวดหมู่\n";
-				$("#MoreBranch").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#MoreBranch");
-				}
-			}
-
-			if (txt_error) {
-				$("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
-				$("#modal-default").modal('show');
-			} else {
-				$("#addBranch").off('submit').submit(); // ยกเลิก event.preventDefault() ชั่วคราวเพื่อส่ง form
-			}
-		});
-
-		$("#btTeach").click(function(event) {
-			event.preventDefault(); // ป้องกันการ submit form โดยตรง
-
-			var txt_error = "";
-			var obj_err = "";	
-			var invalidFileUploaded = false;
-
-			$(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
-
-			if ($("#TeachName").val().trim() == "") {
-				txt_error += "- กรุณากรอกชื่อผู้สอน/อาจารย์\n";
-				$("#TeachName").css("background-color", "#ffebe6");
-				if (!obj_err) {
-					obj_err = $("#TeachName");
-				}
-			}
-
-			var vFile = 0;
-			var file = $("input#image").val();
-			var ext = file.split(".").pop().toLowerCase();
-			var arrayExtensions = ["jpg", "jpeg", "png", "bmp", "pdf"];
-
-			if (file) {
-				if (arrayExtensions.lastIndexOf(ext) == -1) {
-					vFile = 1;
-					invalidFileUploaded = true;
-				} else {
-					invalidFileUploaded = false;
-				}
-			}
-
-			if (vFile == 1) {
-				txt_error += "- กรุณาแนบไฟล์ (jpg, jpeg, png, bmp, pdf)\n";
-			}
-
-			if (txt_error || invalidFileUploaded) {
-				$("#modal-text").html(txt_error.replace(/\n/g, '<br>'));
-				$("#modal-default").modal('show');
-			} else {
-				$("#addTeach").off('submit').submit();
 			}
 		});
 	});
@@ -207,7 +133,7 @@
 		<?php } ?>
 		<div class="row">
 			<!-- left column -->
-			<div class="col-md-6">
+			<div class="col-md-12">
 				<!-- general form elements -->
 				<div class="card card-success">
 					<div class="card-header">
@@ -216,18 +142,28 @@
 					<!-- /.card-header -->
 					<!-- form start -->
 					<form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/insertLablist" method="post">
+					<?php if (isset($_GET['Success'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.success('บันทึกข้อมูลสำเร็จ!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['Error'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.error('เกิดข้อผิดพลาดในการบันทึกข้อมูล!');
+                                });
+                            </script>
+                        <?php } ?>
 						<div class="card-body" style="background-color: rgb(245, 245, 245);">
-							<div class="form-group">
-								<label>รหัสรายวิชา<span class="text-red">*</span></label>
-								<input type="text" name="Id" class="form-control" id="NumId" placeholder="กรอกรหัสรายวิชา" maxlength="5">
+							<div class="form-group mt-3 mr-5 d-flex">
+								<label class="mid mt-2 col-sm-4 text-right">ชื่อรายวิชา<span class="text-red">*</span></label>
+								<input type="text" name="NameList" class="form-control col-sm-8" id="NameList" placeholder="กรอกชื่อรายวิชา">
 							</div>
-							<div class="form-group">
-								<label>ชื่อรายวิชา<span class="text-red">*</span></label>
-								<input type="text" name="NameList" class="form-control" id="NameList" placeholder="กรอกชื่อรายวิชา">
-							</div>
-							<div class="form-group">
-								<label>ชื่อหมวดหมู่<span class="text-red">*</span></label>
-								<select class="form-control select2bs4" name="Branch" id="Branch_type" style="width: 100%;" placeholder="กรอกเนื้อหาวิชา" required>
+							<div class="form-group mt-3 mr-5 d-flex">
+								<label class="mid mt-2 col-sm-4 text-right">ชื่อหมวดหมู่<span class="text-red">*</span></label>
+								<select class="form-control select2bs4 col-sm-6" name="Branch" id="Branch_type" style="width: 100%;" placeholder="กรอกเนื้อหาวิชา" required>
 									<option value="" selected> กรุณาเลือกหมวดหมู่</option>
 									<?php
 									foreach ($branch_type as $o) {
@@ -241,18 +177,22 @@
 									}
 									?>
 								</select>
+								</select>
+								<div class="col-sm-2">
+									<a class="btn btn-primary w-100" href="<?PHP echo config_item("base_url"); ?>/branch/addMenuBranch">เพิ่มหมวดหมู่</a>
+								</div>
 							</div>
-							<div class="form-group">
-								<label>เนื้อหาวิชา<span class="text-red">*</span></label>
-								<textarea name="Concept" rows="4" class="form-control" id="Conceptlab" placeholder="กรอกเนื้อหาวิชา"></textarea>
+							<div class="form-group mt-3 mr-5 d-flex">
+								<label class="mid mt-2 col-sm-4 text-right">เนื้อหาวิชา<span class="text-red">*</span></label>
+								<textarea name="Concept" rows="4" class="form-control col-sm-8" id="Conceptlab" placeholder="กรอกเนื้อหาวิชา"></textarea>
 							</div>
-							<div class="form-group">
-								<label >อาจารย์/ครูผู้สอน (เลือกได้มากกว่า 1 บุคลากร)<span class="text-red">*</span></label>
-								<select class="form-control select2bs4" multiple="multiple" name="Teach_type[]" id="TeachType" data-placeholder=" เลือกรายชื่อผู้สอนรายวิชา" style="word-break: break-word;">
+							<div class="form-group mt-3 mr-5 d-flex">
+								<label class="col-sm-4 text-right">อาจารย์/ครูผู้สอน (เลือกได้มากกว่า 1 บุคลากร)<span class="text-red">*</span></label>
+								<select class="form-control select2bs4" multiple="multiple" name="Teach_type[]" id="TeachType" data-placeholder="เลือกรายชื่อผู้สอนรายวิชา" style="word-break: break-word;">
 									<?php
 									foreach ($teach_type as $v) {
 									?>
-										<option value="<?php echo $v->Teach_id; ?>">
+										<option value=" <?php echo $v->Teach_id; ?>">
 											<?php
 											echo $v->Teach_name;
 											?>
@@ -261,71 +201,25 @@
 									}
 									?>
 								</select>
+								<div class="col-sm-2">
+									<a class="btn btn-primary w-100" href="<?PHP echo config_item("base_url"); ?>/teach/addMenuTeach">เพิ่มรายชื่อ</a>
+								</div>
 							</div>
-							<div class="form-group">
-								<label>ราคารายวิชา<span class="text-red">*</span></label>
-								<input type="text" name="Price" class="form-control" id="Pricelab" placeholder="กรอกราคารายวิชา">
+
+							<div class="form-group mt-3 mr-5 d-flex">
+								<label class="mid mt-2 col-sm-4 text-right">ราคารายวิชา<span class="text-red">*</span></label>
+								<input type="text" name="Price" class="form-control col-sm-8" id="Pricelab" placeholder="กรอกราคารายวิชา">
 							</div>
 						</div>
 						<div class="card-footer" style="background-color: rgb(255, 255, 255);">
+							<a href="<?PHP echo config_item("base_url"); ?>/lab/" class="btn btn-default">กลับ</a>
 							<button type="submit" class="btn btn-success" id="btSubmit">บันทึก</button>
 						</div>
 					</form>
 				</div>
 			</div>
 			<!--/.col (left) -->
-			<!-- right column -->
-			<div class="col-md-6">
-				<!-- general form elements -->
-				<div class="card card-info">
-					<div class="card-header">
-						<h3 class="card-title">เพิ่มหมวดหมู่</h3>
-					</div>
-					<form role="form" id="addBranch" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/addBranch" method="post">
-						<div class="card-body" style="background-color: rgb(245, 245, 245);">
-							<div class="form-group">
-								<label>เพิ่มหมวดหมู่รายวิชา<span class="text-red">*</span></label>
-								<input type="text" name="Branch" class="form-control col-sm-12" id="MoreBranch" placeholder="กรอกเพิ่มหมวดหมู่รายวิชา">
-							</div>
-						</div>
-						<div class="card-footer" style="background-color: rgb(255, 255, 255);">
-							<button type="submit" class="btn btn-info" id="btBranch">บันทึก</button>
-						</div>
-					</form>
-				</div>
-				<!-- general form elements -->
-				<div class="card card-info">
-					<div class="card-header">
-						<h3 class="card-title">เพิ่มรายชื่อผู้สอน/อาจารย์</h3>
-					</div>
-					<form role="form" id="addTeach" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/addTeach" method="post">
-						<div class="card-body" style="background-color: rgb(245, 245, 245);">
-							<div class="form-group">
-								<label>เพิ่มชื่ออาจารย์/ครูผู้สอน<span class="text-red">*</span></label>
-								<input type="text" name="Teach" class="form-control col-sm-12" id="TeachName" placeholder="กรอกเพิ่มชื่ออาจารย์/ครูผู้สอน">
-							</div>
-							<div class="form-group">
-								<label>เบอร์ติดต่ออาจารย์/ครูผู้สอน (ถ้ามี)</label>
-								<input type="text" name="Teach_callnum" class="form-control col-sm-12" id="callNumber2" placeholder="กรอกเพิ่มชื่ออาจารย์/ครูผู้สอน">
-							</div>
-							<div class="form-group">
-								<label>รูปอาจารย์/ผู้สอน (ถ้ามี)</label>
-								<div class="input-group">
-									<div class="custom-file">
-										<input type="file" name="image" class="custom-file-input" id="image">
-										<label class="custom-file-label">เลือกรูปภาพ</label>
-									</div>
 
-								</div>
-							</div>
-						</div>
-						<div class="card-footer" style="background-color: rgb(255, 255, 255);">
-							<button type="submit" class="btn btn-info" id="btTeach">บันทึก</button>
-						</div>
-					</form>
-				</div>
-			</div>
-			<!--/.col (right) -->
 		</div>
 		<!-- /.row -->
 	</div><!-- /.container-fluid -->
@@ -363,7 +257,7 @@
 		})
 
 		// Phone number input restriction
-		$("#callNumber1,#callNumber2 ,#NumId").on('input', function(e) {
+		$("#callNumber1,#callNumber2").on('input', function(e) {
 			$(this).val($(this).val().replace(/[^0-9]/g, ''));
 		});
 

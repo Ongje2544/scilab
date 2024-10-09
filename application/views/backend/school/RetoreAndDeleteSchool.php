@@ -87,7 +87,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
+                    <a href="<?PHP echo config_item("base_url"); ?>/school/restoreMenuSchool/" class="btn btn-default">กลับ</a>
                         <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/school/RestoreSchool" method="post">
                             <input name="inputID" type="hidden" value="<?php echo $row->School_id ?>">
                             <button type="submit" class="btn btn-primary bt" style="bottom : 12px; left:5rem">กู้ข้อมูล</button>

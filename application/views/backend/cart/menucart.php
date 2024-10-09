@@ -167,6 +167,20 @@ $today = date("Y-m-d");
 						obj_err = $("#end_date");
 					}
 				}
+				if ($("#numCount").val() == "" || $("#numCount").val() <= 9) {
+					txt_error += "- กรุณากรอกจำนวนผู้เข้าร่วม/นักเรียน(มากกว่า 10 คนขึ้นไป) \n";
+					$("#numCount").css("background-color", "#ffebe6");
+					if (!obj_err) {
+						obj_err = $("#numCount");
+					}
+				}
+				if ($("#TeachType").val() == "") {
+					txt_error += "- กรุณาเลือกผู้สอน/อาจารย์\n";
+					$("#TeachType").css("background-color", "#ffebe6");
+					if (!obj_err) {
+						obj_err = $("#TeachType");
+					}
+				}
 
 				// แสดงข้อความเตือนถ้ามีข้อผิดพลาด
 				if (txt_error) {
@@ -227,22 +241,40 @@ $today = date("Y-m-d");
 								<label for="class" class="mid mt-2 col-sm-4 text-right">ระดับชั้น</label>
 								<?php foreach ($class as $select) {
 									if ($row->ID == $select->Queue_id) {
-										if ($select->Class_id == "A") {
+										if ($select->Class_id == "A1") {
+											echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 1</div>';
+										}
+										if ($select->Class_id == "A2") {
+											echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 2</div>';
+										}
+										if ($select->Class_id == "A3") {
+											echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 3</div>';
+										}
+										if ($select->Class_id == "A4") {
+											echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 4</div>';
+										}
+										if ($select->Class_id == "A5") {
+											echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 5</div>';
+										}
+										if ($select->Class_id == "A6") {
+											echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 6</div>';
+										}
+										if ($select->Class_id == "B1") {
 											echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 1</div>';
 										}
-										if ($select->Class_id == "B") {
+										if ($select->Class_id == "B2") {
 											echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 2</div>';
 										}
-										if ($select->Class_id == "C") {
+										if ($select->Class_id == "B3") {
 											echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 3</div>';
 										}
-										if ($select->Class_id == "D") {
+										if ($select->Class_id == "B4") {
 											echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 4</div>';
 										}
-										if ($select->Class_id == "E") {
+										if ($select->Class_id == "B5") {
 											echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 5</div>';
 										}
-										if ($select->Class_id == "F") {
+										if ($select->Class_id == "B6") {
 											echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 6</div>';
 										}
 									}
@@ -267,6 +299,28 @@ $today = date("Y-m-d");
 									</div>
 								</div>
 							</div>
+							<div class="form-group mr-5 d-flex">
+								<label for="" class="mid mt-2 col-sm-4 text-right">จำนวนนักเรียน</label>
+								<input name="numCount" class="form-control col-sm-2 ml-3" id="numCount" placeholder="กรอกจำนวน" value="<?php echo $row->numCount ?>">
+							</div>
+							<div class="form-group mr-5 d-flex">
+								<label class="mid mt-2 col-sm-4 text-right">อาจารย์/ครูผู้สอน</label>
+								<select class="form-control select2bs4" multiple="multiple" name="Teach_type[]" id="TeachType" data-placeholder="เลือกรายชื่อผู้สอนรายวิชา(ที่แนะนำ)" style="word-break: break-word;">
+									<?php
+									foreach ($teach_type as $option) {
+									?>
+										<option value="<?php echo $option->Teach_id; ?>" <?php foreach ($teach_type_list as $select) { ?> <?php if ($option->Teach_id == $select->Teach_id) {
+																																				echo 'selected', '';
+																																			} ?> <?php } ?>>
+											<?php
+											echo $option->Teach_name;
+											?>
+										</option>
+									<?php
+									}
+									?>
+								</select>
+							</div>
 							<input type="hidden" name="cart[]" id="selected_camps" readonly value="<?php echo $row->Lab_process ?>">
 							<div class="card">
 								<div class="card-header" style="background-color: rgb(255, 245, 255);">
@@ -277,8 +331,9 @@ $today = date("Y-m-d");
 										<thead>
 											<tr>
 												<th>#</th>
-												<th>ชื่อรายวิชา</th>
-												<th>หมวดหมู่</th>
+												<th class="col-sm-4">ชื่อรายวิชา</th>
+												<th class="col-sm-3">หมวดหมู่</th>
+												<th class="col-sm-3">ผู้สอน(แนะนำ)</th>
 												<th>ดำเนินการ</th>
 											</tr>
 										</thead>
@@ -290,6 +345,13 @@ $today = date("Y-m-d");
 													<td><?php echo $v->Idlab ?></td>
 													<td><?php echo $v->Namelist ?></td>
 													<td><?php echo $v->BranchName ?></td>
+													<td><?php
+														foreach ($teach_lab as $select) {
+															if ($v->Idlab == $select->Lab_id) {
+																echo  "<div>".$select->Teach_name."</div>";
+															}
+														}
+														?></td>
 													<td>
 														<center>
 															<b data-id="<?php echo $v->Idlab ?>" style="color: rgb(250, 0, 0); background:none; border:none; cursor: pointer;">นำออก</b>
@@ -317,8 +379,9 @@ $today = date("Y-m-d");
 										<thead>
 											<tr>
 												<th>#</th>
-												<th class="col-sm-5">ชื่อรายวิชา</th>
-												<th class="col-sm-4">หมวดหมู่</th>
+												<th class="col-sm-4">ชื่อรายวิชา</th>
+												<th class="col-sm-3">หมวดหมู่</th>
+												<th class="col-sm-3">ผู้สอน</th>
 												<th>ดำเนินการ</th>
 											</tr>
 										</thead>
@@ -330,10 +393,18 @@ $today = date("Y-m-d");
 													<td><?php echo $v->Idlab ?></td>
 													<td><?php echo $v->Namelist ?></td>
 													<td><?php echo $v->BranchName ?></td>
+													<td><?php
+														foreach ($teach_lab as $select) {
+															if ($v->Idlab == $select->Lab_id) {
+																echo  "<div>".$select->Teach_name."</div>";
+															}
+														}
+														?></td>
 													<td>
 														<center>
 															<i class="fa fa-shopping-cart" data-id="<?php echo $v->Idlab ?>" style="color: rgb(0, 110, 250); cursor: pointer;"></i>
 														</center>
+
 													</td>
 												</tr>
 											<?php
@@ -433,7 +504,7 @@ $today = date("Y-m-d");
 		console.log(thaiDate); // แสดงวันที่ไทยใน console
 
 		// Phone number input restriction
-		$("#callNumber1,#callNumber2 ,#NumId").on('input', function(e) {
+		$("#callNumber1,#callNumber2 ,#NumId ,#numCount").on('input', function(e) {
 			$(this).val($(this).val().replace(/[^0-9]/g, ''));
 		});
 
@@ -448,6 +519,7 @@ $today = date("Y-m-d");
 		bsCustomFileInput.init();
 	});
 </script>
+
 
 <script>
 	$(document).ready(function() {

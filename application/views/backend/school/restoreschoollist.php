@@ -34,17 +34,37 @@
                 <div class="card">
                     <div class="card-header bg-blue">
                         <h2 class="card-title">รายการรายชื่อโรงเรียน</h2>
-                        <div class="card-tools" bis_skin_checked="1">
-                            <button type="button" class="btn btn-tool bg-white" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool bg-white" data-card-widget="remove" title="Remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body" style="background-color: rgb(248, 248, 248);">
+                    <?php if (isset($_GET['SuccessDelete'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.success('ลบข้อมูลสำเร็จ!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['ErrorDelete'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.error('เกิดข้อผิดพลาดในการลบข้อมูล!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['SuccessRestore'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.success('กู้ข้อมูลสำเร็จ!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['ErrorRestore'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.success('เกิดข้อผิดพลาดในการกู้ข้อมูล!');
+                                });
+                            </script>
+                        <?php } ?>
                         <table id="tablelab2" class="table table-bordered table-striped">
                             <thead>
                                 <tr>

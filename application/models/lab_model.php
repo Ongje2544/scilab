@@ -93,7 +93,6 @@ class lab_model extends CI_Model
 	public function insertLablist($data)
 	{
 		$insertLablist = array(
-			'ID' 		=> $data['Id'],
 			'name_list' 	=> $data['NameList'],
 			'branch_list' 	=> $data['Branch'],
 			'concept_list' 		=> $data['Concept'],
@@ -101,7 +100,7 @@ class lab_model extends CI_Model
 			'price_list' 		=> $data['Price'],
 		);
 		$this->db->insert($this->dbname, $insertLablist);
-		$insert_id = $data['Id'];
+		$insert_id = $this->db->insert_id();
 		$this->add_log($insertLablist, $this->dbname, 'insertLablist', $insert_id);
 		foreach ($data['Teach_type'] as $key => $type) {
 			$type_id = $type;

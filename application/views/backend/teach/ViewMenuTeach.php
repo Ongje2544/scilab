@@ -16,7 +16,6 @@
     .boardfines {
         font-weight: bold;
         padding: 5px;
-        text-decoration: underline;
     }
 </style>
 
@@ -31,7 +30,7 @@
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/home/">หน้าหลัก</a></li>
                     <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/">ตารางรายวิชา</a></li>
-                    <li class="breadcrumb-item active">ลบผู้สอน</li>
+                    <li class="breadcrumb-item active">ดูข้อมูลผู้สอน</li>
                 </ol>
             </div>
         </div>
@@ -50,10 +49,18 @@
                     </div>
                     <div class="card-body">
                         <div class="col-lg-12">
-                        <div class="mid">รูปประจำตัว</div>
-                                <center>
-                                <img src="<?PHP echo config_item("uploads_url");?>/unknow.jpg" alt="" width="100">
-                                </center>
+                            <div class="form-group">
+                                <div class="mid">รูปประจำตัว</div>
+                                <?php if (!empty($row->FileName)) { ?>
+                                    <center>
+                                        <img src="<?PHP echo config_item("base_url"); ?>/uploads/teach_type/<?php echo $row->FileName ?>" alt="รูปผู้สอน" width="200">
+                                    </center>
+                                <?php } else { ?>
+                                    <center>
+                                        <img src="<?PHP echo config_item("uploads_url"); ?>/unknow.jpg" alt="รูปไม่พบ" width="100">
+                                    </center>
+                                <?php } ?>
+                            </div>
                             <div class="form-group">
                                 <div class="mid">ชื่อผู้สอน/อาจารย์</div>
                                 <div class="board"><?php echo $row->Teach_name ?></div>
@@ -70,13 +77,9 @@
                         </div>
                     </div>
                     <!-- /.card-body -->
-                    <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/deleteTeach" method="post">
-                        <input name="inputID" type="hidden" value="<?php echo $row->Teach_id ?>">
-                        <div class="card-footer">
-                            <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
-                            <button type="submit" class="btn btn-danger">ลบข้อมูล</button>
-                        </div>
-                    </form>
+                    <div class="card-footer">
+                        <a href="<?PHP echo config_item("base_url"); ?>/teach/" class="btn btn-default">กลับ</a>
+                    </div>
                     <!-- /.card-footer-->
                 </div>
                 <!-- /.card -->
@@ -96,10 +99,10 @@
                                     foreach ($teach_type_list as $v) {
                                         foreach ($lab as $select) {
                                             if ($v->Lab_id == $select->ID) {
-                                                if($select->name_list != Null){
-                                                    echo $select->name_list;
-                                                }else{
-                                                    echo 'Untitle name';
+                                                if ($select->name_list != Null) {
+                                                    echo "<div class='boardfines'><a href='" . config_item("base_url") . "/lab/ViewMenuLab/" . $select->ID . "'>" . "*" . $select->name_list . "</a></div>";
+                                                } else {
+                                                    echo 'ไม่กำหนดชื่อรายวิชา' . ' (' . $select->ID . ')';
                                                 }
                                             }
                                         }

@@ -84,7 +84,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
+                        <a href="<?PHP echo config_item("base_url"); ?>/school/" class="btn btn-default">กลับ</a>
                     </div>
                     <!-- /.card-footer-->
                 </div>

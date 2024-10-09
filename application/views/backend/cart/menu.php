@@ -226,7 +226,35 @@ function changeDateShow($date)
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form role="form" id="insertQueuelist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/menulist/insertQueue" method="post">
-                        <div class="card-body" style="background-color: rgb(245, 245, 245);">
+                        <?php if (isset($_GET['Success'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.success('บันทึกข้อมูลสำเร็จ!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['Error'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.error('เกิดข้อผิดพลาดในการบันทึกข้อมูล!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['SuccessDelete'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.success('ลบข้อมูลสำเร็จ!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['ErrorDelete'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.error('เกิดข้อผิดพลาดในการลบข้อมูล!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <div class="card-body" style="background-color: rgb(245, 245, 245); padding-bottom: 5rem;">
                             <div class="form-group mt-3 mr-5 d-flex">
                                 <label class="mid mt-2 col-sm-4 text-right">โรงเรียน</label>
                                 <select class="form-control select2bs4" name="SchoolID_process" id="school" style="width: 100%;" placeholder="เลือกโรงเรียน" required>
@@ -247,32 +275,55 @@ function changeDateShow($date)
                             </div>
                             <div class="form-group mt-3 mr-5 d-flex">
                                 <label for="class" class="mid mt-2 col-sm-4 text-right">ระดับชั้น</label>
-                                <div class="checkbox-wrapper-1 bt" style="left: 27.5rem; top: 9rem;">
-                                    <input name="Class_process[]" id="example-1" class="substituted" type="checkbox" aria-hidden="true" value="A" />
-                                    <label for="example-1">มัธยม 1</label>
+                                <div class="checkbox-wrapper-1 bt" style="left: 28.5rem; top: 9.5rem;">
+                                    <input name="Class_process[]" id="example-1" class="substituted" type="checkbox" aria-hidden="true" value="A1" />
+                                    <label for="example-1">ประถม 1</label>
                                 </div>
-                                <div class="checkbox-wrapper-1 bt" style="left: 38rem; top: 9rem;">
-                                    <input name="Class_process[]" id="example-2" class="substituted" type="checkbox" aria-hidden="true" value="B" />
-                                    <label for="example-2">มัธยม 2</label>
+                                <div class="checkbox-wrapper-1 bt" style="left: 39rem; top: 9.5rem;">
+                                    <input name="Class_process[]" id="example-2" class="substituted" type="checkbox" aria-hidden="true" value="A2" />
+                                    <label for="example-2">ประถม 2</label>
                                 </div>
-                                <div class="checkbox-wrapper-1 bt" style="left: 48.5rem; top: 9rem;">
-                                    <input name="Class_process[]" id="example-3" class="substituted" type="checkbox" aria-hidden="true" value="C" />
-                                    <label for="example-3">มัธยม 3</label>
+                                <div class="checkbox-wrapper-1 bt" style="left: 49.5rem; top: 9.5rem;">
+                                    <input name="Class_process[]" id="example-3" class="substituted" type="checkbox" aria-hidden="true" value="A3" />
+                                    <label for="example-3">ประถม 3</label>
                                 </div>
-                                <div class="checkbox-wrapper-1 bt" style="left: 27.5rem; top: 11rem;">
-                                    <input name="Class_process[]" id="example-4" class="substituted" type="checkbox" aria-hidden="true" value="D" />
-                                    <label for="example-4">มัธยม 4</label>
+                                <div class="checkbox-wrapper-1 bt" style="left: 28.5rem; top: 11.5rem;">
+                                    <input name="Class_process[]" id="example-4" class="substituted" type="checkbox" aria-hidden="true" value="A4" />
+                                    <label for="example-4">ประถม 4</label>
                                 </div>
-                                <div class="checkbox-wrapper-1 bt" style="left: 38rem; top: 11rem;">
-                                    <input name="Class_process[]" id="example-5" class="substituted" type="checkbox" aria-hidden="true" value="E" />
-                                    <label for="example-5">มัธยม 5</label>
+                                <div class="checkbox-wrapper-1 bt" style="left: 39rem; top: 11.5rem;">
+                                    <input name="Class_process[]" id="example-5" class="substituted" type="checkbox" aria-hidden="true" value="A5" />
+                                    <label for="example-5">ประถม 5</label>
                                 </div>
-                                <div class="checkbox-wrapper-1 bt" style="left: 48.5rem; top: 11rem;">
-                                    <input name="Class_process[]" id="example-6" class="substituted" type="checkbox" aria-hidden="true" value="F" />
-                                    <label for="example-6">มัธยม 6</label>
+                                <div class="checkbox-wrapper-1 bt" style="left: 49.5rem; top: 11.5rem;">
+                                    <input name="Class_process[]" id="example-6" class="substituted" type="checkbox" aria-hidden="true" value="A6" />
+                                    <label for="example-6">ประถม 6</label>
+                                </div>
+                                <div class="checkbox-wrapper-1 bt" style="left: 28.5rem; top: 13.6rem;">
+                                    <input name="Class_process[]" id="example-7" class="substituted" type="checkbox" aria-hidden="true" value="B1" />
+                                    <label for="example-7">มัธยม 1</label>
+                                </div>
+                                <div class="checkbox-wrapper-1 bt" style="left: 39rem; top: 13.6rem;">
+                                    <input name="Class_process[]" id="example-8" class="substituted" type="checkbox" aria-hidden="true" value="B2" />
+                                    <label for="example-8">มัธยม 2</label>
+                                </div>
+                                <div class="checkbox-wrapper-1 bt" style="left: 49.5rem; top: 13.6rem;">
+                                    <input name="Class_process[]" id="example-9" class="substituted" type="checkbox" aria-hidden="true" value="B3" />
+                                    <label for="example-9">มัธยม 3</label>
+                                </div>
+                                <div class="checkbox-wrapper-1 bt" style="left: 28.5rem; top: 15.5rem;">
+                                    <input name="Class_process[]" id="example-10" class="substituted" type="checkbox" aria-hidden="true" value="B4" />
+                                    <label for="example-10">มัธยม 4</label>
+                                </div>
+                                <div class="checkbox-wrapper-1 bt" style="left: 39rem; top: 15.5rem;">
+                                    <input name="Class_process[]" id="example-11" class="substituted" type="checkbox" aria-hidden="true" value="B5" />
+                                    <label for="example-11">มัธยม 5</label>
+                                </div>
+                                <div class="checkbox-wrapper-1 bt" style="left: 49.5rem; top: 15.5rem;">
+                                    <input name="Class_process[]" id="example-12" class="substituted" type="checkbox" aria-hidden="true" value="B6" />
+                                    <label for="example-12">มัธยม 6</label>
                                 </div>
                             </div>
-
                         </div>
                         <div class="card-footer" style="background-color: rgb(245, 245, 245); display:flex ;  justify-content: end;">
                             <button type="submit" class="btn btn-primary" id="btQueue">บันทึก</button>
@@ -305,17 +356,29 @@ function changeDateShow($date)
                                         <td>
                                             <div class="row"><?php foreach ($class as $select) {
                                                                     if ($v->ID == $select->Queue_id) {
-                                                                        if ($select->Class_id == "A") {
+                                                                        if ($select->Class_id == "A1") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 1</span>";
+                                                                        } elseif ($select->Class_id == "A2") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 2</span>";
+                                                                        } elseif ($select->Class_id == "A3") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 3</span>";
+                                                                        } elseif ($select->Class_id == "A4") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 4</span>";
+                                                                        } elseif ($select->Class_id == "A5") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 5</span>";
+                                                                        } elseif ($select->Class_id == "A6") {
+                                                                            echo "<span class='bg-success btn-xm ml-2 mt-1 col-3'>ประถม 6</span>";
+                                                                        } elseif ($select->Class_id == "B1") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 1</span>";
-                                                                        } elseif ($select->Class_id == "B") {
+                                                                        } elseif ($select->Class_id == "B2") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 2</span>";
-                                                                        } elseif ($select->Class_id == "C") {
+                                                                        } elseif ($select->Class_id == "B3") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 3</span>";
-                                                                        } elseif ($select->Class_id == "D") {
+                                                                        } elseif ($select->Class_id == "B4") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 4</span>";
-                                                                        } elseif ($select->Class_id == "E") {
+                                                                        } elseif ($select->Class_id == "B5") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 5</span>";
-                                                                        } elseif ($select->Class_id == "F") {
+                                                                        } elseif ($select->Class_id == "B6") {
                                                                             echo "<span class='bg-primary btn-xm ml-2 mt-1 col-3'>มัธยม 6</span>";
                                                                         }
                                                                     }

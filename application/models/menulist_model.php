@@ -106,11 +106,17 @@ class menulist_model extends CI_Model
 			return array();
 	}
 
+	public function get_teach_type_list($id)
+	{
+		$query = $this->db->get_where('teach_process_list', array('Process_id' => $id));
+		return $query->result();
+	}
+
 	public function insertQueue($data)
 	{
 		$insertQueue = array(
 			'SchoolID_process' 	=> $data['SchoolID_process'],
-			'Class_process' => implode(",", $data['Class_process']),
+			'Class_process' 	=> implode(",", $data['Class_process']),
 			'CreateDate' 		=> date('Y-m-d H:i:s'),
 			'UpdateDate' 		=> date('Y-m-d H:i:s'),
 		);
@@ -127,23 +133,37 @@ class menulist_model extends CI_Model
 		}
 		return $insert_id;
 	}
-
 	public function updatecart($data)
 	{
 		$updateCart = array(
-			'Place_address' 	=> $data['place'],
-			'StartDate' 		=> (!empty($data['StartDate'])) ? trim($this->changeDate($data['StartDate'])) : null, 
-			'EndDate' 			=> (!empty($data['EndDate'])) ? trim($this->changeDate($data['EndDate'])) : null, 
-			'Place_address' 	=> $data['place'],
-			'Lab_process' 		=> implode(",", $data['cart']),
-			'Status' 			=> $data['Status'],
+			'Place_address'    => $data['place'],
+			'StartDate'        => (!empty($data['StartDate'])) ? trim($this->changeDate($data['StartDate'])) : null, 
+			'EndDate'          => (!empty($data['EndDate'])) ? trim($this->changeDate($data['EndDate'])) : null, 
+			'Place_address'    => $data['place'],
+			'Lab_process'      => implode(",", $data['cart']),
+			'numCount'         => (empty($data['numCount'])) ? Null : $data['numCount'],
+			'Teach_process'    => (empty($data['Teach_type'])) ? '0' : implode(",", $data['Teach_type']), // ตรวจสอบว่า Teach_type ว่างหรือไม่ ถ้าว่างใส่ค่าตัวเลขตามที่ต้องการ
+			'Status'           => $data['Status'],
 		);
-
 		$update_id = $data['inputID'];
 		$this->add_log($updateCart, $this->dbname, 'อัพเดตการเลือกแคมค์สอนเรียน', $update_id);
 		$this->db->update($this->dbname, $updateCart, array($this->ID => $update_id));
+		$this->delete_type_teach($update_id);
+	
+		if (!empty($data['Teach_type'])) {
+			foreach ($data['Teach_type'] as $key => $type) {
+				$type_id = $type;
+				$insert_list = array(
+					'Teach_id' => $type_id,
+					'Process_id' => $update_id
+				);
+				$this->db->insert('Teach_process_list', $insert_list, $key);
+			}
+		}
+		
 		return $update_id;
 	}
+	
 
 	public function editcart($data)
 	{
@@ -153,14 +173,32 @@ class menulist_model extends CI_Model
 			'EndDate' 			=> (!empty($data['EndDate'])) ? trim($this->changeDate($data['EndDate'])) : null, 
 			'Place_address' 	=> $data['place'],
 			'Lab_process' 		=> implode(",", $data['cart']),
+			'numCount'         => $data['numCount'],
+			'Teach_process'    => (empty($data['Teach_type'])) ? '0' : implode(",", $data['Teach_type']), // ตรวจสอบว่า Teach_type ว่างหรือไม่ ถ้าว่างใส่ค่าตัวเลขตามที่ต้องการ
 		);
 
 		$update_id = $data['inputID'];
 		$this->add_log($updateCart, $this->dbname, 'แก้ไขการเลือกแคมค์สอนเรียน', $update_id);
 		$this->db->update($this->dbname, $updateCart, array($this->ID => $update_id));
+		$this->delete_type_teach($update_id);
+	
+		if (!empty($data['Teach_type'])) {
+			foreach ($data['Teach_type'] as $key => $type) {
+				$type_id = $type;
+				$insert_list = array(
+					'Teach_id' => $type_id,
+					'Process_id' => $update_id
+				);
+				$this->db->insert('Teach_process_list', $insert_list, $key);
+			}
+		}
 		return $update_id;
 	}
-
+	private function delete_type_teach($data)
+	{
+		$this->db->where('Process_id', $data);
+		return $this->db->delete('Teach_process_list');
+	}
 	public function DeleteQuese($data)
 	{
 		$this->add_log('Quese ID : '.$data, $this->dbname, 'ComfirmDeleteQuese');
@@ -179,6 +217,7 @@ class menulist_model extends CI_Model
 	{
 		$insertAmount = array(
 			'Amount' 		=> $data['Amount'],
+			'Deduction' 	=> $data['Deduction'],	
 			'NetIncome' 	=> $data['NetIncome'],
 			'Status'		=> 'Online',
 		);

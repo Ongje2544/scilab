@@ -16,11 +16,6 @@
     .boardfines {
         font-weight: bold;
         padding: 5px;
-        text-decoration: underline;
-    }
-    
-    .bt{
-        position: absolute;
     }
 </style>
 
@@ -34,8 +29,8 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/home/">หน้าหลัก</a></li>
-                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/lab/restoreMenuLab">การกู้ข้อมูลรายวิชา</a></li>
-                    <li class="breadcrumb-item active">รายละเอียดข้อมูลหมวดหมู่</li>
+                    <li class="breadcrumb-item"><a href="<?PHP echo config_item("base_url"); ?>/branch/">ตารางหมวดหมู่</a></li>
+                    <li class="breadcrumb-item active">ลบหมวดหมู่</li>
                 </ol>
             </div>
         </div>
@@ -61,17 +56,13 @@
                         </div>
                     </div>
                     <!-- /.card-body -->
-                    <div class="card-footer">
-                        <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
-                        <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/RestoreBranch" method="post">
-                            <input name="inputID" type="hidden" value="<?php echo $row->Branch_id ?>">
-                            <button type="submit" class="btn btn-primary bt" style="bottom : 12px; left:5rem">กู้ข้อมูล</button>
-                        </form>
-                        <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/SuredeleteBranch" method="post">
-                            <input name="inputID" type="hidden" value="<?php echo $row->Branch_id ?>">
-                            <button type="submit" class="btn btn-danger bt" style="bottom : 12px; left:9.9rem">ลบข้อมูล</button>
-                        </form>
-                    </div>
+                    <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/branch/deleteBranch" method="post">
+                        <input name="inputID" type="hidden" value="<?php echo $row->Branch_id ?>">
+                        <div class="card-footer">
+                            <a href="<?PHP echo config_item("base_url"); ?>/branch/" class="btn btn-default">กลับ</a>
+                            <button type="submit" class="btn btn-danger">ลบข้อมูล</button>
+                        </div>
+                    </form>
                     <!-- /.card-footer-->
                 </div>
                 <!-- /.card -->
@@ -92,9 +83,9 @@
                                     foreach ($lab as $option) {
                                         if ($option->branch_list == $row->Branch_id) {
                                             if ($option->name_list != Null) {
-                                                echo "<div class='boardfines'>"  . " " . $option->name_list . "</div></br>";
+                                                echo "<div class='boardfines'><a href='" . config_item("base_url") . "/lab/ViewMenuLab/" . $option->ID . "'>" . "*" . $option->name_list . "</a></div>";
                                             } else {
-                                                echo "Untitle name";
+                                                echo "ไม่กำหนดชื่อรายวิชา";
                                             }
                                             $i++;
                                         }

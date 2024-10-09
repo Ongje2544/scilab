@@ -147,34 +147,113 @@ class teach_model extends CI_Model
 	
 	public function addTeach($data)
 	{
+
+		$fileUpload = $_FILES["image"]['name'];
+		$digit = $this->generatecode(2);
+		$now = date("Ymdgis");
+		$myrand = $now . $digit;
+
+		if (!empty($fileUpload)) {
+			$rest = strrchr($fileUpload, ".");
+			$FileName = "0-" . $myrand . $rest;
+
+			if (!is_dir('./uploads/' . $this->dbname)) {
+				mkdir('./uploads/' . $this->dbname . '/', 0777, TRUE);
+			}
+
+			$config['upload_path'] = './uploads/' . $this->dbname;
+			$config['allowed_types'] = 'jpg|jpeg|gif|png|pdf';
+			$config['file_name'] = $FileName;
+			$this->load->library('upload', $config);
+		} else {
+			$FileName = "";
+		}
+
 		if ($data['Teach_callnum'] == ''){
 			$data['Teach_callnum'] = Null;
 		}
 		$addTeach = array(
 			'Teach_name' 		=> $data['Teach'],
-			'Teach_callnum' 	=> $data['Teach_callnum']
+			'Teach_callnum' 	=> $data['Teach_callnum'],
+			'FileName' 			=> $FileName,
 		);
-		$this->db->insert($this->dbname, $addTeach);
-		$insert_id = $this->db->insert_id();
-		$this->add_log($addTeach, $this->dbname, 'addTeach', $insert_id);
+
+		$insert_id = 0;
+		$row_num = 0;
+		if ($row_num <> 0) {
+			$insert_id = 0;
+		} else {
+			if (!empty($fileUpload)) {
+				$this->upload->do_upload('image');
+			}
+
+			$this->db->insert($this->dbname, $addTeach);
+			$insert_id = $this->db->insert_id();
+			$this->add_log($addTeach, $this->dbname, 'addTeach', $insert_id);
+
+		}
 		return $insert_id;
 	}
 
 	public function updateTeach($data)
 	{
+		$fileUpload = $_FILES["image"]['name'];
+		$digit = $this->generatecode(2);
+		$now = date("Ymdgis");
+		$myrand = $now . $digit;
+		//print_r($_FILES);exit();
+		if (!empty($fileUpload)) {
+			$rest = strrchr($fileUpload, ".");
+			$FileName = $data['inputID'] . "-" . $myrand . $rest;
+
+			if (!is_dir('./uploads/' . $this->dbname)) {
+				mkdir('./uploads/' . $this->dbname . '/', 0777, TRUE);
+			}
+
+			$config['upload_path'] = './uploads/' . $this->dbname;
+			$config['allowed_types'] = 'jpg|jpeg|gif|png|pdf';
+			$config['file_name'] = $FileName;
+			$this->load->library('upload', $config);
+		} else {
+			$FileName = $data['image_old'];
+		}
+
 		if ($data['Teach_callnum'] == ''){
 			$data['Teach_callnum'] = Null;
 		}
 		$updateTeach = array(
 			'Teach_name' 		=> $data['Teach'],
-			'Teach_callnum' 	=> $data['Teach_callnum']
+			'Teach_callnum' 	=> $data['Teach_callnum'],
+			'FileName' 			=> $FileName,
 		);
 
+		if (!empty($fileUpload)) {
+			if (!empty($data['image_old'])) {
+				@unlink('./uploads/' . $this->dbname . '/' . $data['image_old']);
+			}
+			$this->upload->do_upload('image');
+		}
 		$update_id = $data['inputID'];
 		$this->db->update($this->dbname, $updateTeach, array($this->ID => $update_id));
 		$this->add_log($updateTeach, $this->dbname, 'updateTeach', $update_id);
 		return $update_id;
 	}
+
+	// public function updateTeach($data)
+	// {
+	// 	if ($data['Teach_callnum'] == ''){
+	// 		$data['Teach_callnum'] = Null;
+	// 	}
+	// 	$updateTeach = array(
+	// 		'Teach_name' 		=> $data['Teach'],
+	// 		'Teach_callnum' 	=> $data['Teach_callnum']
+	// 	);
+
+	// 	$update_id = $data['inputID'];
+	// 	$this->db->update($this->dbname, $updateTeach, array($this->ID => $update_id));
+	// 	$this->add_log($updateTeach, $this->dbname, 'updateTeach', $update_id);
+	// 	return $update_id;
+	// }
 
 	public function deleteTeach($id)
 	{
@@ -207,6 +286,16 @@ class teach_model extends CI_Model
 		return $this->db->update($this->dbname, $RestoreTeach, array($this->ID => $id));
 	}
 
+	public function generatecode($digit)
+	{
+		$gen = $digit;
+		$char_pass = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		$password = "";
+		while (strlen($password) < $gen) {
+			$password .= $char_pass[rand() % strlen($char_pass)];
+		}
+		return $password;
+	}
 	public function changeDate($date)
 	{
 		list($dd, $mm, $yy) = explode("/", $date);

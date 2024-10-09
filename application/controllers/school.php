@@ -37,9 +37,9 @@ class school extends CI_Controller
 		$data = $this->school_model->insertSchool($inputFrom);
 		//echo $data;exit();
 		if ($data <> 0)
-			redirect('school/addMenuSchool?success', 'refresh');
+			redirect('school/addMenuSchool/?Success', 'refresh');
 		else
-			redirect('school/addMenuSchool/add?Error', 'refresh');
+			redirect('school/addMenuSchool/?Error', 'refresh');
 	}
 
 	/*<----------------------------- //Add ------------------------------------------->*/
@@ -106,10 +106,12 @@ class school extends CI_Controller
 		$data = $this->school_model->deleteSchool($inputFrom['inputID']);
 
 		if ($data <> 0)
-			redirect('school/', 'refresh');
+			redirect('school/?SuccessDelete', 'refresh');
 		else
-			redirect('school/', 'refresh');
+			redirect('school/?ErrorDelete', 'refresh');
 	}
+
+	/*<------------------------------- Comfire Delete or Restore Menu -------------------------------------------->*/
 
     public function confirmRestoreandeleteSchool()
 	{
@@ -130,9 +132,9 @@ class school extends CI_Controller
 		$data = $this->school_model->SuredeleteSchool($inputFrom['inputID']);
 
 		if ($data <> 0)
-			redirect('school/', 'refresh');
+			redirect('school/restoreMenuSchool/?SuccessDelete', 'refresh');
 		else
-			redirect('school/', 'refresh');
+			redirect('school/restoreMenuSchool/?ErrorDelete', 'refresh');
 	}
 	public function RestoreSchool()
 	{
@@ -140,10 +142,13 @@ class school extends CI_Controller
 		$data = $this->school_model->RestoreSchool($inputFrom['inputID']);
 
 		if ($data <> 0)
-			redirect('school/', 'refresh');
+			redirect('school/restoreMenuSchool/?SuccessRestore', 'refresh');
 		else
-			redirect('school/', 'refresh');
+			redirect('school/restoreMenuSchool/?ErrorRestore', 'refresh');
 	}
+
+	/*<------------------------------ //Comfire Delete or Restore Menu ------------------------------------------->*/
+
 
     // public function deleteSchool()
 	// {

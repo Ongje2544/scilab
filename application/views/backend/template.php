@@ -139,7 +139,7 @@ $Actionlink2 = $this->uri->segment(2);
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-      <a href="../../index3.html" class="brand-link">
+      <a href="<?PHP echo config_item("base_url"); ?>/home/" class="brand-link">
         <img src="<?PHP echo config_item("assets_url"); ?>/dist/img/bsru.png" class="brand-image" style="margin-left: 5px;">
         <span class="brand-text font-weight-normal">BSRU</span>
       </a>
@@ -193,8 +193,18 @@ $Actionlink2 = $this->uri->segment(2);
                   <a href="<?PHP echo config_item("base_url"); ?>/dashboard/B" class="nav-link <?php if ($Actionlink2 == 'B') {
                                                                                                   echo 'active';
                                                                                                 } ?>">
+                      <i class='fas fa-archive nav-icon'></i>
+                    <p>ยอดเข้าใช้</p>
+                  </a>
+                </li>
+                <li class="nav-item <?php if ($Actionlink == 'dashboard') {
+                                      echo 'active';
+                                    } ?>">
+                  <a href="<?PHP echo config_item("base_url"); ?>/dashboard/C" class="nav-link <?php if ($Actionlink2 == 'C') {
+                                                                                                  echo 'active';
+                                                                                                } ?>">
                     <i class="fas fa-user-friends nav-icon"></i>
-                    <p>ยอดผู้ใช้</p>
+                    <p>ยอดผู้เข้าร่วม</p>
                   </a>
                 </li>
               </ul>
@@ -256,10 +266,10 @@ $Actionlink2 = $this->uri->segment(2);
               </ul>
             </li>
             <li class="nav-header">ฐานข้อมูล</li>
-            <li class="nav-item <?php if ($Actionlink == 'lab' || $Actionlink == 'school') {
+            <li class="nav-item <?php if ($Actionlink == 'lab' || $Actionlink == 'school' || $Actionlink == 'branch' || $Actionlink == 'teach') {
                                   echo 'menu-open';
                                 } ?>">
-              <a href="#" class="nav-link <?php if ($Actionlink == 'lab' || $Actionlink == 'school') {
+              <a href="#" class="nav-link <?php if ($Actionlink == 'lab' || $Actionlink == 'school' || $Actionlink == 'branch' || $Actionlink == 'teach') {
                                             echo 'active';
                                           } ?>">
                 <i class="nav-icon fas fa-book"></i>
@@ -278,11 +288,51 @@ $Actionlink2 = $this->uri->segment(2);
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a href="<?PHP echo config_item("base_url"); ?>/branch/" class="nav-link <?php if ($Actionlink == 'branch') {
+                                                                                          echo 'active';
+                                                                                        } ?>">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>รายการหมวดหมู่</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?PHP echo config_item("base_url"); ?>/teach/" class="nav-link <?php if ($Actionlink == 'teach') {
+                                                                                          echo 'active';
+                                                                                        } ?>">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>รายการชื่อผู้สอน</p>
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a href="<?PHP echo config_item("base_url"); ?>/school/" class="nav-link <?php if ($Actionlink == 'school') {
                                                                                               echo 'active';
                                                                                             } ?>">
                     <i class="far fa-circle nav-icon"></i>
                     <p>รายการโรงเรียน</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-header">แจ้งเตือน</li>
+            <li class="nav-item <?php if ($Actionlink == 'log') {
+                                  echo 'menu-open';
+                                } ?>">
+              <a href="#" class="nav-link <?php if ($Actionlink == 'log') {
+                                            echo 'active';
+                                          } ?>">
+              <i class='far fa-bell nav-icon'></i>
+                <p>
+                  แจ้งเตือนข้อมูล
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?PHP echo config_item("base_url"); ?>/log/" class="nav-link <?php if ($Actionlink == 'log') {
+                                                                                          echo 'active';
+                                                                                        } ?>">
+                    <i class='fas fa-hammer nav-icon'></i>
+                    <p>แจ้งเตือนประวัติ</p>
                   </a>
                 </li>
               </ul>

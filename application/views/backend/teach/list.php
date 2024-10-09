@@ -19,9 +19,9 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>ฐานข้อมูลโรงเรียน</h1>
-                <a href="<?PHP echo config_item("base_url"); ?>/school/addMenuSchool/" class="btn bg-blue bt" style=" top: 0px; right: -31rem;">เพิ่มข้อมูลโรงเรียน</a>
-                <a href="<?PHP echo config_item("base_url"); ?>/school/restoreMenuSchool/" class="btn btn-outline-danger bt" style=" top: 0px; right:-39.75rem;">กู้ข้อมูลโรงเรียน</a>
+                <h1>ฐานข้อมูลรายการ</h1>
+                <a href="<?PHP echo config_item("base_url"); ?>/teach/addMenuTeach/" class="btn bg-blue bt" style=" top: 0px; right:-31.35rem;">เพิ่มผู้สอน</a>
+                <a href="<?PHP echo config_item("base_url"); ?>/teach/restoreMenuTeach/" class="btn btn-outline-danger bt" style=" top: 0px; right:-39.75rem;">กู้ข้อมูลรายการ</a>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -34,11 +34,11 @@
             <div class="col-12">
                 <!-- /.card -->
                 <div class="card">
-                    <div class="card-header bg-blue">
-                        <h2 class="card-title">รายการรายชื่อโรงเรียน</h2>
+                    <div class="card-header bg-green">
+                        <h2 class="card-title">รายการผู้สอน</h2>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body" style="background-color: rgb(248, 248, 248);">
+                    <div class="card-body" style="background-color: rgb(255, 250, 255);">
                         <?php if (isset($_GET['SuccessDelete'])) { ?>
                             <script>
                                 $(document).ready(function() {
@@ -53,53 +53,52 @@
                                 });
                             </script>
                         <?php } ?>
-                        <table id="tablelab2" class="table table-bordered table-striped">
+                        <table id="tablelab1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th class="col-sm-1">#</th>
-                                    <th class="col-sm-5">ชื่อโรงเรียน</th>
+                                    <th class="col-sm-5">ชื่อหมวดหมู่</th>
                                     <th class="col-sm-4">เบอร์ติดต่อ</th>
                                     <th class="">ดำเนินการ</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $numId = '1';
-                                foreach ($school['row'] as $index => $s) {
+                                $i = 1;
+                                foreach ($teacher['row'] as $key => $v) {
                                 ?>
                                     <tr>
-                                        <td><?php echo $numId ?></td>
-                                        <td><?php echo $s->School_name ?></td>
-                                        <td><?php echo $s->School_callnum ?></td>
+                                        <td><?php echo $i ?></td>
+                                        <td><?php echo $v->Teach_name ?></td>
+                                        <td><?php if(!empty($v->Teach_callnum)){
+                                            echo $v->Teach_callnum ;
+                                        }else{
+                                            echo "ไม่ระบุ" ;
+                                        } ?></td>
                                         <td>
                                             <center>
-                                                <p class="<?php echo ($s->Status == 'Online') ? "text-green" : "text-red"; ?>" title="" style="margin-bottom: 0px;"><?php echo $s->Status ?></p>
-                                                <a href="<?PHP echo config_item("base_url"); ?>/school/ViewMenuSchool/<?php echo $s->School_id ?>">
+                                                <a href="<?PHP echo config_item("base_url"); ?>/teach/ViewMenuTeach/<?php echo $v->Teach_id ?>">
                                                     <span class="btn btn-xs btn-primary">ดูรายละเอียด</span>
                                                 </a>
 
-                                                <a href="<?PHP echo config_item("base_url"); ?>/school/EditMenuSchool/<?php echo $s->School_id ?>/?sID=<?php echo $s->School_id ?>">
+                                                <a href="<?PHP echo config_item("base_url"); ?>/teach/EditMenuTeach/<?php echo $v->Teach_id ?>/?sID=<?php echo $v->Teach_id ?>">
                                                     <span class="btn btn-xs btn-warning">แก้ไข</span>
                                                 </a>
 
-                                                <a href="<?PHP echo config_item("base_url"); ?>/school/confirmDeleteSchool/<?php echo $s->School_id ?>" style="display:">
+                                                <a href="<?PHP echo config_item("base_url"); ?>/teach/confirmDeleteTeach/<?php echo $v->Teach_id ?>" style="display:">
                                                     <span class="btn btn-xs btn-danger">ลบ</span>
                                                 </a>
-                                                <?php
-                                                ?>
                                             </center>
                                         </td>
                                     </tr>
                                 <?php
-                                    $numId++;
-                                }
-                                ?>
+                                    $i++;
+                                } ?>
                             </tbody>
                         </table>
                     </div>
                     <!-- /.card-body -->
                 </div>
-
                 <!-- /.card -->
             </div>
             <!-- /.col -->

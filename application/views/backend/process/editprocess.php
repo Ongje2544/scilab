@@ -139,7 +139,6 @@ $today = date("Y-m-d");
             var txt_error = "";
             var obj_err = "";
             var invalidFileUploaded = false;
-            var selectedRadio = $("input[name='Status']:checked").val();
 
             // รีเซ็ตสีพื้นหลังให้เป็นสีขาว
             $(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
@@ -171,6 +170,20 @@ $today = date("Y-m-d");
                 $("#end_date").css("background-color", "#ffebe6");
                 if (!obj_err) {
                     obj_err = $("#end_date");
+                }
+            }
+            if ($("#numCount").val() == "" || $("#numCount").val() <= 9) {
+                txt_error += "- กรุณากรอกจำนวนผู้เข้าร่วม/นักเรียน(มากกว่า 10 คนขึ้นไป) \n";
+                $("#numCount").css("background-color", "#ffebe6");
+                if (!obj_err) {
+                    obj_err = $("#numCount");
+                }
+            }
+            if ($("#TeachType").val() == "") {
+                txt_error += "- กรุณาเลือกผู้สอน/อาจารย์(ตามที่แนะนำให้เลือก)\n";
+                $("#TeachType").css("background-color", "#ffebe6");
+                if (!obj_err) {
+                    obj_err = $("#TeachType");
                 }
             }
 
@@ -231,121 +244,178 @@ $today = date("Y-m-d");
                                 <label for="class" class="mid mt-2 col-sm-4 text-right">ระดับชั้น</label>
                                 <?php foreach ($class as $select) {
                                     if ($row->ID == $select->Queue_id) {
-                                        if ($select->Class_id == "A") {
+                                        if ($select->Class_id == "A1") {
+                                            echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 1</div>';
+                                        }
+                                        if ($select->Class_id == "A2") {
+                                            echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 2</div>';
+                                        }
+                                        if ($select->Class_id == "A3") {
+                                            echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 3</div>';
+                                        }
+                                        if ($select->Class_id == "A4") {
+                                            echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 4</div>';
+                                        }
+                                        if ($select->Class_id == "A5") {
+                                            echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 5</div>';
+                                        }
+                                        if ($select->Class_id == "A6") {
+                                            echo '<div class="bg-success btn-sm ml-3 mt-2 mb-2">ประถม 6</div>';
+                                        }
+                                        if ($select->Class_id == "B1") {
                                             echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 1</div>';
                                         }
-                                        if ($select->Class_id == "B") {
+                                        if ($select->Class_id == "B2") {
                                             echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 2</div>';
                                         }
-                                        if ($select->Class_id == "C") {
+                                        if ($select->Class_id == "B3") {
                                             echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 3</div>';
                                         }
-                                        if ($select->Class_id == "D") {
+                                        if ($select->Class_id == "B4") {
                                             echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 4</div>';
                                         }
-                                        if ($select->Class_id == "E") {
+                                        if ($select->Class_id == "B5") {
                                             echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 5</div>';
                                         }
-                                        if ($select->Class_id == "F") {
+                                        if ($select->Class_id == "B6") {
                                             echo '<div class="bg-primary btn-sm ml-3 mt-2 mb-2">มัธยม 6</div>';
                                         }
                                     }
                                 } ?>
                             </div>
 
-							<div class="form-group mr-5 d-flex">
-								<label for="School_process" class="mid mt-2 col-sm-4 text-right">สถานที่จัดค่าย</label>
-								<textarea name="place" rows="4" class="form-control col-sm-8 ml-3" id="place" placeholder="กรอกสถานที่จัดงาน"><?php echo $row->Place_address ?></textarea>
-							</div>
-							<div class="form-group mr-5 d-flex">
-								<label for="" class="mid mt-2 col-sm-4 text-right">วันที่จัด</label>
-								<div class="input-group date" id="reservationdate1" data-target-input="nearest">
-									<div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker" readonly>
-										<input type="text" name="StartDate" class="form-control datetimepicker-input ml-3" id="start_date" data-target="#reservationdate1" data-date-language="th-th" value="<?php echo changeDateShow($row->StartDate); ?>" readonly />
-									</div>
-								</div>
-								<label for="" class="mt-2 col-sm-1 text-right">วันที่สิ้นสุด</label>
-								<div class="input-group date" id="reservationdate2" data-target-input="nearest">
-									<div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker" readonly>
-										<input type="text" name="EndDate" class="form-control datetimepicker-input ml-3" id="end_date" data-target="#reservationdate2" data-date-language="th-th" value="<?php echo changeDateShow($row->EndDate); ?>" readonly />
-									</div>
-								</div>
-							</div>
-							<input type="hidden" name="cart[]" id="selected_camps" readonly value="<?php echo $row->Lab_process ?>">
-							<div class="card">
-								<div class="card-header" style="background-color: rgb(255, 245, 255);">
-									<h3 class="card-title">รายการที่เลือก</h3>
-								</div>
-								<div class="card-body" style="background-color: rgb(255, 245, 255);">
-									<table id="selectedItemsTable" class="table table-bordered table-striped">
-										<thead>
-											<tr>
-												<th>#</th>
-												<th>ชื่อรายวิชา</th>
-												<th>หมวดหมู่</th>
-												<th>ดำเนินการ</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php
-											foreach ($result['row'] as $key => $v) {
-											?>
-												<tr>
-													<td><?php echo $v->Idlab ?></td>
-													<td><?php echo $v->Namelist ?></td>
-													<td><?php echo $v->BranchName ?></td>
-													<td>
-														<center>
-															<b data-id="<?php echo $v->Idlab ?>" style="color: rgb(250, 0, 0); background:none; border:none; cursor: pointer;">นำออก</b>
-														</center>
-													</td>
-												</tr>
-											<?php
-											} ?>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							<br>
-							<div class="card">
-								<div class="card-header" style="background-color: rgb(230, 230, 230);">
-									<h3 class="card-title">รายการค่าย</h3>
-									<div class="card-tools" bis_skin_checked="1">
-										<button type="button" class="btn btn-tool bg-white" data-card-widget="collapse" title="Collapse">
-											<i class="fas fa-minus"></i>
-										</button>
-									</div>
-								</div>
-								<div class="card-body" style="background-color: rgb(230, 230, 230);">
-									<table id="tablelab1" class="table table-bordered table-striped">
-										<thead>
-											<tr>
-												<th>#</th>
-												<th class="col-sm-5">ชื่อรายวิชา</th>
-												<th class="col-sm-4">หมวดหมู่</th>
-												<th>ดำเนินการ</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php
-											foreach ($result['row'] as $key => $v) {
-											?>
-												<tr>
-													<td><?php echo $v->Idlab ?></td>
-													<td><?php echo $v->Namelist ?></td>
-													<td><?php echo $v->BranchName ?></td>
-													<td>
-														<center>
-															<i class="fa fa-shopping-cart" data-id="<?php echo $v->Idlab ?>" style="color: rgb(0, 110, 250); cursor: pointer;"></i>
-														</center>
-													</td>
-												</tr>
-											<?php
-											} ?>
-										</tbody>
-									</table>
-								</div>
-							</div>
+                            <div class="form-group mr-5 d-flex">
+                                <label for="School_process" class="mid mt-2 col-sm-4 text-right">สถานที่จัดค่าย</label>
+                                <textarea name="place" rows="4" class="form-control col-sm-8 ml-3" id="place" placeholder="กรอกสถานที่จัดงาน"><?php echo $row->Place_address ?></textarea>
+                            </div>
+                            <div class="form-group mr-5 d-flex">
+                                <label for="" class="mid mt-2 col-sm-4 text-right">วันที่จัด</label>
+                                <div class="input-group date" id="reservationdate1" data-target-input="nearest">
+                                    <div class="input-group-append" data-target="#reservationdate1" data-toggle="datetimepicker" readonly>
+                                        <input type="text" name="StartDate" class="form-control datetimepicker-input ml-3" id="start_date" data-target="#reservationdate1" data-date-language="th-th" value="<?php echo changeDateShow($row->StartDate); ?>" readonly />
+                                    </div>
+                                </div>
+                                <label for="" class="mt-2 col-sm-1 text-right">วันที่สิ้นสุด</label>
+                                <div class="input-group date" id="reservationdate2" data-target-input="nearest">
+                                    <div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker" readonly>
+                                        <input type="text" name="EndDate" class="form-control datetimepicker-input ml-3" id="end_date" data-target="#reservationdate2" data-date-language="th-th" value="<?php echo changeDateShow($row->EndDate); ?>" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mr-5 d-flex">
+                                <label for="" class="mid mt-2 col-sm-4 text-right">จำนวนนักเรียน</label>
+                                <input name="numCount" class="form-control col-sm-2 ml-3" id="numCount" placeholder="กรอกจำนวน" value="<?php echo $row->numCount ?>">
+                            </div>
+                            <div class="form-group mr-5 d-flex">
+                                <label class="mid mt-2 col-sm-4 text-right">อาจารย์/ครูผู้สอน</label>
+                                <select class="form-control select2bs4" multiple="multiple" name="Teach_type[]" id="TeachType" data-placeholder="เลือกรายชื่อผู้สอนรายวิชา(ที่แนะนำ)" style="word-break: break-word;">
+                                    <?php
+                                    foreach ($teach_type as $option) {
+                                    ?>
+                                        <option value="<?php echo $option->Teach_id; ?>" <?php foreach ($teach_type_list as $select) { ?> <?php if ($option->Teach_id == $select->Teach_id) {
+                                                                                                                                                echo 'selected', '';
+                                                                                                                                            } ?> <?php } ?>>
+                                            <?php
+                                            echo $option->Teach_name;
+                                            ?>
+                                        </option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <input type="hidden" name="cart[]" id="selected_camps" readonly value="<?php echo $row->Lab_process ?>">
+                            <div class="card">
+                                <div class="card-header" style="background-color: rgb(255, 245, 255);">
+                                    <h3 class="card-title">รายการที่เลือก</h3>
+                                </div>
+                                <div class="card-body" style="background-color: rgb(255, 245, 255);">
+                                    <table id="selectedItemsTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th class="col-sm-4">ชื่อรายวิชา</th>
+                                                <th class="col-sm-3">หมวดหมู่</th>
+                                                <th class="col-sm-3">ผู้สอน(แนะนำ)</th>
+                                                <th>ดำเนินการ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            foreach ($result['row'] as $key => $v) {
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo $v->Idlab ?></td>
+                                                    <td><?php echo $v->Namelist ?></td>
+                                                    <td><?php echo $v->BranchName ?></td>
+                                                    <td><?php
+                                                        foreach ($teach_lab as $select) {
+                                                            if ($v->Idlab == $select->Lab_id) {
+                                                                echo  "<div>" . $select->Teach_name . "</div>";
+                                                            }
+                                                        }
+                                                        ?></td>
+                                                    <td>
+                                                        <center>
+                                                            <b data-id="<?php echo $v->Idlab ?>" style="color: rgb(250, 0, 0); background:none; border:none; cursor: pointer;">นำออก</b>
+                                                        </center>
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                            } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="card">
+                                <div class="card-header" style="background-color: rgb(230, 230, 230);">
+                                    <h3 class="card-title">รายการค่าย</h3>
+                                    <div class="card-tools" bis_skin_checked="1">
+                                        <button type="button" class="btn btn-tool bg-white" data-card-widget="collapse" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body" style="background-color: rgb(230, 230, 230);">
+                                    <table id="tablelab1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th class="col-sm-4">ชื่อรายวิชา</th>
+                                                <th class="col-sm-3">หมวดหมู่</th>
+                                                <th class="col-sm-3">ผู้สอน</th>
+                                                <th>ดำเนินการ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            foreach ($result['row'] as $key => $v) {
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo $v->Idlab ?></td>
+                                                    <td><?php echo $v->Namelist ?></td>
+                                                    <td><?php echo $v->BranchName ?></td>
+                                                    <td><?php
+                                                        foreach ($teach_lab as $select) {
+                                                            if ($v->Idlab == $select->Lab_id) {
+                                                                echo  "<div>" . $select->Teach_name . "</div>";
+                                                            }
+                                                        }
+                                                        ?></td>
+                                                    <td>
+                                                        <center>
+                                                            <i class="fa fa-shopping-cart" data-id="<?php echo $v->Idlab ?>" style="color: rgb(0, 110, 250); cursor: pointer;"></i>
+                                                        </center>
+
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                            } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-footer" style="background-color: rgb(255, 255, 255);">
                             <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
@@ -359,148 +429,166 @@ $today = date("Y-m-d");
         <!--/.col (right) -->
     </div>
     <!-- /.row -->
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">แจ้งเตือน</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-text"></p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <!-- /.content -->
 <script>
-	$(function() {
-		// ตั้งค่า DataTable ให้ไม่ใช้การแบ่งหน้า
-		$("#tablelab1").DataTable({
-			"paging": false, // ปิดการแบ่งหน้า
-			"searching": true, // เปิดใช้งานการค้นหา
-			"info": false, // ปิดการแสดงข้อมูลของตาราง
-			"responsive": true,
-			"autoWidth": false
-		});
+    $(function() {
+        // ตั้งค่า DataTable ให้ไม่ใช้การแบ่งหน้า
+        $("#tablelab1").DataTable({
+            "paging": false, // ปิดการแบ่งหน้า
+            "searching": true, // เปิดใช้งานการค้นหา
+            "info": false, // ปิดการแสดงข้อมูลของตาราง
+            "responsive": true,
+            "autoWidth": false
+        });
 
-		// Initialize Select2 Elements
-		$('.select2').select2();
+        // Initialize Select2 Elements
+        $('.select2').select2();
 
-		// Initialize Select2 Elements with Bootstrap4 theme
-		$('.select2bs4').select2({
-			theme: 'bootstrap4'
-		})
+        // Initialize Select2 Elements with Bootstrap4 theme
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
 
-		// Initialize DateTimePicker
-		$('#reservationdate1').datetimepicker({
-			format: 'DD/MM/YYYY', // ใช้รูปแบบวันที่ไทย
-			locale: 'th' // กำหนดให้ใช้ locale ภาษาไทย
-		});
+        // Initialize DateTimePicker
+        $('#reservationdate1').datetimepicker({
+            format: 'DD/MM/YYYY', // ใช้รูปแบบวันที่ไทย
+            locale: 'th' // กำหนดให้ใช้ locale ภาษาไทย
+        });
 
-		$('#reservationdate2').datetimepicker({
-			format: 'DD/MM/YYYY', // ใช้รูปแบบวันที่ไทย
-			locale: 'th' // กำหนดให้ใช้ locale ภาษาไทย
-		});
+        $('#reservationdate2').datetimepicker({
+            format: 'DD/MM/YYYY', // ใช้รูปแบบวันที่ไทย
+            locale: 'th' // กำหนดให้ใช้ locale ภาษาไทย
+        });
 
-		// ตัวอย่างการแปลงวันที่จากรูปแบบภาษาอังกฤษเป็นไทย
-		function formatDateToThai(date) {
-			if (date) {
-				var parts = date.split("-");
-				return parts[2] + "/" + parts[1] + "/" + (parseInt(parts[0]) + 543);
-			}
-			return "";
-		}
+        // ตัวอย่างการแปลงวันที่จากรูปแบบภาษาอังกฤษเป็นไทย
+        function formatDateToThai(date) {
+            if (date) {
+                var parts = date.split("-");
+                return parts[2] + "/" + parts[1] + "/" + (parseInt(parts[0]) + 543);
+            }
+            return "";
+        }
 
-		// ตัวอย่างการใช้งานฟังก์ชัน formatDateToThai
-		var englishDate = "2024-08-13"; // วันที่ในรูปแบบภาษาอังกฤษ
-		var thaiDate = formatDateToThai(englishDate); // แปลงเป็นวันที่ไทย
-		console.log(thaiDate); // แสดงวันที่ไทยใน console
+        // ตัวอย่างการใช้งานฟังก์ชัน formatDateToThai
+        var englishDate = "2024-08-13"; // วันที่ในรูปแบบภาษาอังกฤษ
+        var thaiDate = formatDateToThai(englishDate); // แปลงเป็นวันที่ไทย
+        console.log(thaiDate); // แสดงวันที่ไทยใน console
 
-		// Phone number input restriction
-		$("#callNumber1,#callNumber2 ,#NumId").on('input', function(e) {
-			$(this).val($(this).val().replace(/[^0-9]/g, ''));
-		});
+        // Phone number input restriction
+        $("#callNumber1,#callNumber2 ,#NumId").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
 
-		// Initialize DataTable
-		$("#example1").DataTable({
-			"responsive": true,
-			"lengthChange": false,
-			"autoWidth": false,
-		}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        // Initialize DataTable
+        $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
-		// Initialize custom file input
-		bsCustomFileInput.init();
-	});
+        // Initialize custom file input
+        bsCustomFileInput.init();
+    });
 </script>
 
 <script>
-	$(document).ready(function() {
-		// ฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวในตาราง 'รายการที่เลือก'
-		function updateSelectedItems() {
-			var $inputField = $('#selected_camps');
-			var selectedIds = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่เลือก
-			$('#selectedItemsTable tbody tr').each(function() {
-				var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
-				if (selectedIds.includes(rowId)) {
-					$(this).show(); // แสดงแถว
-				} else {
-					$(this).hide(); // ซ่อนแถว
-				}
-			});
-		}
+    $(document).ready(function() {
+        // ฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวในตาราง 'รายการที่เลือก'
+        function updateSelectedItems() {
+            var $inputField = $('#selected_camps');
+            var selectedIds = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่เลือก
+            $('#selectedItemsTable tbody tr').each(function() {
+                var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
+                if (selectedIds.includes(rowId)) {
+                    $(this).show(); // แสดงแถว
+                } else {
+                    $(this).hide(); // ซ่อนแถว
+                }
+            });
+        }
 
-		// ฟังก์ชันเพื่ออัปเดตค่าใน input และซ่อนแถว
-		function removeItemFromCart(id) {
-			var $inputField = $('#selected_camps');
-			var existingValues = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่มีอยู่แล้ว
-			existingValues = existingValues.filter(value => value !== id); // ลบ ID ออก
-			$inputField.val(existingValues.join(',')); // อัปเดตค่าใน input
+        // ฟังก์ชันเพื่ออัปเดตค่าใน input และซ่อนแถว
+        function removeItemFromCart(id) {
+            var $inputField = $('#selected_camps');
+            var existingValues = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่มีอยู่แล้ว
+            existingValues = existingValues.filter(value => value !== id); // ลบ ID ออก
+            $inputField.val(existingValues.join(',')); // อัปเดตค่าใน input
 
-			// อัปเดตการแสดงผลของแถว
-			updateSelectedItems();
-			updateAvailableItems(); // เรียกใช้งานฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวใน 'รายการค่าย'
-		}
+            // อัปเดตการแสดงผลของแถว
+            updateSelectedItems();
+            updateAvailableItems(); // เรียกใช้งานฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวใน 'รายการค่าย'
+        }
 
-		// ฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวในตาราง 'รายการค่าย'
-		function updateAvailableItems() {
-			var $inputField = $('#selected_camps');
-			var selectedIds = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่เลือก
-			$('#tablelab1 tbody tr').each(function() {
-				var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
-				if (selectedIds.includes(rowId)) {
-					$(this).hide(); // ซ่อนแถวถ้า ID อยู่ใน input
-				} else {
-					$(this).show(); // แสดงแถวถ้า ID ไม่อยู่ใน input
-				}
-			});
-		}
+        // ฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวในตาราง 'รายการค่าย'
+        function updateAvailableItems() {
+            var $inputField = $('#selected_camps');
+            var selectedIds = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่เลือก
+            $('#tablelab1 tbody tr').each(function() {
+                var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
+                if (selectedIds.includes(rowId)) {
+                    $(this).hide(); // ซ่อนแถวถ้า ID อยู่ใน input
+                } else {
+                    $(this).show(); // แสดงแถวถ้า ID ไม่อยู่ใน input
+                }
+            });
+        }
 
-		// ฟังก์ชันเพื่อเพิ่มรายการใหม่
-		function addItemToCart(id) {
-			var $inputField = $('#selected_camps');
-			var existingValues = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่มีอยู่แล้ว
-			if (!existingValues.includes(id)) {
-				existingValues.push(id); // เพิ่ม ID ใหม่
-				$inputField.val(existingValues.join(',')); // อัปเดตค่าใน input
-			}
+        // ฟังก์ชันเพื่อเพิ่มรายการใหม่
+        function addItemToCart(id) {
+            var $inputField = $('#selected_camps');
+            var existingValues = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่มีอยู่แล้ว
+            if (!existingValues.includes(id)) {
+                existingValues.push(id); // เพิ่ม ID ใหม่
+                $inputField.val(existingValues.join(',')); // อัปเดตค่าใน input
+            }
 
-			// อัปเดตการแสดงผลของแถว
-			updateSelectedItems();
-			updateAvailableItems(); // เรียกใช้งานฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวใน 'รายการค่าย'
-		}
+            // อัปเดตการแสดงผลของแถว
+            updateSelectedItems();
+            updateAvailableItems(); // เรียกใช้งานฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวใน 'รายการค่าย'
+        }
 
-		// จัดการคลิกที่ไอคอนรถเข็น
-		$('#tablelab1').on('click', '.fa-shopping-cart', function() {
-			var id = $(this).data('id').toString(); // ดึง ID จาก data-id และแปลงเป็นสตริง
-			addItemToCart(id); // เพิ่ม ID ลงใน input และอัปเดตแถว
-		});
+        // จัดการคลิกที่ไอคอนรถเข็น
+        $('#tablelab1').on('click', '.fa-shopping-cart', function() {
+            var id = $(this).data('id').toString(); // ดึง ID จาก data-id และแปลงเป็นสตริง
+            addItemToCart(id); // เพิ่ม ID ลงใน input และอัปเดตแถว
+        });
 
-		// จัดการคลิกที่ <b> เพื่อนำออก
-		$('#selectedItemsTable').on('click', 'b', function() {
-			var id = $(this).data('id').toString(); // ดึง ID จาก data-id และแปลงเป็นสตริง
-			removeItemFromCart(id); // ลบ ID ออกจาก input และอัปเดตแถว
-		});
+        // จัดการคลิกที่ <b> เพื่อนำออก
+        $('#selectedItemsTable').on('click', 'b', function() {
+            var id = $(this).data('id').toString(); // ดึง ID จาก data-id และแปลงเป็นสตริง
+            removeItemFromCart(id); // ลบ ID ออกจาก input และอัปเดตแถว
+        });
 
-		// ตรวจสอบเมื่อโหลดหน้าเพื่อซ่อนแถวที่มี ID ใน input และแสดงแถวที่เหลือ
-		(function() {
-			var ids = $('#selected_camps').val().split(',').filter(Boolean); // ดึง IDs จาก input
-			$('#tablelab1 tbody tr').each(function() {
-				var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
-				if (ids.includes(rowId)) {
-					$(this).hide(); // ซ่อนแถวถ้า ID อยู่ใน input
-				}
-			});
+        // ตรวจสอบเมื่อโหลดหน้าเพื่อซ่อนแถวที่มี ID ใน input และแสดงแถวที่เหลือ
+        (function() {
+            var ids = $('#selected_camps').val().split(',').filter(Boolean); // ดึง IDs จาก input
+            $('#tablelab1 tbody tr').each(function() {
+                var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
+                if (ids.includes(rowId)) {
+                    $(this).hide(); // ซ่อนแถวถ้า ID อยู่ใน input
+                }
+            });
 
-			updateSelectedItems(); // อัปเดตการแสดงผลของแถวใน 'รายการที่เลือก'
-		})();
-	});
+            updateSelectedItems(); // อัปเดตการแสดงผลของแถวใน 'รายการที่เลือก'
+        })();
+    });
 </script>

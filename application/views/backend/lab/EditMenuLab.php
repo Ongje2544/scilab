@@ -56,13 +56,6 @@
 
             $(".col-lg-12 input, .col-lg-12 textarea, .col-lg-12 select, .panel-body input, .panel-body textarea").css("background-color", "#FFFFFF");
 
-            if ($("#NumId").val().trim() == "") {
-                txt_error += "- กรุณากรอกรหัสรายวิชา\n";
-                $("#NumId").css("background-color", "#ffebe6");
-                if (!obj_err) {
-                    obj_err = $("#NumId");
-                }
-            }
             if ($("#NameList").val().trim() == "") {
                 txt_error += "- กรุณากรอกชื่อรายวิชา\n";
                 $("#NameList").css("background-color", "#ffebe6");
@@ -131,7 +124,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <!-- general form elements -->
                 <div class="card card-success">
                     <div class="card-header">
@@ -141,20 +134,30 @@
                     <!-- form start -->
                     <form role="form" id="editLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/updateLablist" method="post">
                         <input name="inputID" type="hidden" value="<?php echo $row->ID ?>">
+                        <?php if (isset($_GET['Success'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.success('บันทึกข้อมูลสำเร็จ!');
+                                });
+                            </script>
+                        <?php } ?>
+                        <?php if (isset($_GET['Error'])) { ?>
+                            <script>
+                                $(document).ready(function() {
+                                    toastr.error('เกิดข้อผิดพลาดในการบันทึกข้อมูล!');
+                                });
+                            </script>
+                        <?php } ?>
                         <div class="card-body" style="background-color: rgb(245, 245, 245);">
-                            <div class="form-group">
-                                <label>รหัสรายวิชา</label>
-                                <input type="text" class="form-control" id="NumId" placeholder="กรอกรหัสรายวิชา" maxlength="5" value="<?php echo $row->ID ?>" disabled>
-                            </div>
-                            <div class="form-group">
-                                <label>ชื่อรายวิชา</label>
+                            <div class="form-group mt-3 mr-5 d-flex">
+                                <label class="mid mt-2 col-sm-4 text-right">ชื่อรายวิชา<span class="text-red">*</span></label>
                                 <input type="text" name="NameList" class="form-control" id="NameList" placeholder="กรอกชื่อรายวิชา" value="<?php echo $row->name_list ?>">
                             </div>
-                            <div class="form-group">
-                                <label>ชื่อหมวดหมู่</label>
-                                <select class="form-control select2bs4" name="Branch" id="Branch_type" name="Branch_type" style="width: 100%;" placeholder="กรอกเนื้อหาวิชา" required>
+                            <div class="form-group mt-3 mr-5 d-flex">
+                                <label class="mid mt-2 col-sm-4 text-right">ชื่อหมวดหมู่<span class="text-red">*</span></label>
+                                <select class="form-control select2bs4" name="Branch" id="Branch_type" style="width: 100%;" placeholder="กรอกเนื้อหาวิชา" required>
+                                    <option value="" selected> กรุณาเลือกหมวดหมู่</option>
                                     <?php
-
                                     foreach ($branch_type as $c) {
                                         echo "<option value='" . $c->Branch_id . "' ";
                                         if ($row->branch_list == $c->Branch_id) {
@@ -164,15 +167,18 @@
                                     }
                                     ?>
                                 </select>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-primary w-100" href="<?PHP echo config_item("base_url"); ?>/branch/addMenuBranch">เพิ่มหมวดหมู่</a>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>เนื้อหาวิชา</label>
-                                <textarea name="Concept" rows="4" class="form-control" id="Conceptlab" placeholder="กรอกเนื้อหาวิชา"><?php echo $row->concept_list ?></textarea>
+                            <div class="form-group mt-3 mr-5 d-flex">
+                                <label class="mid mt-2 col-sm-4 text-right">เนื้อหาวิชา<span class="text-red">*</span></label>
+                                <textarea name="Concept" rows="4" class="form-control col-sm-8" id="Conceptlab" placeholder="กรอกเนื้อหาวิชา"><?php echo $row->concept_list ?></textarea>
                             </div>
-                            <div class="form-group">
-                                <label>อาจารย์/ครูผู้สอน (เลือกได้มากกว่า 1 บุคลากร)</label>
-                                <select class="form-control select2bs4" multiple="multiple" name="Teach_type[]" id="TeachType" data-placeholder=" เลือกรายชื่อผู้สอนรายวิชา" style="word-break: break-word;">
-                                    <?php
+                            <div class="form-group mt-3 mr-5 d-flex">
+                                <label class="col-sm-4 text-right">อาจารย์/ครูผู้สอน (เลือกได้มากกว่า 1 บุคลากร)<span class="text-red">*</span></label>
+                                <select class="form-control select2bs4" multiple="multiple" name="Teach_type[]" id="TeachType" data-placeholder="เลือกรายชื่อผู้สอนรายวิชา" style="word-break: break-word;">
+                                <?php
                                     foreach ($teach_type as $option) {
                                     ?>
                                         <option value="<?php echo $option->Teach_id; ?>" <?php foreach ($teach_type_list as $select) { ?> <?php if ($option->Teach_id == $select->Teach_id) {
@@ -186,55 +192,23 @@
                                     }
                                     ?>
                                 </select>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-primary w-100" href="<?PHP echo config_item("base_url"); ?>/teach/addMenuTeach">เพิ่มรายชื่อ</a>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>ราคารายวิชา</label>
-                                <input type="text" name="Price" class="form-control" id="Pricelab" placeholder="กรอกราคารายวิชา" value="<?php echo $row->price_list ?>">
+
+                            <div class="form-group mt-3 mr-5 d-flex">
+                                <label class="mid mt-2 col-sm-4 text-right">ราคารายวิชา<span class="text-red">*</span></label>
+                                <input type="text" name="Price" class="form-control col-sm-8" id="Pricelab" placeholder="กรอกราคารายวิชา" value="<?php echo $row->price_list ?>">
                             </div>
                         </div>
                         <div class="card-footer" style="background-color: rgb(255, 255, 255);">
+                            <a href="<?PHP echo config_item("base_url"); ?>/lab/" class="btn btn-default">กลับ</a>
                             <button type="submit" class="btn btn-success" id="btSubmit">บันทึก</button>
                         </div>
                     </form>
                 </div>
             </div>
-            <!--/.col (left) -->
-            <!-- right column -->
-            <div class="col-md-6">
-                <!-- general form elements -->
-                <div class="card card-gray">
-                    <div class="card-header">
-                        <h3 class="card-title">เพิ่มหมวดหมู่</h3>
-                    </div>
-                    <div class="card-body" style="background-color: rgb(245, 245, 245);">
-                        <div class="form-group">
-                            <label for="MoreBranch">เพิ่มหมวดหมู่รายวิชา</label>
-                            <input type="text" name="Branch" class="form-control col-sm-10" id="MoreBranch" placeholder="กรอกเพิ่มหมวดหมู่รายวิชา" disabled>
-                        </div>
-                        <button type="submit" class="btn bg-gray " style="position: absolute; top: 98px; right: 27px;;" disabled>บันทึก</button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- general form elements -->
-                <div class="card card-gray">
-                    <div class="card-header">
-                        <h3 class="card-title">เพิ่มรายชื่อผู้สอน/อาจารย์</h3>
-                    </div>
-                    <div class="card-body" style="background-color: rgb(245, 245, 245);">
-                        <div class="form-group">
-                            <label for="MoreTeacher">เพิ่มชื่ออาจารย์/ครูผู้สอน</label>
-                            <input type="text" name="Teach" class="form-control col-sm-10" id="MoreTeacher" placeholder="กรอกเพิ่มชื่ออาจารย์/ครูผู้สอน" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label for="MoreTeacher">เบอร์ติดต่ออาจารย์/ครูผู้สอน (ถ้ามี)</label>
-                            <input type="text" name="Teach_callnum" class="form-control col-sm-10" id="callNumber2" placeholder="กรอกเพิ่มชื่ออาจารย์/ครูผู้สอน" disabled>
-                        </div>
-                        <button type="submit" class="btn bg-gray" style="position: absolute; top: 97px;; right: 27px;;">บันทึก</button>
-                    </div>
-                </div>
-            </div>
-            <!--/.col (right) -->
         </div>
         <!-- /.row -->
     </div><!-- /.container-fluid -->

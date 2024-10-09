@@ -55,12 +55,6 @@
                     <div class="card-body">
                         <div class="col-lg-12 ">
                             <div class="form-group mt-3 mr-5 d-flex">
-                                <div class="mid col-sm-4 text-right">รหัสวิชา</div>
-                                <div class="form-group col-sm-8">
-                                    <div class="board"><?php echo $row->ID ?></div>
-                                </div>
-                            </div>
-                            <div class="form-group mt-3 mr-5 d-flex">
                                 <div class="mid col-sm-4 text-right">ชื่อรายวิชา</div>
                                 <div class="form-group col-sm-8">
                                     <div class="board"><?php echo $row->name_list ?></div>
@@ -102,7 +96,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        <a href="javascript:history.back()" class="btn btn-success">กลับ</a>
+                    <a href="<?PHP echo config_item("base_url"); ?>/lab/" class="btn btn-default">กลับ</a>
                         <form role="form" id="insertLablist" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/lab/RestoreLab" method="post">
                             <input name="inputID" type="hidden" value="<?php echo $row->ID ?>">
                             <button type="submit" class="btn btn-primary bt" style="bottom : 12px; left:5rem">กู้ข้อมูล</button>

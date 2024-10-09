@@ -11,20 +11,22 @@ class log_model extends CI_Model
 		date_default_timezone_set('Asia/Bangkok');
 	}
 
-	public function get_list()
+	public function get_list($limit, $offset)
 	{
-
-		$today = date("Y-m-d");
-
-		$sql = "SELECT *
-                FROM log l
-                ORDER BY l.logID DESC";
-		$query = $this->db->query($sql);
+		// แสดงข้อมูลจากล่าสุดไปหาเก่าสุด
+		$sql = "SELECT * FROM log ORDER BY logID DESC LIMIT ?, ?";
+		$query = $this->db->query($sql, array($offset, $limit)); // สลับ limit และ offset
 		$school = $query->result();
-		$data['row'] = $school;
-		return $data;
+	
+		// รับจำนวนทั้งหมดของแถว
+		$total_rows = $this->db->count_all('log');
+	
+		return [
+			'row' => $school,
+			'total_rows' => $total_rows
+		];
 	}
-
+	
 	public function changeDate($date)
 	{
 		list($dd, $mm, $yy) = explode("/", $date);

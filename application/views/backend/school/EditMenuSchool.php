@@ -125,7 +125,21 @@
 					</div>
 					<!-- /.card-header -->
 					<!-- form start -->
-					<form role="form" id=#editSchool" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/school/updateSchool" method="post">
+					<form role="form" id="#editSchool" enctype="multipart/form-data" action="<?PHP echo config_item("base_url"); ?>/school/updateSchool" method="post">
+						<?php if (isset($_GET['Success'])) { ?>
+							<script>
+								$(document).ready(function() {
+									toastr.success('บันทึกข้อมูลสำเร็จ!');
+								});
+							</script>
+						<?php } ?>
+						<?php if (isset($_GET['Error'])) { ?>
+							<script>
+								$(document).ready(function() {
+									toastr.error('เกิดข้อผิดพลาดในการบันทึกข้อมูล!');
+								});
+							</script>
+						<?php } ?>
 						<input name="inputID" type="hidden" value="<?php echo $row->School_id ?>">
 						<div class="card-body" style="background-color: rgb(245, 245, 245);">
 							<div class="form-group mt-3 mr-5 d-flex">
@@ -150,7 +164,7 @@
 							</div>
 						</div>
 						<div class="card-footer" style="background-color: rgb(255, 255, 255);">
-						<a href="javascript:history.back()" class="btn btn-success">กลับ</a>
+							<a href="<?PHP echo config_item("base_url"); ?>/school/" class="btn btn-default">กลับ</a>
 							<button type="submit" class="btn btn-primary">บันทึก</button>
 						</div>
 					</form>
