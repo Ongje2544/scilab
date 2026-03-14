@@ -8,7 +8,20 @@ function changeDateShow($date)
 }
 
 $today = date("Y-m-d");
+
+$labToTeachers = [];
+foreach ($teach_lab as $t) {
+    $labToTeachers[$t->Lab_id][] = $t->Teach_id;
+}
+foreach ($labToTeachers as &$arr) {
+    $arr = array_values(array_unique($arr));
+}
+unset($arr);
 ?>
+
+<script>
+var labToTeachers = <?php echo json_encode($labToTeachers, JSON_UNESCAPED_UNICODE); ?>;
+</script>
 
 <style>
 	textarea {
@@ -523,12 +536,31 @@ $today = date("Y-m-d");
 
 <script>
 	$(document).ready(function() {
+		// ฟังก์ชันเพื่ออัปเดตรายชื่อครูผู้สอนตามรายการวิชา
+		function syncTeachSelection() {
+			var selectedIds = $('#selected_camps').val().split(',').map(function(v) { return v.trim(); }).filter(Boolean);
+			console.log('Selected camp IDs:', selectedIds);
+			var teacherSet = {};
+			selectedIds.forEach(function(labId) {
+				var teachers = labToTeachers[labId];
+				console.log('Lab ID:', labId, 'Teachers:', teachers);
+				if (teachers) {
+					teachers.forEach(function(t) {
+						teacherSet[t] = true;
+					});
+				}
+			});
+			var teacherIds = Object.keys(teacherSet);
+			console.log('Teacher IDs to select:', teacherIds);
+			$('#TeachType').val(teacherIds).trigger('change');
+		}
+
 		// ฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวในตาราง 'รายการที่เลือก'
 		function updateSelectedItems() {
 			var $inputField = $('#selected_camps');
-			var selectedIds = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่เลือก
+			var selectedIds = $inputField.val().split(',').map(function(v) { return v.trim(); }).filter(Boolean); // ดึงค่า ID ที่เลือก
 			$('#selectedItemsTable tbody tr').each(function() {
-				var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
+				var rowId = $(this).find('td').first().text().trim(); // ดึง ID จากคอลัมน์แรกของแถว
 				if (selectedIds.includes(rowId)) {
 					$(this).show(); // แสดงแถว
 				} else {
@@ -540,21 +572,20 @@ $today = date("Y-m-d");
 		// ฟังก์ชันเพื่ออัปเดตค่าใน input และซ่อนแถว
 		function removeItemFromCart(id) {
 			var $inputField = $('#selected_camps');
-			var existingValues = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่มีอยู่แล้ว
-			existingValues = existingValues.filter(value => value !== id); // ลบ ID ออก
+			var existingValues = $inputField.val().split(',').map(function(v) { return v.trim(); }).filter(Boolean); // ดึงค่า ID ที่มีอยู่แล้ว
+			existingValues = existingValues.filter(function(value) { return value !== id; }); // ลบ ID ออก
 			$inputField.val(existingValues.join(',')); // อัปเดตค่าใน input
 
 			// อัปเดตการแสดงผลของแถว
 			updateSelectedItems();
 			updateAvailableItems(); // เรียกใช้งานฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวใน 'รายการค่าย'
+			syncTeachSelection(); // อัปเดตครูผู้สอนตามรายวิชาที่เลือก
 		}
-
-		// ฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวในตาราง 'รายการค่าย'
 		function updateAvailableItems() {
 			var $inputField = $('#selected_camps');
-			var selectedIds = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่เลือก
+			var selectedIds = $inputField.val().split(',').map(function(v) { return v.trim(); }).filter(Boolean); // ดึงค่า ID ที่เลือก
 			$('#tablelab1 tbody tr').each(function() {
-				var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
+				var rowId = $(this).find('td').first().text().trim(); // ดึง ID จากคอลัมน์แรกของแถว
 				if (selectedIds.includes(rowId)) {
 					$(this).hide(); // ซ่อนแถวถ้า ID อยู่ใน input
 				} else {
@@ -562,11 +593,11 @@ $today = date("Y-m-d");
 				}
 			});
 		}
-
+		
 		// ฟังก์ชันเพื่อเพิ่มรายการใหม่
 		function addItemToCart(id) {
 			var $inputField = $('#selected_camps');
-			var existingValues = $inputField.val().split(',').filter(Boolean); // ดึงค่า ID ที่มีอยู่แล้ว
+			var existingValues = $inputField.val().split(',').map(function(v) { return v.trim(); }).filter(Boolean); // ดึงค่า ID ที่มีอยู่แล้ว
 			if (!existingValues.includes(id)) {
 				existingValues.push(id); // เพิ่ม ID ใหม่
 				$inputField.val(existingValues.join(',')); // อัปเดตค่าใน input
@@ -575,6 +606,7 @@ $today = date("Y-m-d");
 			// อัปเดตการแสดงผลของแถว
 			updateSelectedItems();
 			updateAvailableItems(); // เรียกใช้งานฟังก์ชันเพื่ออัปเดตการแสดงผลของแถวใน 'รายการค่าย'
+			syncTeachSelection(); // อัปเดตครูผู้สอนตามรายวิชาที่เลือก
 		}
 
 		// จัดการคลิกที่ไอคอนรถเข็น
@@ -591,7 +623,7 @@ $today = date("Y-m-d");
 
 		// ตรวจสอบเมื่อโหลดหน้าเพื่อซ่อนแถวที่มี ID ใน input และแสดงแถวที่เหลือ
 		(function() {
-			var ids = $('#selected_camps').val().split(',').filter(Boolean); // ดึง IDs จาก input
+			var ids = $('#selected_camps').val().split(',').map(function(v) { return v.trim(); }).filter(Boolean); // ดึง IDs จาก input
 			$('#tablelab1 tbody tr').each(function() {
 				var rowId = $(this).find('td').first().text(); // ดึง ID จากคอลัมน์แรกของแถว
 				if (ids.includes(rowId)) {
@@ -600,6 +632,8 @@ $today = date("Y-m-d");
 			});
 
 			updateSelectedItems(); // อัปเดตการแสดงผลของแถวใน 'รายการที่เลือก'
+			updateAvailableItems(); // ซ่อนแถวในรายการค่ายที่ถูกเลือก
+			syncTeachSelection(); // อัปเดตรายชื่อครูผู้สอนตามวิชาที่เลือก
 		})();
 	});
 </script>

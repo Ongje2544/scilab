@@ -119,6 +119,7 @@ class menulist_model extends CI_Model
 			'Class_process' 	=> implode(",", $data['Class_process']),
 			'CreateDate' 		=> date('Y-m-d H:i:s'),
 			'UpdateDate' 		=> date('Y-m-d H:i:s'),
+			'Status' 		=> 'Waiting',
 		);
 		$this->db->insert($this->dbname, $insertQueue);
 		$insert_id = $this->db->insert_id();

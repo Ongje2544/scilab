@@ -2,8 +2,12 @@
 function changeDateShow($date)
 {
 	if (!empty($date)) {
-		list($yy, $mm, $dd) = explode("-", $date);
-		return $dd . "/" . $mm . "/" . $yy;
+		try {
+			$dt = new DateTime($date);
+			return $dt->format('d/m/Y');
+		} catch (Exception $e) {
+			return $date;
+		}
 	}
 }
 

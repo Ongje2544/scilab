@@ -70,35 +70,41 @@ function changeDateShow($date)
             locale: 'th', // ตั้งค่า locale เป็นภาษาไทย
             events: [
                 <?php foreach ($result['row'] as $key => $v) {
-                    list($startYear, $startMonth, $startDay) = explode("-", $v->StartDate);
-                    list($endYear, $endMonth, $endDay) = explode("-", $v->EndDate);
+                    $start = new DateTime($v->StartDate);
+                    $end   = new DateTime($v->EndDate);
+                    $startLabel = $start->format('d/m/Y H:i');
+                    $endLabel   = $end->format('d/m/Y H:i');
+                    $endForCalendar = (clone $end)->modify('+1 day');
                 ?> {
                         title: '<?php echo $v->SchoolName ?>',
-                        start: new Date(<?php echo $startYear; ?>, <?php echo $startMonth - 1; ?>, <?php echo $startDay; ?>),
-                        end: new Date(<?php echo $endYear; ?>, <?php echo $endMonth - 1; ?>, <?php echo $endDay; ?>),
+                        start: new Date(<?php echo $start->format('Y'); ?>, <?php echo ($start->format('n') - 1); ?>, <?php echo $start->format('j'); ?>, <?php echo $start->format('H'); ?>, <?php echo $start->format('i'); ?>),
+                        end: new Date(<?php echo $endForCalendar->format('Y'); ?>, <?php echo ($endForCalendar->format('n') - 1); ?>, <?php echo $endForCalendar->format('j'); ?>, <?php echo $endForCalendar->format('H'); ?>, <?php echo $endForCalendar->format('i'); ?>),
                         url: '<?php echo config_item("base_url"); ?>/menuprocess/process/<?php echo $v->ID ?>/?sID=<?php echo $v->ID ?>',
                         allDay: true,
                         backgroundColor: '#3c8dbc',
                         borderColor: '#3c8dbc',
                         description: 'ยังไม่ได้จัดค่าย',
-                        startDate: toThaiDate('<?php echo $v->StartDate; ?>'),
-                        endDate: toThaiDate('<?php echo $v->EndDate; ?>')
+                        startDate: '<?php echo $startLabel; ?>',
+                        endDate: '<?php echo $endLabel; ?>'
                     },
                 <?php } ?>
                 <?php foreach ($online['row'] as $key => $v) {
-                    list($startYear, $startMonth, $startDay) = explode("-", $v->StartDate);
-                    list($endYear, $endMonth, $endDay) = explode("-", $v->EndDate);
+                    $start = new DateTime($v->StartDate);
+                    $end   = new DateTime($v->EndDate);
+                    $startLabel = $start->format('d/m/Y H:i');
+                    $endLabel   = $end->format('d/m/Y H:i');
+                    $endForCalendar = (clone $end)->modify('+1 day');
                 ?> {
                         title: '<?php echo $v->SchoolName ?>',
-                        start: new Date(<?php echo $startYear; ?>, <?php echo $startMonth - 1; ?>, <?php echo $startDay; ?>),
-                        end: new Date(<?php echo $endYear; ?>, <?php echo $endMonth - 1; ?>, <?php echo $endDay; ?>),
+                        start: new Date(<?php echo $start->format('Y'); ?>, <?php echo ($start->format('n') - 1); ?>, <?php echo $start->format('j'); ?>, <?php echo $start->format('H'); ?>, <?php echo $start->format('i'); ?>),
+                        end: new Date(<?php echo $endForCalendar->format('Y'); ?>, <?php echo ($endForCalendar->format('n') - 1); ?>, <?php echo $endForCalendar->format('j'); ?>, <?php echo $endForCalendar->format('H'); ?>, <?php echo $endForCalendar->format('i'); ?>),
                         url: '<?php echo config_item("base_url"); ?>/menuprocess/viewprocessed/<?php echo $v->ID ?>/?sID=<?php echo $v->ID ?>',
                         allDay: true,
                         backgroundColor: '#3c8', // สีเขียวสำหรับกิจกรรมที่จัดแล้ว
                         borderColor: '#3c8',
                         description: 'จัดค่ายแล้ว',
-                        startDate: toThaiDate('<?php echo $v->StartDate; ?>'),
-                        endDate: toThaiDate('<?php echo $v->EndDate; ?>')
+                        startDate: '<?php echo $startLabel; ?>',
+                        endDate: '<?php echo $endLabel; ?>'
                     },
                 <?php } ?>
             ],
@@ -156,8 +162,8 @@ function changeDateShow($date)
         /* ลด padding ด้านใน */
         width: 100%;
         /* ลดขนาดความกว้าง */
-        height: 0%;
-        /* ลดขนาดความสูง */
+        min-height: 500px;
+        /* ตั้งค่าสูงสุดเพื่อแสดงปฏิทิน */
         margin: 0 auto;
         /* ทำให้ปฏิทินอยู่กึ่งกลาง */
         font-size: 0.8rem;
